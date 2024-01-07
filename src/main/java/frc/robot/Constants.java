@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -13,7 +16,53 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static class OperatorConstants {
-    public static final int kDriverControllerPort = 0;
-  }
+
+    public static final class Swerve {
+
+        public static final class FrontLeft {
+            public static int driveID = 21;
+            public static int steerID = 31;
+            public static int CANCoderID = 1;
+            public static Rotation2d defaultCalibration = 
+                new Rotation2d(Math.toRadians(49.5));
+            public static Translation2d trackPosition =
+                new Translation2d(-Swerve.TrackYMeters/2, Swerve.TrackXMeters/2);
+        }
+
+        public static final class FrontRight {
+            public static int driveID = 23;
+            public static int steerID = 33;
+            public static int CANCoderID = 2;
+            public static Rotation2d defaultCalibration = 
+                new Rotation2d(Math.toRadians(200));
+            public static Translation2d trackPosition =
+                new Translation2d(Swerve.TrackYMeters/2, Swerve.TrackXMeters/2);
+        }
+
+        public static final class BackLeft {
+            public static int driveID = 22;
+            public static int steerID = 32;
+            public static int CANCoderID = 3;
+            public static Rotation2d defaultCalibration = 
+                new Rotation2d(Math.toRadians(2));
+            public static Translation2d trackPosition =
+                new Translation2d(-Swerve.TrackYMeters/2, -Swerve.TrackXMeters/2);
+        }
+
+        public static final class BackRight {
+            public static int driveID = 24;
+            public static int steerID = 34;
+            public static int CANCoderID = 0;
+            public static Rotation2d defaultCalibration = 
+                new Rotation2d(Math.toRadians(54));
+            public static Translation2d trackPosition =
+                new Translation2d(Swerve.TrackYMeters/2, -Swerve.TrackXMeters/2);
+        }
+
+        // Meters from wheel center to wheel center
+        public static double TrackYMeters = 0.65405;
+        public static double TrackXMeters = 0.57785;
+
+        public static Rotation2d forwardAngle = new Rotation2d(Math.toRadians(90));
+    }
 }
