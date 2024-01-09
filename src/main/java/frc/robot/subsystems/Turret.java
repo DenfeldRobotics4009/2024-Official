@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -14,8 +15,8 @@ public class Turret extends SubsystemBase {
   // Example spark initialization
   // CANSparkMax motor = new CANSparkMax(id, MotorType.kBrushless);
 
-  public CANSparkMax leftMotor = new CANSparkMax(50, MotorType.kBrushless);
-  public CANSparkMax rightMotor = new CANSparkMax(51, MotorType.kBrushless);
+  public CANSparkFlex leftMotor = new CANSparkFlex(50, MotorType.kBrushless);
+  public CANSparkFlex rightMotor = new CANSparkFlex(51, MotorType.kBrushless);
   static Turret instance;
 
   /**
