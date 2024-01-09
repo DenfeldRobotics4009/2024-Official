@@ -14,8 +14,8 @@ public class Turret extends SubsystemBase {
   // Example spark initialization
   // CANSparkMax motor = new CANSparkMax(id, MotorType.kBrushless);
 
-
-
+  public CANSparkMax leftMotor = new CANSparkMax(50, MotorType.kBrushless);
+  public CANSparkMax rightMotor = new CANSparkMax(51, MotorType.kBrushless);
   static Turret instance;
 
   /**
@@ -42,7 +42,8 @@ public class Turret extends SubsystemBase {
    * @param percentPower [-1, 1]
    */
   public void setFlyWheelSpeed(double percentPower) {
-
+    leftMotor.set(-percentPower);
+    rightMotor.set(percentPower);
 
   }
 }
