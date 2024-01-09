@@ -12,10 +12,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ExampleSubsystem extends SubsystemBase {
 
-  CANSparkMax shooterFlyWheelA = new CANSparkMax(100, MotorType.kBrushless);
-  CANSparkMax shooterFlyWheelB = new CANSparkMax(101, MotorType.kBrushless);
-
-
   /** Creates a new ExampleSubsystem. */
   public ExampleSubsystem() {}
 
@@ -31,15 +27,6 @@ public class ExampleSubsystem extends SubsystemBase {
         () -> {
           /* one-time action goes here */
         });
-  }
-
-  /**
-   * Sets the speed of the flywheels
-   * @param percentPower [-1, 1]
-   */
-  public void setFlyWheelSpeed(double percentPower) {
-    shooterFlyWheelA.set(percentPower);
-    shooterFlyWheelB.set(-percentPower);
   }
 
   /**

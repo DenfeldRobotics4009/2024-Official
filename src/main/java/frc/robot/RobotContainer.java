@@ -9,8 +9,10 @@ import frc.robot.auto.pathing.AutoShuffleboardTab;
 import frc.robot.auto.pathing.PathingConstants;
 import frc.robot.commands.Drive;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.Shoot;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.SwerveDrive;
+import frc.robot.subsystems.Turret;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -25,8 +27,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   
   final Controls controls = new Controls();
-  final ExampleSubsystem example = new ExampleSubsystem();
   final SwerveDrive driveTrain = SwerveDrive.GetInstance();
+  final Turret turret = Turret.getInstance();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -58,7 +60,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    controls.getSteerButton(1).whileTrue(new ExampleCommand(controls, example));
+    controls.getSteerButton(1).whileTrue(new Shoot(turret, controls));
   }
 
   /**

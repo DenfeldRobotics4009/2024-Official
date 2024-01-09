@@ -17,6 +17,11 @@ import edu.wpi.first.math.geometry.Translation2d;
  */
 public final class Constants {
 
+    public static final class Turret {
+        public static int flyWheelA = 100;
+        public static int flyWheelB = 101;
+    }
+
     public static final class Swerve {
 
         public static final class FrontLeft {

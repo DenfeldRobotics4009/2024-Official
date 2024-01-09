@@ -5,16 +5,20 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Controls;
+import frc.robot.subsystems.Turret;
 
-/** An example command that uses an example subsystem. */
-public class ExampleCommand extends Command {
+public class Shoot extends Command {
 
-  /**
-   * Creates a new ExampleCommand.
-   *
-   * @param subsystem The subsystem used by this command.
-   */
-  public ExampleCommand() {}
+  Turret turret;
+  Controls controls;
+
+  /** Creates a new Shoot. */
+  public Shoot(Turret turret, Controls controls) {
+    this.turret = turret;
+    this.controls = controls;
+    addRequirements(turret);
+  }
 
   // Called when the command is initially scheduled.
   @Override
@@ -22,7 +26,9 @@ public class ExampleCommand extends Command {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    
+  }
 
   // Called once the command ends or is interrupted.
   @Override
