@@ -5,9 +5,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public class Controls {
 
-    final Joystick drive = new Joystick(0), steer = new Joystick(1);
-
-    public JoystickButton GotoZero;
+    public final Joystick drive = new Joystick(0), steer = new Joystick(1);
 
     public Controls() {}
 
@@ -51,6 +49,14 @@ public class Controls {
      */
     public JoystickButton getDriverButton(int id) {
         return new JoystickButton(drive, id);
+    }
+
+    /**
+     * @param id button id
+     * @return JoystickButton on steer joystick
+     */
+    public JoystickButton getSteerButton(int id) {
+        return new JoystickButton(steer, id);
     }
 
     private static double deadband(double value, double deadband) {

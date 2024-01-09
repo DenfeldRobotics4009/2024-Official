@@ -8,6 +8,8 @@ import frc.robot.Constants.Swerve;
 import frc.robot.auto.pathing.AutoShuffleboardTab;
 import frc.robot.auto.pathing.PathingConstants;
 import frc.robot.commands.Drive;
+import frc.robot.commands.ExampleCommand;
+import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.SwerveDrive;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -23,6 +25,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   
   final Controls controls = new Controls();
+  final ExampleSubsystem example = new ExampleSubsystem();
   final SwerveDrive driveTrain = SwerveDrive.GetInstance();
 
   /**
@@ -54,7 +57,9 @@ public class RobotContainer {
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
-  private void configureBindings() {}
+  private void configureBindings() {
+    controls.getSteerButton(1).whileTrue(new ExampleCommand(controls, example));
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
