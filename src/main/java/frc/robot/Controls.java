@@ -5,12 +5,22 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public class Controls {
 
-    final Joystick drive = new Joystick(0), steer = new Joystick(1);
+    public final Joystick drive = new Joystick(0), steer = new Joystick(1);
 
-    public JoystickButton GotoZero;
+    static Controls instance;
 
-    public Controls() {}
+    public static Controls GetInstance() {
+        if (instance == null) {
+            instance = new Controls();
+        }
 
+        return instance;
+    }
+
+    /**
+     * Creates a new controls object
+     */
+    private Controls() {}
 
     /**
      * Y axis of the drive joystick

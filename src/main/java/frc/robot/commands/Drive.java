@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Controls;
@@ -14,12 +16,17 @@ public class Drive extends Command {
   SwerveDrive m_drivetrain;
   Controls m_controls;
 
+  // Tuner values are in degrees, and are converted after calculation
+  PIDController directionTuner = new PIDController(4, 0, 0);
+
   /** Creates a new Drive. */
   public Drive(SwerveDrive Drivetrain, Controls Controls) {
     addRequirements(Drivetrain);
 
     m_drivetrain = Drivetrain;
     m_controls = Controls;
+
+    directionTuner.enableContinuousInput(0, 360);
   }
 
   // Called when the command is initially scheduled.
@@ -30,11 +37,27 @@ public class Drive extends Command {
   @Override
   public void execute() {
 
+    double radPSec;
+
+    // If the hat is held in a direction
+    if (m_controls.steer.getPOV() != -1) {
+      // Units are in degrees for POV hat, thus use degrees from navx
+      radPSec = MathUtil.clamp(
+          Math.toRadians( directionTuner.calculate(
+            SwerveDrive.navxGyro.getRotation2d().times(-1).getDegrees(), 
+            m_controls.steer.getPOV()
+          )),
+          -SwerveModule.maxRadPerSecond, SwerveModule.maxRadPerSecond
+        );
+    } else {
+      radPSec = m_controls.getTurn() * SwerveModule.maxRadPerSecond;
+    }
+
     ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
       new ChassisSpeeds(
         m_controls.getForward() * SwerveModule.maxMetersPerSecond,
         m_controls.getLateral() * SwerveModule.maxMetersPerSecond,
-        m_controls.getTurn() * SwerveModule.maxRadPerSecond
+        radPSec
       ), 
       SwerveDrive.navxGyro.getRotation2d()
     );
