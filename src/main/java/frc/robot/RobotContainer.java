@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   
-  final Controls controls = new Controls();
+  final Controls controls = Controls.GetInstance();
   final SwerveDrive driveTrain = SwerveDrive.GetInstance();
 
   /**
