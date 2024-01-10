@@ -43,8 +43,8 @@ public class Turret extends SubsystemBase {
    * @param percentPower [-1, 1]
    */
   public void setFlyWheelSpeed(double percentPower) {
-    leftMotor.set(-percentPower);
-    rightMotor.set(percentPower);
+    leftMotor.set(percentPower);
+    rightMotor.set(-percentPower * 0.9);
 
   }
 }
