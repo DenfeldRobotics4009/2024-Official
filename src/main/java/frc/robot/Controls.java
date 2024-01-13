@@ -9,7 +9,7 @@ public class Controls {
 
     static Controls instance;
 
-    public static Controls GetInstance() {
+    public static Controls getInstance() {
         if (instance == null) {
             instance = new Controls();
         }
