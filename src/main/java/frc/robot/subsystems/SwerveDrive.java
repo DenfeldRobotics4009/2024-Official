@@ -101,7 +101,7 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
 
   static SwerveDrive instance;
 
-  public static SwerveDrive GetInstance() {
+  public static SwerveDrive getInstance() {
     if (instance == null) {
       instance = new SwerveDrive();
     }
