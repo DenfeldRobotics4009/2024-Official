@@ -7,7 +7,8 @@ package frc.robot;
 import java.io.IOException;
 import java.util.Optional;
 
-import org.photonvision.*;
+import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonUtils;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
@@ -16,6 +17,9 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * This class will manage processes related to photon vision,
@@ -30,7 +34,9 @@ public class AprilTagOdometry {
     public final Transform3d cameraToRobot;
 
     AprilTagFieldLayout aprilTagFieldLayout;
-    Pose3d lastRobotPose;
+    Pose3d lastRobotPose = new Pose3d();
+
+    final ShuffleboardTab photonTab = Shuffleboard.getTab("Photonvision");
 
     /**
      * Records the amount of time that has passed since the
@@ -53,7 +59,7 @@ public class AprilTagOdometry {
      */
     public AprilTagOdometry(String cameraName, Transform3d cameraToRobot) {
 
-        camera = new PhotonCamera(cameraName);
+        camera = new PhotonCamera("Microsoft_LifeCam_HD-3000");
         this.cameraToRobot = cameraToRobot;
 
         lastRecordedPose.start();
@@ -81,9 +87,8 @@ public class AprilTagOdometry {
         // Catch if the layout was not able to be initialized
         if (aprilTagFieldLayout == null) {return;}
 
-        PhotonTrackedTarget target = camera.getLatestResult().getBestTarget();
-        // This function may be called without a valid target
-        if (target != null) {
+        if (camera.getLatestResult().hasTargets()) {
+            PhotonTrackedTarget target = camera.getLatestResult().getBestTarget();
             int fiducialId = target.getFiducialId();
             Optional<Pose3d> tagPose = aprilTagFieldLayout.getTagPose(fiducialId);
             // Ensure the existence of this tag id
@@ -98,6 +103,11 @@ public class AprilTagOdometry {
             // Reset timer
             lastRecordedPose.reset();
         }
+
+        SmartDashboard.putNumber("X", lastRobotPose.getX());
+        SmartDashboard.putNumber("Y", lastRobotPose.getY());
+        SmartDashboard.putNumber("Z", lastRobotPose.getZ());
+        
     }
 
     /**

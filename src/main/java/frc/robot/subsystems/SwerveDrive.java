@@ -8,6 +8,7 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -17,7 +18,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+import frc.robot.AprilTagOdometry;
 import frc.robot.Constants.Swerve;
 import frc.robot.auto.pathing.DriveSubsystem;
 import frc.robot.subsystems.swerve.SwerveDriveInverseKinematics;
@@ -28,6 +29,9 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
 
   final ShuffleboardTab swerveTab = Shuffleboard.getTab("Swerve");
   final Field2d feildWidget = new Field2d();
+
+  AprilTagOdometry cam1 = new AprilTagOdometry("Microsoft_LifeCam_HD-3000-1", new Transform3d());
+  AprilTagOdometry cam2 = new AprilTagOdometry("Microsoft_LifeCam_HD-3000-2", new Transform3d());
 
   // Construct swerve modules
   final SwerveModule
@@ -129,6 +133,8 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
 
   @Override
   public void periodic() {
+    cam1.updateRobotPose();
+    cam2.updateRobotPose();
 
     inverseKinematics.Update();
 
