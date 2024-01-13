@@ -31,7 +31,7 @@ public class Controls {
      * @return double
      */
     public double getTurn() {
-        return modifyAxis(steer.getZ(), 0.15);
+        return 0 ;//modifyAxis(steer.getZ(), 0.15);
     }
 
     /**
