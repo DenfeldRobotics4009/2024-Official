@@ -59,7 +59,7 @@ public class AprilTagOdometry {
      */
     public AprilTagOdometry(String cameraName, Transform3d cameraToRobot) {
 
-        camera = new PhotonCamera("Microsoft_LifeCam_HD-3000");
+        camera = new PhotonCamera(cameraName);
         this.cameraToRobot = cameraToRobot;
 
         lastRecordedPose.start();
