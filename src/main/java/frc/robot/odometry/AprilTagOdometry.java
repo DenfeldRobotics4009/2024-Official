@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot;
+package frc.robot.odometry;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -13,6 +13,7 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -28,7 +29,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * 
  * Each instance of this class will manage a single camera 
  */
-public class AprilTagOdometry {
+public class AprilTagOdometry extends OdometrySource {
 
     public final PhotonCamera camera;
     public final Transform3d cameraToRobot;
@@ -59,6 +60,8 @@ public class AprilTagOdometry {
      */
     public AprilTagOdometry(String cameraName, Transform3d cameraToRobot) {
 
+        super(OdometryType.kAbsolute);
+
         camera = new PhotonCamera(cameraName);
         this.cameraToRobot = cameraToRobot;
 
@@ -79,13 +82,23 @@ public class AprilTagOdometry {
         }
     }
 
-    /*
-     * This method should be called periodically to keep the last
-     * recorded robot position accurate.
+    /**
+     * @return seconds since the robot pose has been updated
      */
-    public void updateRobotPose() {
+    public double getTimeSinceLastRecording() {
+        return lastRecordedPose.get();
+    }
+
+    @Override
+    /**
+     * Calculates and returns the position of the robot via april-tags
+     * currently viewable by the robots camera(s).
+     * @returns Optional<Pose2d>, nothing if no april-tags are seen.
+     */
+    Optional<Pose2d> getPosition() {
+        Pose2d position = null;
         // Catch if the layout was not able to be initialized
-        if (aprilTagFieldLayout == null) {return;}
+        if (aprilTagFieldLayout == null) {return Optional.ofNullable(position);}
 
         if (camera.getLatestResult().hasTargets()) {
             PhotonTrackedTarget target = camera.getLatestResult().getBestTarget();
@@ -94,7 +107,7 @@ public class AprilTagOdometry {
             // Ensure the existence of this tag id
             if (tagPose.isEmpty()) {
                 DriverStation.reportWarning("Fiducial id " + fiducialId + " not recognized", false);
-                return;
+                return Optional.ofNullable(position);
             }
             // Assign robot position
             lastRobotPose = PhotonUtils.estimateFieldToRobotAprilTag(
@@ -107,25 +120,7 @@ public class AprilTagOdometry {
         SmartDashboard.putNumber("X", lastRobotPose.getX());
         SmartDashboard.putNumber("Y", lastRobotPose.getY());
         SmartDashboard.putNumber("Z", lastRobotPose.getZ());
-        
-    }
 
-    /**
-     * Gets the most recently updated robot position
-     * @return pose3d of position. Ideally, the Z axis
-     * of the pose should remain zero, unless the robot
-     * is not on the carpet.
-     */
-    public Pose3d getRobotPose() {
-        updateRobotPose();
-        return lastRobotPose;
+        return Optional.ofNullable(position);
     }
-
-    /**
-     * @return seconds sinze the robot pose has been updated
-     */
-    public double getTimeSinceLastRecording() {
-        return lastRecordedPose.get();
-    }
-
 }

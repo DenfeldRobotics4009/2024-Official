@@ -18,17 +18,18 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.AprilTagOdometry;
 import frc.robot.Constants.Swerve;
 import frc.robot.auto.pathing.DriveSubsystem;
-import frc.robot.subsystems.swerve.SwerveDriveInverseKinematics;
+import frc.robot.odometry.AprilTagOdometry;
+import frc.robot.odometry.OdometrySource;
+import frc.robot.odometry.SwerveDriveInverseKinematics;
 import frc.robot.subsystems.swerve.SwerveModule;
 import frc.robot.subsystems.swerve.SwerveMotors;
 
 public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
 
   final ShuffleboardTab swerveTab = Shuffleboard.getTab("Swerve");
-  final Field2d feildWidget = new Field2d();
+  final Field2d fieldWidget = new Field2d();
 
   AprilTagOdometry cam1 = new AprilTagOdometry("Microsoft_LifeCam_HD-3000-1", new Transform3d());
   AprilTagOdometry cam2 = new AprilTagOdometry("Microsoft_LifeCam_HD-3000-2", new Transform3d());
@@ -127,23 +128,19 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
     navxGyro.setAngleAdjustment(-Swerve.forwardAngle.getDegrees());
 
     // Construct feild widget
-    swerveTab.add("Robot Position", feildWidget
+    swerveTab.add("Robot Position", fieldWidget
       ).withPosition(7, 0).withSize(18, 10);
   }
 
   @Override
   public void periodic() {
-    cam1.updateRobotPose();
-    cam2.updateRobotPose();
-
-    inverseKinematics.Update();
 
     // Displaying position values
-    xPositionEntry.setDouble(inverseKinematics.getPosition().getX());
-    yPositionEntry.setDouble(inverseKinematics.getPosition().getY());
+    xPositionEntry.setDouble(inverseKinematics.getPosition().get().getX());
+    yPositionEntry.setDouble(inverseKinematics.getPosition().get().getY());
     rotationEntry.setDouble(navxGyro.getRotation2d().getDegrees());
 
-    feildWidget.setRobotPose(
+    fieldWidget.setRobotPose(
       new Pose2d(
         getPosition().getTranslation().plus(new Translation2d(1.8, 0.4)), new Rotation2d()
       )
@@ -168,7 +165,7 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
   }
 
   public Pose2d getPosition() {
-    return inverseKinematics.getPosition();
+    return OdometrySource.getBestPosition();
   }
 
   /**

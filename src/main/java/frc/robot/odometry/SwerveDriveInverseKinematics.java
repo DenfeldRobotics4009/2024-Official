@@ -1,10 +1,13 @@
-package frc.robot.subsystems.swerve;
+package frc.robot.odometry;
+
+import java.util.Optional;
 
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import frc.robot.subsystems.swerve.SwerveModule;
 
-public class SwerveDriveInverseKinematics {
+public class SwerveDriveInverseKinematics extends OdometrySource {
 
     /**
      * see https://docs.wpilib.org/en/stable/docs/software/kinematics-and-odometry/swerve-drive-odometry.html
@@ -20,8 +23,6 @@ public class SwerveDriveInverseKinematics {
 
     final AHRS navxGyro;
 
-    Pose2d currentPose;
-
     private static SwerveDriveInverseKinematics Instance;
 
     public static SwerveDriveInverseKinematics getInstance(AHRS navxGyro) {
@@ -30,41 +31,37 @@ public class SwerveDriveInverseKinematics {
         return Instance;
     }
 
-    /**
-     * @param SwerveModules 4 Swerve modules to calculate position from
-     */
     private SwerveDriveInverseKinematics(AHRS navxGyro) {
+        super(OdometryType.kRelative);
+        
         this.navxGyro = navxGyro;
     }
  
+    @Override
     /**
      * Updates current readings from swerve modules to calculate
      * position, should be ran from the drive train's periodic
      * function.
      */
-    public void Update() {
-
-        Translation2d wheelPosSum = new Translation2d();
-        
+    public void periodic() {
         for (SwerveModule swerveModule : SwerveModule.instances) {
-
             swerveModule.updateFieldRelativePosition(navxGyro.getRotation2d());
+        }
+    }
 
+    @Override
+    public Optional<Pose2d> getPosition() {
+        Translation2d wheelPosSum = new Translation2d();
+        for (SwerveModule swerveModule : SwerveModule.instances) {
             wheelPosSum = wheelPosSum.plus(swerveModule.getFieldRelativePosition());
         }
-
-        currentPose =  new Pose2d (
-            wheelPosSum.div(
-                SwerveModule.instances.size()
-            ), 
-            navxGyro.getRotation2d()
+        // This will always return a value
+        return Optional.ofNullable(
+            new Pose2d (wheelPosSum.div(SwerveModule.instances.size()), navxGyro.getRotation2d())
         );
     }
 
-    public Pose2d getPosition() {
-        return currentPose;
-    }
-
+    @Override
     public void setPosition(Pose2d Position) {
         for (SwerveModule swerveModule : SwerveModule.instances) {
             swerveModule.setFieldRelativePositionFromRobotPosition(Position);
