@@ -11,7 +11,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 
-/** Add your docs here. */
 public abstract class OdometrySource {
 
     static ArrayList<OdometrySource> relativeInstances = new ArrayList<OdometrySource>(); 
@@ -44,7 +43,11 @@ public abstract class OdometrySource {
     }
 
     /**
-     * Finds the center Pose2d within the given set
+     * Finds the center Pose2d within the given set.
+     * 
+     * #TODO There is a better way to do this, one that
+     * considers the possibility of outliers and bad data.
+     * 
      * @param pose2ds
      * @return center Pose2d
      */
