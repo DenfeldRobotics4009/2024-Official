@@ -5,7 +5,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public class Controls {
 
-    public final Joystick drive = new Joystick(0), steer = new Joystick(1);
+    public final Joystick drive = new Joystick(0);
+    public final Joystick steer = new Joystick(1);
 
     public Controls() {}
 

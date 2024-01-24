@@ -9,14 +9,15 @@ import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Turret extends SubsystemBase {
 
   // Example spark initialization
   // CANSparkMax motor = new CANSparkMax(id, MotorType.kBrushless);
 
-  public CANSparkFlex leftMotor = new CANSparkFlex(50, MotorType.kBrushless);
-  public CANSparkFlex rightMotor = new CANSparkFlex(51, MotorType.kBrushless);
+  public CANSparkFlex leftMotor = new CANSparkFlex(Constants.Turret.leftMotorID, MotorType.kBrushless);
+  public CANSparkFlex rightMotor = new CANSparkFlex(Constants.Turret.rightMotorID, MotorType.kBrushless);
   static Turret instance;
 
   /**
@@ -44,7 +45,7 @@ public class Turret extends SubsystemBase {
    */
   public void setFlyWheelSpeed(double percentPower) {
     leftMotor.set(percentPower);
-    rightMotor.set(-percentPower * 0.9);
+    rightMotor.set(-percentPower*Constants.Turret.spin);
 
   }
 }
