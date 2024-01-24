@@ -5,10 +5,13 @@
 package frc.robot.odometry;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonUtils;
+import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
@@ -17,10 +20,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * This class will manage processes related to photon vision,
@@ -36,14 +37,6 @@ public class AprilTagOdometry extends OdometrySource {
 
     AprilTagFieldLayout aprilTagFieldLayout;
     Pose3d lastRobotPose = new Pose3d();
-
-    final ShuffleboardTab photonTab = Shuffleboard.getTab("Photonvision");
-
-    /**
-     * Records the amount of time that has passed since the
-     * last record of the robots position.
-     */
-    Timer lastRecordedPose = new Timer();
 
     /**
      * Creates an april tag odometry source relating to a 
@@ -65,8 +58,6 @@ public class AprilTagOdometry extends OdometrySource {
         camera = new PhotonCamera(cameraName);
         this.cameraToRobot = cameraToRobot;
 
-        lastRecordedPose.start();
-
         try {
 
             aprilTagFieldLayout = AprilTagFieldLayout.loadFromResource(
@@ -82,11 +73,27 @@ public class AprilTagOdometry extends OdometrySource {
         }
     }
 
-    /**
-     * @return seconds since the robot pose has been updated
-     */
-    public double getTimeSinceLastRecording() {
-        return lastRecordedPose.get();
+    public List<PhotonTrackedTarget> getTargets() {
+        return getPipelineResult().targets;
+    }
+
+    public Optional<PhotonTrackedTarget> getBestTarget() {
+        return Optional.ofNullable(getPipelineResult().getBestTarget());
+    }
+
+    public PhotonPipelineResult getPipelineResult() {
+        return camera.getLatestResult();
+    }
+
+    public Optional<Pose3d> getTargetPose(PhotonTrackedTarget target) {
+        int fiducialId = target.getFiducialId();
+        Optional<Pose3d> tagPose = aprilTagFieldLayout.getTagPose(fiducialId);
+        // Ensure the existence of this tag id, print warning
+        if (tagPose.isEmpty()) {
+            DriverStation.reportWarning("Fiducial id " + fiducialId + " not recognized", false);
+        }
+        // Return with optional null value
+        return tagPose;
     }
 
     @Override
@@ -100,27 +107,30 @@ public class AprilTagOdometry extends OdometrySource {
         // Catch if the layout was not able to be initialized
         if (aprilTagFieldLayout == null) {return Optional.ofNullable(position);}
 
-        if (camera.getLatestResult().hasTargets()) {
-            PhotonTrackedTarget target = camera.getLatestResult().getBestTarget();
-            int fiducialId = target.getFiducialId();
-            Optional<Pose3d> tagPose = aprilTagFieldLayout.getTagPose(fiducialId);
+        if (getBestTarget().isPresent()) {
+            PhotonTrackedTarget target = getBestTarget().get();
+            Optional<Pose3d> tagPose = getTargetPose(target);
             // Ensure the existence of this tag id
-            if (tagPose.isEmpty()) {
-                DriverStation.reportWarning("Fiducial id " + fiducialId + " not recognized", false);
-                return Optional.ofNullable(position);
-            }
+            if (tagPose.isEmpty()) {return Optional.ofNullable(position);}
             // Assign robot position
             lastRobotPose = PhotonUtils.estimateFieldToRobotAprilTag(
                 target.getBestCameraToTarget(), tagPose.get(), cameraToRobot);
-
-            // Reset timer
-            lastRecordedPose.reset();
         }
 
-        SmartDashboard.putNumber("X", lastRobotPose.getX());
-        SmartDashboard.putNumber("Y", lastRobotPose.getY());
-        SmartDashboard.putNumber("Z", lastRobotPose.getZ());
-
         return Optional.ofNullable(position);
+    }
+
+    
+    double getDistanceToTarget(PhotonTrackedTarget target) {
+        Optional<Pose3d> tagPose = getTargetPose(target);
+        // Ensure the existence of this tag id
+        if (tagPose.isEmpty()) {return -1;}
+
+        return PhotonUtils.calculateDistanceToTargetMeters(
+                cameraToRobot.getZ(), 
+                tagPose.get().getZ(), 
+                cameraToRobot.getRotation().getZ(), 
+                target.getPitch()
+            );
     }
 }

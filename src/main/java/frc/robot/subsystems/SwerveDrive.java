@@ -31,9 +31,6 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
   final ShuffleboardTab swerveTab = Shuffleboard.getTab("Swerve");
   final Field2d fieldWidget = new Field2d();
 
-  AprilTagOdometry cam1 = new AprilTagOdometry("Microsoft_LifeCam_HD-3000-1", new Transform3d());
-  AprilTagOdometry cam2 = new AprilTagOdometry("Microsoft_LifeCam_HD-3000-2", new Transform3d());
-
   // Construct swerve modules
   final SwerveModule
     // Pass swerve tab into modules to allow each of them to display relevant 
@@ -136,8 +133,8 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
   public void periodic() {
 
     // Displaying position values
-    xPositionEntry.setDouble(inverseKinematics.getPosition().get().getX());
-    yPositionEntry.setDouble(inverseKinematics.getPosition().get().getY());
+    xPositionEntry.setDouble(OdometrySource.getBestPosition().getX());
+    yPositionEntry.setDouble(OdometrySource.getBestPosition().getY());
     rotationEntry.setDouble(navxGyro.getRotation2d().getDegrees());
 
     fieldWidget.setRobotPose(

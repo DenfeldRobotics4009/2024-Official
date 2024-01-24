@@ -30,6 +30,7 @@
     "AHRS",
     "navx",
     "odometry",
+    "Pathing",
     "photonvision"
   ]
 }
