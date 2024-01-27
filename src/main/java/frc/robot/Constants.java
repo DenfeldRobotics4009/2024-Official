@@ -18,10 +18,19 @@ import edu.wpi.first.math.geometry.Translation2d;
 public final class Constants {
 
     public static final class Turret {
-        public static int flyWheelA = 100;
-        public static int flyWheelB = 101;
+        public static int leftMotorID = 100;
+        public static int rightMotorID = 101;
+        public static double spin = 0.9;
     }
-
+public static final class Intake {
+        public static int intakeMotorID = 40;
+        public static int rotateMotorID = 41; 
+        public static double rotateMotorPower = 0.5;
+        public static double intakeMotorPower = 0.5;
+        public static double source = 1000;
+        public static double ground = 500;
+        public static double deposit = 250;
+    }
     public static final class Swerve {
 
         public static final class FrontLeft {
