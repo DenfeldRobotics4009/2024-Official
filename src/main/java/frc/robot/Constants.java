@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import frc.robot.subsystems.Climber.positionOptions;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -17,12 +18,32 @@ import edu.wpi.first.math.geometry.Translation2d;
  */
 public final class Constants {
 
+    public static final class Arm {
+        public static int armIntakeMotorID = 63;
+        public static int armShooterMotorLeftID = 64;
+        public static int armShooterMotorRightID = 65;
+        public static int armMotorID = 66;
+        public static double armIntakeMotorPower = 0.4;
+        public static double source = 1000;
+        public static double ground = 500;
+        public static double deposit = 250;
+        public static double upperLimit = 6.25;
+        public static double lowerLimit = 0;
+    }
+    public static final class Climber {
+        public static int climberMotorID = 70;
+        public static double down = 1000;
+        public static double up = 500;
+        public static double climberMotorPower = 0.5;
+        public void setPosition(positionOptions up2) {
+  
+    }
     public static final class Turret {
-        public static int leftMotorID = 100;
-        public static int rightMotorID = 101;
+        public static int leftMotorID = 60;
+        public static int rightMotorID = 59; 
         public static double spin = 0.9;
     }
-public static final class Intake {
+    public static final class Intake {
         public static int intakeMotorID = 40;
         public static int rotateMotorID = 41; 
         public static double rotateMotorPower = 0.5;
@@ -78,5 +99,6 @@ public static final class Intake {
         public static double TrackXMeters = 0.57785;
 
         public static Rotation2d forwardAngle = new Rotation2d(Math.toRadians(0));
+    }
     }
 }

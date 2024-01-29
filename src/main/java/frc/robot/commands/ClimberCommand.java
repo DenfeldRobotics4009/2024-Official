@@ -6,21 +6,21 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Controls;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Intake.positionOptions;
+import frc.robot.Constants.Climber;
+import frc.robot.subsystems.Climber.positionOptions;
 
 /** An example command that uses an example subsystem. */
-public class IntakeCommand extends Command {
+public class ClimberCommand extends Command {
 Controls controls;
-Intake intake;
+Climber climber;
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public IntakeCommand(Controls controls, Intake intake) {
+  public ClimberCommand(Controls controls, Climber climber) {
     this.controls = controls;
-    this.intake = intake;
+    this.climber = climber;
   }
 
   // Called when the command is initially scheduled.
@@ -30,20 +30,11 @@ Intake intake;
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(controls.drive.getRawButton(7)){
-      intake.setPosition(positionOptions.SOURCE);
+    if(controls.drive.getRawButton(6)){
+      climber.setPosition(positionOptions.DOWN);
     }
-    if(controls.drive.getRawButton(9)){
-      intake.setPosition(positionOptions.DEPOSIT);
-      }
-    if(controls.drive.getRawButton(11)){
-      intake.setPosition(positionOptions.GROUND);
-    }
-    if(controls.drive.getRawButton(2)){
-      intake.setIntake();
-    }
-    if(controls.drive.getRawButton(1)){
-      intake.setOutake();
+    if(controls.drive.getRawButton(5)){
+      climber.setPosition(positionOptions.UP);
     }
   }
   // Called once the command ends or is interrupted.
