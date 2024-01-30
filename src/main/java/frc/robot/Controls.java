@@ -1,12 +1,13 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public class Controls {
 
-    public final Joystick drive = new Joystick(0), steer = new Joystick(1);
-
+    public final XboxController driveController = new XboxController(0);
+    
     static Controls instance;
 
     public static Controls GetInstance() {
@@ -27,7 +28,7 @@ public class Controls {
      * @return double
      */
     public double getForward() {
-        return modifyAxis(-drive.getY(), 0.15);
+        return modifyAxis(-driveController.getLeftY(), 0.15);
     }
 
     /**
@@ -35,7 +36,7 @@ public class Controls {
      * @return double
      */
     public double getLateral() {
-        return modifyAxis(-drive.getX(), 0.15);
+        return modifyAxis(-driveController.getLeftX(), 0.15);
     }
 
     /**
@@ -43,7 +44,7 @@ public class Controls {
      * @return double
      */
     public double getTurn() {
-        return modifyAxis(steer.getZ(), 0.15);
+        return modifyAxis(driveController.getRightX(), 0.15);
     }
 
     /**
@@ -52,7 +53,7 @@ public class Controls {
      * @return boolean
      */
     public boolean getPrecisionMode() {
-        return drive.getTrigger();
+        return driveController.getLeftStickButton();
     }
 
     /**
@@ -60,7 +61,7 @@ public class Controls {
      * @return JoystickButton on drive joystick
      */
     public JoystickButton getDriverButton(int id) {
-        return new JoystickButton(drive, id);
+        return new JoystickButton(driveController, id);
     }
 
     private static double deadband(double value, double deadband) {
