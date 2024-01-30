@@ -45,7 +45,7 @@ public class Turret extends SubsystemBase {
    */
   public void setFlyWheelSpeed(double percentPower) {
     leftMotor.set(percentPower);
-    rightMotor.set(-percentPower*Constants.Turret.spin);
+    rightMotor.set(-percentPower);
 
   }
 }

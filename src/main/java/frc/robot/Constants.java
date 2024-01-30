@@ -18,8 +18,8 @@ import edu.wpi.first.math.geometry.Translation2d;
 public final class Constants {
 
     public static final class Turret {
-        public static int leftMotorID = 100;
-        public static int rightMotorID = 101;
+        public static int leftMotorID = 58;
+        public static int rightMotorID = 59;
         public static double spin = 0.9;
     }
 public static final class Intake {
