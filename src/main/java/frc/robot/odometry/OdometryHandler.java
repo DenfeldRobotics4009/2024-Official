@@ -103,6 +103,11 @@ public class OdometryHandler {
         allPositions.addAll(getPose2ds(external));
         allPositions.addAll(getPose2ds(internal));
 
+        System.out.println(" - ");
+        for (Pose2d pose2d : allPositions) {
+            System.out.println(pose2d);
+        }
+
         // Convert to array and calculate
         return processPose2dSet(allPositions.toArray(new Pose2d[0]));
             

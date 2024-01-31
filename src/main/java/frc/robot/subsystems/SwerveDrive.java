@@ -135,6 +135,8 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
   @Override
   public void periodic() {
 
+    inverseKinematics.periodic();
+
     // Displaying position values
     xPositionEntry.setDouble(OdometryHandler.getBestPosition().getX());
     yPositionEntry.setDouble(OdometryHandler.getBestPosition().getY());

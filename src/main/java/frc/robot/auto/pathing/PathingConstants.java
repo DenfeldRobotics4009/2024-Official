@@ -27,7 +27,7 @@ public class PathingConstants {
      * lookAheadMeters = speedMeters * lookAheadScalar
      * @param lookAheadScalar double, [0.1, 10]
      */
-    public static void setLookAheadScalaer(double lookAheadScalar) {
+    public static void setLookAheadScalar(double lookAheadScalar) {
         PathingConstants.lookAheadScalar = 
             FollowPath.Clamp(lookAheadScalar, 10, 0.1);
     }
