@@ -151,14 +151,14 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
    */
   public void drive(ChassisSpeeds Speeds) {
 
-    // xVelocityEntry.setDouble(Speeds.vxMetersPerSecond);
-    // yVelocityEntry.setDouble(Speeds.vyMetersPerSecond);
-    // rotationVelocityEntry.setDouble(Math.toDegrees(Speeds.omegaRadiansPerSecond));
+    xVelocityEntry.setDouble(Speeds.vxMetersPerSecond);
+    yVelocityEntry.setDouble(Speeds.vyMetersPerSecond);
+    rotationVelocityEntry.setDouble(Math.toDegrees(Speeds.omegaRadiansPerSecond));
 
-    // SwerveModuleState[] states = kinematics.toSwerveModuleStates(Speeds);
-    // for (int i = 0; i < 4; i++) {
-    //   SwerveModule.instances.get(i).drive(states[i]);
-    // }
+    SwerveModuleState[] states = kinematics.toSwerveModuleStates(Speeds);
+    for (int i = 0; i < 4; i++) {
+      SwerveModule.instances.get(i).drive(states[i]);
+    }
   }
 
   public Pose2d getPosition() {
