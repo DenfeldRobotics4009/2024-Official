@@ -31,21 +31,4 @@ public class Field {
             fieldWidthMeters - bluePosition.getY()
         );
     }
-
-    // /**
-    //  * Translates an april tag position relative to
-    //  * the blue alliance zero to a position relative
-    //  * to a red alliance zero
-    //  * @param bluePosition
-    //  * @return
-    //  */
-    // public static Pose3d translateAprilTagPoseToRed(Pose3d bluePosition) {
-    //     return new Pose3d(
-    //         fieldLengthMeters - bluePosition.getX(),
-    //         fieldWidthMeters - bluePosition.getY(),
-    //         bluePosition.getZ(),
-    //         bluePosition.getRotation()
-    //     );
-    // }
-
 }

@@ -5,6 +5,7 @@
 package frc.robot.odometry;
 
 public enum OdometryType {
+    
     /**
      * External odometry sources are non-continuous, non-self relative sources
      * for position calculation. Thus, they do not have to constantly supply

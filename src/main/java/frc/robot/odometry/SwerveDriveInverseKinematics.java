@@ -63,7 +63,9 @@ public class SwerveDriveInverseKinematics implements OdometrySource {
     @Override
     public void setPosition(Pose2d Position) {
 
-        // Set gyro angle by the passed in rotation
+        // Set gyro angle by the passed in rotation, the gyro itself 
+        // is measured internal relative to its starting location, which
+        // may be incorrect.
         navxGyro.setAngleAdjustment(
             navxGyro.getRotation2d().minus(Position.getRotation()).getDegrees()
         );

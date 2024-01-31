@@ -44,8 +44,8 @@ public class PathingConstants {
 
     public static double maxAccelerationMeters = 3;
     /**
-     * Sets the maximum allowed decceleration along paths
-     * This does not limit acceleration, only decelleration.
+     * Sets the maximum allowed deceleration along paths
+     * This does not limit acceleration, only deceleration.
      * @param maxAccelerationMeters double [0, 10]
      */
     public static void setMaxAccelerationMeters(double maxAccelerationMeters) {
