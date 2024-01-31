@@ -6,7 +6,6 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import frc.robot.subsystems.Climber.positionOptions;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -34,9 +33,7 @@ public final class Constants {
         public static int climberMotorID = 70;
         public static double down = 1000;
         public static double up = 500;
-        public static double climberMotorPower = 0.5;
-        public void setPosition(positionOptions up2) {
-  
+        public static double climberMotorPower = 0.5;  
     }
     public static final class Turret {
         public static int leftMotorID = 60;
@@ -99,6 +96,5 @@ public final class Constants {
         public static double TrackXMeters = 0.57785;
 
         public static Rotation2d forwardAngle = new Rotation2d(Math.toRadians(0));
-    }
     }
 }
