@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Swerve;
 import frc.robot.auto.pathing.DriveSubsystem;
 import frc.robot.odometry.AprilTagOdometry;
+import frc.robot.odometry.OdometryHandler;
 import frc.robot.odometry.OdometrySource;
 import frc.robot.odometry.SwerveDriveInverseKinematics;
 import frc.robot.subsystems.swerve.SwerveModule;
@@ -135,8 +136,8 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
   public void periodic() {
 
     // Displaying position values
-    xPositionEntry.setDouble(OdometrySource.getBestPosition().getX());
-    yPositionEntry.setDouble(OdometrySource.getBestPosition().getY());
+    xPositionEntry.setDouble(OdometryHandler.getBestPosition().getX());
+    yPositionEntry.setDouble(OdometryHandler.getBestPosition().getY());
     rotationEntry.setDouble(navxGyro.getRotation2d().getDegrees());
 
     fieldWidget.setRobotPose(
@@ -164,7 +165,7 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
   }
 
   public Pose2d getPosition() {
-    return OdometrySource.getBestPosition();
+    return OdometryHandler.getBestPosition();
   }
 
   /**

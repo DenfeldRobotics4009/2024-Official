@@ -4,7 +4,6 @@
 
 package frc.robot.auto.util;
 
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Translation2d;
 
 public class Field {
@@ -33,20 +32,20 @@ public class Field {
         );
     }
 
-    /**
-     * Translates an april tag position relative to
-     * the blue alliance zero to a position relative
-     * to a red alliance zero
-     * @param bluePosition
-     * @return
-     */
-    public static Pose3d translateAprilTagPoseToRed(Pose3d bluePosition) {
-        return new Pose3d(
-            fieldLengthMeters - bluePosition.getX(),
-            fieldWidthMeters - bluePosition.getY(),
-            bluePosition.getZ(),
-            bluePosition.getRotation()
-        );
-    }
+    // /**
+    //  * Translates an april tag position relative to
+    //  * the blue alliance zero to a position relative
+    //  * to a red alliance zero
+    //  * @param bluePosition
+    //  * @return
+    //  */
+    // public static Pose3d translateAprilTagPoseToRed(Pose3d bluePosition) {
+    //     return new Pose3d(
+    //         fieldLengthMeters - bluePosition.getX(),
+    //         fieldWidthMeters - bluePosition.getY(),
+    //         bluePosition.getZ(),
+    //         bluePosition.getRotation()
+    //     );
+    // }
 
 }

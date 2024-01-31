@@ -7,7 +7,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.subsystems.swerve.SwerveModule;
 
-public class SwerveDriveInverseKinematics extends OdometrySource {
+public class SwerveDriveInverseKinematics implements OdometrySource {
 
     /**
      * see https://docs.wpilib.org/en/stable/docs/software/kinematics-and-odometry/swerve-drive-odometry.html
@@ -32,12 +32,11 @@ public class SwerveDriveInverseKinematics extends OdometrySource {
     }
 
     private SwerveDriveInverseKinematics(AHRS navxGyro) {
-        super(OdometryType.kRelative);
+        OdometryHandler.addSource(this, OdometryType.Internal); 
         
         this.navxGyro = navxGyro;
     }
  
-    @Override
     /**
      * Updates current readings from swerve modules to calculate
      * position, should be ran from the drive train's periodic
@@ -63,8 +62,15 @@ public class SwerveDriveInverseKinematics extends OdometrySource {
 
     @Override
     public void setPosition(Pose2d Position) {
+
+        // Set gyro angle by the passed in rotation
+        navxGyro.setAngleAdjustment(
+            navxGyro.getRotation2d().minus(Position.getRotation()).getDegrees()
+        );
+
         for (SwerveModule swerveModule : SwerveModule.instances) {
-            swerveModule.setFieldRelativePositionFromRobotPosition(Position);
+            // Rotation2d of 
+            swerveModule.setFieldRelativePositionFromRobotPosition(Position.getTranslation());
         }
     }
 }

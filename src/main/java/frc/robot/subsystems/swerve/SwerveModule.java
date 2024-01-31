@@ -2,7 +2,6 @@ package frc.robot.subsystems.swerve;
 
 import java.util.ArrayList;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -336,8 +335,8 @@ public class SwerveModule {
      * 
      * @param Position Field relative position of robot.
      */
-    public void setFieldRelativePositionFromRobotPosition(Pose2d Position) {
-        AccumulatedRelativePositionMeters = Position.getTranslation().plus(robotTrackPosition);
+    public void setFieldRelativePositionFromRobotPosition(Translation2d Position) {
+        AccumulatedRelativePositionMeters = Position.plus(robotTrackPosition);
     }
 
     

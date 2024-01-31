@@ -6,21 +6,21 @@ package frc.robot.odometry;
 
 public enum OdometryType {
     /**
-     * Absolute odometry sources are non-continuous, non-self relative sources
+     * External odometry sources are non-continuous, non-self relative sources
      * for position calculation. Thus, they do not have to constantly supply
      * an accurate and up to date Pose2d when getPosition is called, instead
      * returning an empty optional type. These position sources are assumed
-     * to be more accurate than relative sources due to absolute sources
+     * to be more accurate than internal sources due to external sources
      * having non-compounding error.
      */
-    kAbsolute, 
+    External, 
     
     /**
-     * Relative odometry sources provide continuous, self-relative position
+     * Internal odometry sources provide continuous, self-relative position
      * calculations. Thus, they (in most cases) can constantly provide an
      * accurate and up to date Pose2d when getPosition is called. These position
-     * sources are assumed to be less accurate than absolute sources due
+     * sources are assumed to be less accurate than external sources due
      * to error compounding over time.
      */
-    kRelative;
+    Internal;
 }
