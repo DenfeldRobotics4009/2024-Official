@@ -7,6 +7,7 @@ public class Controls {
 
     public final Joystick drive = new Joystick(0);
     public final Joystick steer = new Joystick(1);
+    public final Joystick operate = new Joystick(2);
 
     public Controls() {}
 
@@ -32,7 +33,7 @@ public class Controls {
      * @return double
      */
     public double getTurn() {
-        return 0 ;//modifyAxis(steer.getZ(), 0.15);
+        return 0;//steer.getZ(), 0.15);
     }
 
     /**
@@ -43,7 +44,7 @@ public class Controls {
     public boolean getPrecisionMode() {
         return drive.getTrigger();
     }
-
+    
     /**
      * @param id button id
      * @return JoystickButton on drive joystick

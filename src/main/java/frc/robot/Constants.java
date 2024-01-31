@@ -17,12 +17,30 @@ import edu.wpi.first.math.geometry.Translation2d;
  */
 public final class Constants {
 
+    public static final class Arm {
+        public static int armIntakeMotorID = 63;
+        public static int armShooterMotorLeftID = 64;
+        public static int armShooterMotorRightID = 65;
+        public static int armMotorID = 66;
+        public static double armIntakeMotorPower = 0.4;
+        public static double source = 1000;
+        public static double ground = 500;
+        public static double deposit = 250;
+        public static double upperLimit = 6.25;
+        public static double lowerLimit = 0;
+    }
+    public static final class Climber {
+        public static int climberMotorID = 70;
+        public static double down = 1000;
+        public static double up = 500;
+        public static double climberMotorPower = 0.5;  
+    }
     public static final class Turret {
-        public static int leftMotorID = 58;
-        public static int rightMotorID = 59;
+        public static int leftMotorID = 60;
+        public static int rightMotorID = 59; 
         public static double spin = 0.9;
     }
-public static final class Intake {
+    public static final class Intake {
         public static int intakeMotorID = 40;
         public static int rotateMotorID = 41; 
         public static double rotateMotorPower = 0.5;

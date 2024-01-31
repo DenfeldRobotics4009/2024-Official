@@ -30,19 +30,19 @@ Intake intake;
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(controls.drive.getRawButton(2)){
+    if(controls.drive.getRawButton(7)){
       intake.setPosition(positionOptions.SOURCE);
     }
-    if(controls.drive.getRawButton(3)){
+    if(controls.drive.getRawButton(9)){
       intake.setPosition(positionOptions.DEPOSIT);
       }
-    if(controls.drive.getRawButton(4)){
+    if(controls.drive.getRawButton(11)){
       intake.setPosition(positionOptions.GROUND);
     }
-    if(controls.drive.getRawButton(5)){
+    if(controls.drive.getRawButton(2)){
       intake.setIntake();
     }
-    if(controls.drive.getRawButton(6)){
+    if(controls.drive.getRawButton(1)){
       intake.setOutake();
     }
   }
