@@ -5,11 +5,10 @@
 package frc.robot.auto;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.auto.pathing.FollowPath;
-import frc.robot.auto.pathing.SetDrivePosition;
 import frc.robot.auto.paths.ExamplePath;
+import frc.robot.auto.util.SetDrivePosition;
 
 public enum Autos {
 
@@ -30,12 +29,7 @@ public enum Autos {
             new SetDrivePosition(new Pose2d()),
 
             // This command will run until the end of the path is reached.
-            new FollowPath(
-                new ExamplePath(
-                    // Last point offset
-                    new Translation2d()
-                )
-            )
+            new FollowPath(new ExamplePath())
         )
     );
 
