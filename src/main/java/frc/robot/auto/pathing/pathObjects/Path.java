@@ -9,8 +9,11 @@ import java.util.Arrays;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import frc.robot.auto.pathing.PathingConstants;
+import frc.robot.auto.util.Field;
 
 public class Path {
 
@@ -25,7 +28,7 @@ public class Path {
      * initializer is the first point along the path.
      */
     public Path(PathPoint... Points) {
-        this(new ArrayList<PathPoint>(Arrays.asList(Points)), 0.02);
+        this(0.02, new ArrayList<PathPoint>(Arrays.asList(Points)));
     }
 
     /**
@@ -37,7 +40,7 @@ public class Path {
      * initializer is the first point along the path.
      */
     public Path(double lastPointTolerance, PathPoint... Points) {
-        this(new ArrayList<PathPoint>(Arrays.asList(Points)), lastPointTolerance);
+        this(lastPointTolerance, new ArrayList<PathPoint>(Arrays.asList(Points)));
     }
 
     /**
@@ -46,10 +49,18 @@ public class Path {
      * into this initializer is the first point along the path.
      * @param lastPointTolerance double in meters
      */
-    public Path(ArrayList<PathPoint> Points, double lastPointTolerance) {
+    public Path(double lastPointTolerance, ArrayList<PathPoint> Points) {
         System.out.println();
 
         System.out.println("Processing path " + this.toString());
+
+        // Flip all points to the corresponding side
+        if (DriverStation.getAlliance().get() == Alliance.Red) {
+            System.out.println("Flipping point coordinates to red alliance");
+            for (PathPoint pathPoint : Points) {
+                pathPoint.posMeters = Field.translateRobotPoseToRed(pathPoint.posMeters);
+            }
+        }
 
         this.lastPointTolerance = lastPointTolerance;
         points = Points;

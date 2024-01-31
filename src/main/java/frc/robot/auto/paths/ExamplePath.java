@@ -18,7 +18,7 @@ public class ExamplePath extends Path {
     /**
      * Drives the robot 1.5 meters along the x
      * axis (which should be forward, if the settings
-     * are properly configered within the PathingConstants
+     * are properly configured within the PathingConstants
      * class), at the robots maximum speed.
      */
     public ExamplePath() {
@@ -27,7 +27,7 @@ public class ExamplePath extends Path {
          * set of points, the first point passed
          * into super is the first point along the path.
          */
-        super(
+        super(            
             new PathPoint(
                 new Translation2d(0, 0),               // Position (meters)
                 new Rotation2d(Math.toRadians(0)),     // Rotation (rad)
