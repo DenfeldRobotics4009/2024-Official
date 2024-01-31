@@ -32,7 +32,7 @@ public class Drive extends Command {
 
     ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
       new ChassisSpeeds(
-        m_controls.getForward() * SwerveModule.maxMetersPerSecond,
+        -0.2 * SwerveModule.maxMetersPerSecond,
         m_controls.getLateral() * SwerveModule.maxMetersPerSecond,
         m_controls.getTurn() * SwerveModule.maxRadPerSecond
       ), 
