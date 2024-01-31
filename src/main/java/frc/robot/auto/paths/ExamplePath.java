@@ -4,6 +4,7 @@
 
 package frc.robot.auto.paths;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
@@ -18,16 +19,18 @@ public class ExamplePath extends Path {
     /**
      * Drives the robot 1.5 meters along the x
      * axis (which should be forward, if the settings
-     * are properly configered within the PathingConstants
+     * are properly configured within the PathingConstants
      * class), at the robots maximum speed.
      */
-    public ExamplePath() {
+    public ExamplePath(Translation2d lastPointOffset) {
         /**
          * Initializes Path super with the given
          * set of points, the first point passed
          * into super is the first point along the path.
          */
         super(
+            lastPointOffset,
+            
             new PathPoint(
                 new Translation2d(0, 0),               // Position (meters)
                 new Rotation2d(Math.toRadians(0)),     // Rotation (rad)

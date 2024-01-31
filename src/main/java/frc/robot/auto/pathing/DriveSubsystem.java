@@ -26,4 +26,11 @@ public interface DriveSubsystem extends Subsystem {
      * oriented position of the robot in meters.
      */
     Pose2d getPosition();
+
+    /**
+     * Sets the position of the supplied drive
+     * subsystem.
+     * @param position Pose2d
+     */
+    void setPosition(Pose2d position);
 }
