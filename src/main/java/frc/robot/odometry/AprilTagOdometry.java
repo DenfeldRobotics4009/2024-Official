@@ -17,6 +17,7 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -106,22 +107,24 @@ public class AprilTagOdometry implements OdometrySource {
         // Catch if the layout was not able to be initialized
         if (aprilTagFieldLayout == null) {return Optional.ofNullable(position);}
 
-        if (getBestTarget().isPresent()) {
-            PhotonTrackedTarget target = getBestTarget().get();
+        Optional<PhotonTrackedTarget> bestTarget = getBestTarget();
+        if (bestTarget.isPresent()) {
+            PhotonTrackedTarget target = bestTarget.get();
             Optional<Pose3d> tagPose = getTargetPose(target);
             // Ensure the existence of this tag id
             if (tagPose.isEmpty()) {return Optional.ofNullable(position);}
             // Assign robot position
             position = PhotonUtils.estimateFieldToRobotAprilTag(
                 target.getBestCameraToTarget(), tagPose.get(), cameraToRobot).toPose2d();
-        }
 
-        if (DriverStation.getAlliance().get() == Alliance.Red) {
-            // Flip the assumed robot position if we are on the red alliance
-            position = new Pose2d(
-                Field.translateRobotPoseToRed(position.getTranslation()), 
-                position.getRotation()
-            );
+            if (DriverStation.getAlliance().get() == Alliance.Red) {
+                // Flip the assumed robot position if we are on the red alliance
+                position = new Pose2d(
+                    Field.translateRobotPoseToRed(position.getTranslation()), 
+                    // Rotate angle by 180
+                    position.getRotation().plus(new Rotation2d(Math.PI))
+                );
+            }
         }
 
         return Optional.ofNullable(position);

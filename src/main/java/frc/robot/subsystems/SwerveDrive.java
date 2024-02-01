@@ -34,6 +34,8 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
 
   AprilTagOdometry cam1 = new AprilTagOdometry("Microsoft_LifeCam_HD-3000-1", new Transform3d());
 
+  Pose2d velocity = new Pose2d();
+
   // Construct swerve modules
   final SwerveModule
     // Pass swerve tab into modules to allow each of them to display relevant 
@@ -127,7 +129,7 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
 
     navxGyro.setAngleAdjustment(-Swerve.forwardAngle.getDegrees());
 
-    // Construct feild widget
+    // Construct field widget
     swerveTab.add("Robot Position", fieldWidget
       ).withPosition(7, 0).withSize(18, 10);
   }
@@ -160,6 +162,12 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
     yVelocityEntry.setDouble(Speeds.vyMetersPerSecond);
     rotationVelocityEntry.setDouble(Math.toDegrees(Speeds.omegaRadiansPerSecond));
 
+    velocity = new Pose2d(
+      Speeds.vxMetersPerSecond, 
+      Speeds.vyMetersPerSecond, 
+      new Rotation2d(Speeds.omegaRadiansPerSecond)
+    );
+
     SwerveModuleState[] states = kinematics.toSwerveModuleStates(Speeds);
     for (int i = 0; i < 4; i++) {
       SwerveModule.instances.get(i).drive(states[i]);
@@ -176,16 +184,7 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
    * @return A Pose2d with translation values bounded from -1 to 1
    */
   public Pose2d getVelocity() {
-    return new Pose2d(
-      new Translation2d(
-        xVelocityEntry.getDouble(0), yVelocityEntry.getDouble(0)
-      ), 
-      new Rotation2d(
-        Math.toRadians(
-          rotationVelocityEntry.getDouble(0)
-        )
-      )
-    );
+    return velocity;
   }
 
   public void setPosition(Pose2d position) {
