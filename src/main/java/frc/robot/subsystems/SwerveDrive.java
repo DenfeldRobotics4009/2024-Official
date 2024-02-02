@@ -154,21 +154,21 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
   /**
    * Drives the robot in a robot oriented manner, if field oriented is
    * desired, inputs must be rotated by calling function accordingly.
-   * @param Speeds Robot relative chassis speeds on a scale from 0 to 1.
+   * @param speeds Robot relative chassis speeds on a scale from 0 to 1.
    */
-  public void drive(ChassisSpeeds Speeds) {
+  public void drive(ChassisSpeeds speeds) {
 
-    xVelocityEntry.setDouble(Speeds.vxMetersPerSecond);
-    yVelocityEntry.setDouble(Speeds.vyMetersPerSecond);
-    rotationVelocityEntry.setDouble(Math.toDegrees(Speeds.omegaRadiansPerSecond));
+    xVelocityEntry.setDouble(speeds.vxMetersPerSecond);
+    yVelocityEntry.setDouble(speeds.vyMetersPerSecond);
+    rotationVelocityEntry.setDouble(Math.toDegrees(speeds.omegaRadiansPerSecond));
 
     velocity = new Pose2d(
-      Speeds.vxMetersPerSecond, 
-      Speeds.vyMetersPerSecond, 
-      new Rotation2d(Speeds.omegaRadiansPerSecond)
+      speeds.vxMetersPerSecond, 
+      speeds.vyMetersPerSecond, 
+      new Rotation2d(speeds.omegaRadiansPerSecond)
     );
 
-    SwerveModuleState[] states = kinematics.toSwerveModuleStates(Speeds);
+    SwerveModuleState[] states = kinematics.toSwerveModuleStates(speeds);
     for (int i = 0; i < 4; i++) {
       SwerveModule.instances.get(i).drive(states[i]);
     }

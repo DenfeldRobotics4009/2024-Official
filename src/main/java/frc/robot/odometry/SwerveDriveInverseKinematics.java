@@ -6,6 +6,7 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import frc.robot.subsystems.SwerveDrive;
 import frc.robot.subsystems.swerve.SwerveModule;
 
 public class SwerveDriveInverseKinematics implements OdometrySource {
@@ -23,8 +24,6 @@ public class SwerveDriveInverseKinematics implements OdometrySource {
      */
 
     final AHRS navxGyro;
-
-    Pose2d position = new Pose2d();
 
     private static SwerveDriveInverseKinematics Instance;
 
@@ -64,28 +63,25 @@ public class SwerveDriveInverseKinematics implements OdometrySource {
         );
     }
 
+
     @Override
     public Optional<Pose2d> getPosition() {
         Translation2d wheelPosSum = new Translation2d();
         for (SwerveModule swerveModule : SwerveModule.instances) {
             wheelPosSum = wheelPosSum.plus(swerveModule.getFieldRelativePosition());
         }
-        position = new Pose2d (wheelPosSum.div(SwerveModule.instances.size()), navxGyro.getRotation2d());
+        Pose2d position = new Pose2d (wheelPosSum.div(SwerveModule.instances.size()), navxGyro.getRotation2d());
         // This will always return a value
         return Optional.ofNullable(position);
     }
 
     @Override
-    public void setPosition(Pose2d Position) {
-        // Only set position if we aren't moving
-        Pose2d lastPosition = position;
-        if (lastPosition.equals(getPosition().get())) {
-            setGyroAngle(position.getRotation());
+    public void setPosition(Pose2d position) {
+        setGyroAngle(position.getRotation());
 
-            for (SwerveModule swerveModule : SwerveModule.instances) {
-                // Rotation2d of 
-                swerveModule.setFieldRelativePositionFromRobotPosition(Position.getTranslation());
-            }
+        for (SwerveModule swerveModule : SwerveModule.instances) {
+            // Rotation2d of 
+            swerveModule.setFieldRelativePositionFromRobotPosition(position.getTranslation());
         }
     }
 }

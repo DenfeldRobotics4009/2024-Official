@@ -5,8 +5,11 @@
 package frc.robot.odometry;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Queue;
 
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonUtils;
@@ -18,9 +21,12 @@ import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.auto.util.Field;
 
 /**
@@ -30,13 +36,26 @@ import frc.robot.auto.util.Field;
  * 
  * Each instance of this class will manage a single camera 
  */
-public class AprilTagOdometry implements OdometrySource {
+public class AprilTagOdometry extends SubsystemBase implements OdometrySource {
+    
+    protected static class positionSample {
+        final Pose2d sample;
+        final double time;
+
+        public positionSample(Pose2d sample, double time) {
+            this.sample = sample;
+            this.time = time;
+        }
+    }
 
     public final PhotonCamera camera;
     public final Transform3d cameraToRobot;
 
     AprilTagFieldLayout aprilTagFieldLayout;
     Pose3d lastRobotPose = new Pose3d();
+
+    LinkedList<positionSample> positionSamples = new LinkedList<positionSample>();
+    Pose2d sampleSum = new Pose2d();
 
     /**
      * Creates an april tag odometry source relating to a 
@@ -103,10 +122,56 @@ public class AprilTagOdometry implements OdometrySource {
      * @returns Optional<Pose2d>, nothing if no april-tags are seen.
      */
     public Optional<Pose2d> getPosition() {
+        // Pose2d position = null;
+        // // Catch if the layout was not able to be initialized
+        // if (aprilTagFieldLayout == null) {return Optional.ofNullable(position);}
+
+        // Optional<PhotonTrackedTarget> bestTarget = getBestTarget();
+        // if (bestTarget.isPresent()) {
+        //     PhotonTrackedTarget target = bestTarget.get();
+        //     Optional<Pose3d> tagPose = getTargetPose(target);
+        //     // Ensure the existence of this tag id
+        //     if (tagPose.isEmpty()) {return Optional.ofNullable(position);}
+        //     // Assign robot position
+        //     position = PhotonUtils.estimateFieldToRobotAprilTag(
+        //         target.getBestCameraToTarget(), tagPose.get(), cameraToRobot).toPose2d();
+
+        //     if (DriverStation.getAlliance().get() == Alliance.Red) {
+        //         // Flip the assumed robot position if we are on the red alliance
+        //         position = new Pose2d(
+        //             Field.translateRobotPoseToRed(position.getTranslation()), 
+        //             // Rotate angle by 180
+        //             position.getRotation().plus(new Rotation2d(Math.PI))
+        //         );
+        //     }
+        // }
+
+        // return Optional.ofNullable(position);
+    }
+
+    
+    public double getDistanceToTarget(PhotonTrackedTarget target) {
+        Optional<Pose3d> tagPose = getTargetPose(target);
+        // Ensure the existence of this tag id
+        if (tagPose.isEmpty()) {return -1;}
+
+        return PhotonUtils.calculateDistanceToTargetMeters(
+                cameraToRobot.getZ(), 
+                tagPose.get().getZ(), 
+                cameraToRobot.getRotation().getZ(), 
+                target.getPitch()
+            );
+    }
+
+    @Override
+    public void setPosition(Pose2d position) {
+        // April tag positioning cannot be corrected
+    }
+
+    Optional<Pose2d> getPositionFromTargets() {
         Pose2d position = null;
         // Catch if the layout was not able to be initialized
         if (aprilTagFieldLayout == null) {return Optional.ofNullable(position);}
-
         Optional<PhotonTrackedTarget> bestTarget = getBestTarget();
         if (bestTarget.isPresent()) {
             PhotonTrackedTarget target = bestTarget.get();
@@ -130,22 +195,23 @@ public class AprilTagOdometry implements OdometrySource {
         return Optional.ofNullable(position);
     }
 
-    
-    public double getDistanceToTarget(PhotonTrackedTarget target) {
-        Optional<Pose3d> tagPose = getTargetPose(target);
-        // Ensure the existence of this tag id
-        if (tagPose.isEmpty()) {return -1;}
-
-        return PhotonUtils.calculateDistanceToTargetMeters(
-                cameraToRobot.getZ(), 
-                tagPose.get().getZ(), 
-                cameraToRobot.getRotation().getZ(), 
-                target.getPitch()
-            );
-    }
 
     @Override
-    public void setPosition(Pose2d position) {
-        // April tag positioning cannot be corrected
+    public void periodic() {
+        Optional<Pose2d> currentPose = getPositionFromTargets();
+        if (currentPose.isPresent()) {
+
+            Pose2d average = sampleSum.div(positionSamples.size());
+
+            positionSamples.addLast(
+                new positionSample(currentPose.get(), System.currentTimeMillis())
+            );
+
+            Transform2d transform = new Transform2d(new Pose2d(), currentPose.get());
+            sampleSum = sampleSum.plus(transform);
+
+
+        }
+
     }
 }

@@ -17,6 +17,10 @@ import edu.wpi.first.math.geometry.Translation2d;
  */
 public final class Constants {
 
+    public static final class AprilTagOdometry {
+        public static int sampleSize = 100;
+    }
+
     public static final class Swerve {
 
         public static final class FrontLeft {
