@@ -23,7 +23,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
 
-  AprilTagOdometry cam2 = new AprilTagOdometry("Microsoft_LifeCam_HD-3000-2", new Transform3d());
+  // Create a new april-tag camera, this is a subsystem.
+  final AprilTagOdometry cam2 = new AprilTagOdometry("Microsoft_LifeCam_HD-3000-2", new Transform3d());
   
   final Controls controls = Controls.getInstance();
   final SwerveDrive driveTrain = SwerveDrive.getInstance();

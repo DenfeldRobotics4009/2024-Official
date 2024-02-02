@@ -32,8 +32,6 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
   final ShuffleboardTab swerveTab = Shuffleboard.getTab("Swerve");
   final Field2d fieldWidget = new Field2d();
 
-  AprilTagOdometry cam1 = new AprilTagOdometry("Microsoft_LifeCam_HD-3000-1", new Transform3d());
-
   Pose2d velocity = new Pose2d();
 
   // Construct swerve modules

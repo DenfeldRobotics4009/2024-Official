@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 
 /**
@@ -18,7 +19,11 @@ import edu.wpi.first.math.geometry.Translation2d;
 public final class Constants {
 
     public static final class AprilTagOdometry {
-        public static int sampleSize = 100;
+        public static int sampleSize = 8;
+        public static Transform2d maximumDeviation = new Transform2d(
+            new Translation2d(0.1, 0.1), new Rotation2d(Math.PI/12)
+        );
+        public static double maxSampleAge = 100;
     }
 
     public static final class Swerve {

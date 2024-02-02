@@ -5,11 +5,9 @@
 package frc.robot.odometry;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Queue;
 
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonUtils;
@@ -117,36 +115,12 @@ public class AprilTagOdometry extends SubsystemBase implements OdometrySource {
 
     @Override
     /**
-     * Calculates and returns the position of the robot via april-tags
-     * currently viewable by the robots camera(s).
-     * @returns Optional<Pose2d>, nothing if no april-tags are seen.
+     * Calculates and returns the best position from relevant values
      */
     public Optional<Pose2d> getPosition() {
-        // Pose2d position = null;
-        // // Catch if the layout was not able to be initialized
-        // if (aprilTagFieldLayout == null) {return Optional.ofNullable(position);}
-
-        // Optional<PhotonTrackedTarget> bestTarget = getBestTarget();
-        // if (bestTarget.isPresent()) {
-        //     PhotonTrackedTarget target = bestTarget.get();
-        //     Optional<Pose3d> tagPose = getTargetPose(target);
-        //     // Ensure the existence of this tag id
-        //     if (tagPose.isEmpty()) {return Optional.ofNullable(position);}
-        //     // Assign robot position
-        //     position = PhotonUtils.estimateFieldToRobotAprilTag(
-        //         target.getBestCameraToTarget(), tagPose.get(), cameraToRobot).toPose2d();
-
-        //     if (DriverStation.getAlliance().get() == Alliance.Red) {
-        //         // Flip the assumed robot position if we are on the red alliance
-        //         position = new Pose2d(
-        //             Field.translateRobotPoseToRed(position.getTranslation()), 
-        //             // Rotate angle by 180
-        //             position.getRotation().plus(new Rotation2d(Math.PI))
-        //         );
-        //     }
-        // }
-
-        // return Optional.ofNullable(position);
+        // Check for 0
+        if (positionSamples.size() == 0) {return Optional.ofNullable(null);}
+        return Optional.of(sampleSum.div(positionSamples.size()));
     }
 
     
@@ -195,22 +169,64 @@ public class AprilTagOdometry extends SubsystemBase implements OdometrySource {
         return Optional.ofNullable(position);
     }
 
+    /**
+     * @param value
+     * @return A new transform2d of unsigned values
+     */
+    Transform2d abs(Transform2d value) {
+        return new Transform2d(
+            Math.abs(value.getX()),
+            Math.abs(value.getY()),
+            new Rotation2d(
+                Math.abs(value.getRotation().getRadians())
+            )
+        );
+    }
+
+    /**
+     * Compares 2 translation2ds, and checks
+     * whether the unsigned equivalent of a
+     * is within the unsigned equivalent of b
+     * @param a
+     * @param b
+     * @return true if a is within b
+     */
+    boolean withinBoundary(Transform2d a, Transform2d b) {
+        a = abs(a);
+        b = abs(b);
+        return (
+            a.getX() <= b.getX() && a.getY() <= b.getY() &&
+            a.getRotation().getRadians() <= b.getRotation().getRadians()
+        );
+    }
+
 
     @Override
     public void periodic() {
+
+        // Populate new value
         Optional<Pose2d> currentPose = getPositionFromTargets();
         if (currentPose.isPresent()) {
 
             Pose2d average = sampleSum.div(positionSamples.size());
+            Transform2d deviation = currentPose.get().minus(average);
+            
+            // Check if the given deviation from the average is within tolerance
+            if (withinBoundary(deviation, Constants.AprilTagOdometry.maximumDeviation)) {
+                // Insert at the end of the list
+                positionSamples.addLast(
+                    new positionSample(currentPose.get(), System.currentTimeMillis())
+                );
 
-            positionSamples.addLast(
-                new positionSample(currentPose.get(), System.currentTimeMillis())
-            );
+                // Add the transform equivalent of the position to the sample sum
+                Transform2d transform = new Transform2d(new Pose2d(), currentPose.get());
+                sampleSum = sampleSum.plus(transform);
+            }
+        }
 
-            Transform2d transform = new Transform2d(new Pose2d(), currentPose.get());
-            sampleSum = sampleSum.plus(transform);
-
-
+        // Depopulate expired value
+        if (positionSamples.getFirst().time < (System.currentTimeMillis() - Constants.AprilTagOdometry.maxSampleAge)) {
+            positionSamples.removeFirst();
         }
 
     }
