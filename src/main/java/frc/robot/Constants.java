@@ -36,8 +36,8 @@ public final class Constants {
         public static double climberMotorPower = 0.5;  
     }
     public static final class Turret {
-        public static int leftMotorID = 60;
-        public static int rightMotorID = 59; 
+        public static int leftMotorID = 59;
+        public static int rightMotorID = 58; 
         public static double spin = 0.9;
     }
     public static final class Intake {
