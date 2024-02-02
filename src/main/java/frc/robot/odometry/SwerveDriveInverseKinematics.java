@@ -6,7 +6,6 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import frc.robot.subsystems.SwerveDrive;
 import frc.robot.subsystems.swerve.SwerveModule;
 
 public class SwerveDriveInverseKinematics implements OdometrySource {
