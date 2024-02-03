@@ -16,9 +16,9 @@ import edu.wpi.first.math.geometry.Translation2d;
  */
 public class OdometryHandler {
 
-    static ArrayList<OdometrySource> internal = new ArrayList<OdometrySource>(); 
+    public static ArrayList<OdometrySource> internal = new ArrayList<OdometrySource>(); 
 
-    static ArrayList<OdometrySource> external = new ArrayList<OdometrySource>(); 
+    public static ArrayList<OdometrySource> external = new ArrayList<OdometrySource>(); 
     
     /**
      * Inserts the source instance into the odometry handler for consideration

@@ -5,8 +5,11 @@
 package frc.robot;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -19,11 +22,15 @@ import edu.wpi.first.math.geometry.Translation2d;
 public final class Constants {
 
     public static final class AprilTagOdometry {
-        public static int sampleSize = 8;
-        public static Transform2d maximumDeviation = new Transform2d(
-            new Translation2d(0.1, 0.1), new Rotation2d(Math.PI/12)
+        public static double maxSampleAge = 0.01; // seconds
+        public static double maxSpeed = 0.001; // power
+        public static double maxRotation = 0.001; // power
+        public static double maxDistance = 2; // meters
+        public static double maxMedianBetweenSamples = 0.10; // meters
+        public static Transform3d cameraPose = new Transform3d(
+            new Translation3d(0, 0, 0.694), // TODO convert to meters
+            new Rotation3d(0, 0, 0)
         );
-        public static double maxSampleAge = 100;
     }
 
     public static final class Swerve {

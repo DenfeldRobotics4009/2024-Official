@@ -27,7 +27,7 @@ public class Field {
      */
     public static Translation2d translateRobotPoseToRed(Translation2d bluePosition) {
         return new Translation2d(
-            bluePosition.getX(), 
+            fieldLengthMeters - bluePosition.getX(), 
             fieldWidthMeters - bluePosition.getY()
         );
     }

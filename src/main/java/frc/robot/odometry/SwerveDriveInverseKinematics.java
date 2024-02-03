@@ -3,9 +3,13 @@ package frc.robot.odometry;
 import java.util.Optional;
 
 import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import frc.robot.Constants;
+import frc.robot.subsystems.SwerveDrive;
 import frc.robot.subsystems.swerve.SwerveModule;
 
 public class SwerveDriveInverseKinematics implements OdometrySource {
@@ -25,7 +29,6 @@ public class SwerveDriveInverseKinematics implements OdometrySource {
     final AHRS navxGyro;
 
     private static SwerveDriveInverseKinematics Instance;
-
 
     public static SwerveDriveInverseKinematics getInstance(AHRS navxGyro) {
         if (Instance == null) {Instance = new SwerveDriveInverseKinematics(navxGyro);}
@@ -74,9 +77,27 @@ public class SwerveDriveInverseKinematics implements OdometrySource {
         return Optional.ofNullable(position);
     }
 
+    public void setRotation(Rotation2d rotation) {
+        if (
+            Math.abs(SwerveDrive.getInstance().getVelocity().getRotation().getRadians()) >
+            Constants.AprilTagOdometry.maxRotation
+        ) {
+            return;
+        }
+
+        setGyroAngle(rotation);
+    }
+
     @Override
     public void setPosition(Pose2d position) {
-        setGyroAngle(position.getRotation());
+
+        if (
+            Math.abs(SwerveDrive.getInstance().getVelocity().getTranslation().getNorm()) > 
+            Constants.AprilTagOdometry.maxSpeed
+        ) {
+            return;
+        }
+
 
         for (SwerveModule swerveModule : SwerveModule.instances) {
             // Rotation2d of 
