@@ -6,9 +6,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 public class SwerveModule {
@@ -50,11 +48,6 @@ public class SwerveModule {
     private Translation2d AccumulatedRelativePositionMeters = new Translation2d();
 
     public static ShuffleboardTab swerveModuleTab = Shuffleboard.getTab("Swerve Modules");
-
-    public static ShuffleboardLayout calibrationAngleEntryGroup = 
-        swerveModuleTab.getLayout("Calibration Angle (Degrees)", BuiltInLayouts.kList)
-            .withPosition(0, 0)
-            .withSize(5, 4);
 
     public static ArrayList<SwerveModule> instances = new ArrayList<SwerveModule>();
 
