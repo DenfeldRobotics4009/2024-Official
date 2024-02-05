@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -49,8 +48,6 @@ public class SwerveModule {
      * if not set, begin at zero
      */
     private Translation2d AccumulatedRelativePositionMeters = new Translation2d();
-
-    final GenericEntry calibrationEntry;
 
     public static ShuffleboardTab swerveModuleTab = Shuffleboard.getTab("Swerve Modules");
 
@@ -97,10 +94,6 @@ public class SwerveModule {
 
         // Set maximum rotation speed
         maxRadPerSecond = maxMetersPerSecond / Math.hypot(robotTrack.getX() / 2.0, robotTrack.getY() / 2.0);
-
-        // Add calibration entry, persistent for safety
-        calibrationEntry = calibrationAngleEntryGroup
-            .add(name + " Calibration", swerveMotors.defaultAngleOffset.getDegrees()).getEntry();
     }
 
     /**
@@ -237,9 +230,6 @@ public class SwerveModule {
      * @param State Un-Optimized state
      */
     public void drive(SwerveModuleState State) {
-
-        // Update calibration from entries
-        swerveMotors.defaultAngleOffset = new Rotation2d(Math.toRadians(calibrationEntry.getDouble(0)));
 
         SwerveModuleState OptimizedState = optimizeState(State, swerveMotors.getRotation2d());
 

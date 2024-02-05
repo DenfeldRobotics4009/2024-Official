@@ -5,8 +5,6 @@
 package frc.robot.odometry;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,7 +12,6 @@ import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
-import org.photonvision.PhotonUtils;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
@@ -22,16 +19,11 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.auto.util.Field;
 import frc.robot.subsystems.SwerveDrive;
 
 /**
@@ -41,16 +33,7 @@ import frc.robot.subsystems.SwerveDrive;
  * 
  * Each instance of this class will manage a single camera 
  */
-public class AprilTagOdometry extends SubsystemBase implements OdometrySource {
-
-    public static class Camera {
-        final PhotonCamera camera;
-        final Transform3d robotToCamera;
-        public Camera(PhotonCamera camera, Transform3d robotToCamera) {
-            this.camera = camera;
-            this.robotToCamera = robotToCamera;
-        }
-    }
+public class AprilTagOdometry extends SubsystemBase {
 
     AprilTagFieldLayout aprilTagFieldLayout;
 
@@ -72,8 +55,6 @@ public class AprilTagOdometry extends SubsystemBase implements OdometrySource {
      * @param cameraToRobot offset in meters from the robot to the camera
      */
     public AprilTagOdometry(PhotonCamera camera, Transform3d robotToCamera) {
-
-        OdometryHandler.addSource(this, OdometryType.External);
 
         this.camera = camera;
         
@@ -120,7 +101,6 @@ public class AprilTagOdometry extends SubsystemBase implements OdometrySource {
         return tagPose;
     }
 
-    @Override
     /**
      * Calculates and returns the best position from relevant values
      */
@@ -144,16 +124,12 @@ public class AprilTagOdometry extends SubsystemBase implements OdometrySource {
         return Math.hypot(cameraToTarget.getX(), cameraToTarget.getY());
     }
 
-    @Override
-    public void setPosition(Pose2d position) {
-        // April tag positioning cannot be corrected
-    }
-
     Optional<Pose2d> getPositionFromTargets() {
         // Catch if the layout was not able to be initialized
         if (aprilTagFieldLayout == null) {
             return Optional.empty();
         }
+
         if (
             Math.abs(SwerveDrive.getInstance().getVelocity().getTranslation().getNorm()) > 
             Constants.AprilTagOdometry.maxSpeed &&
@@ -162,13 +138,6 @@ public class AprilTagOdometry extends SubsystemBase implements OdometrySource {
         ) {
             return Optional.empty();
         }
-
-        // Set reference to the relative positions
-        // photonPoseEstimator.setReferencePose(
-        //     OdometryHandler.processPose2dSet(
-        //         OdometryHandler.getPose2ds(OdometryHandler.internal).toArray(new Pose2d[0])
-        //     )
-        // );
         
         Optional<EstimatedRobotPose> estimatedPose = photonPoseEstimator.update();
         // Break if pose cannot be calculated
@@ -176,40 +145,16 @@ public class AprilTagOdometry extends SubsystemBase implements OdometrySource {
             return Optional.empty();
         }
         return Optional.of(estimatedPose.get().estimatedPose.toPose2d());
-
-        // Optional<PhotonTrackedTarget> bestTarget = getBestTarget();
-        // if (bestTarget.isPresent()) {
-        //     SmartDashboard.putNumber("Distance", getDistanceToTarget(bestTarget.get()));
-
-        //     if (getDistanceToTarget(bestTarget.get()) > Constants.AprilTagOdometry.maxDistance) {
-        //         return Optional.empty();
-        //     }
-
-        //     PhotonTrackedTarget target = bestTarget.get();
-        //     Optional<Pose3d> tagPose = getTargetPose(target);
-        //     // Ensure the existence of this tag id
-        //     if (tagPose.isEmpty()) {
-        //         return Optional.ofNullable(position);
-        //     }
-        //     // Assign robot position
-        //     position = PhotonUtils.estimateFieldToRobotAprilTag(
-        //         target.getBestCameraToTarget(), tagPose.get(), cameraToRobot).toPose2d();
-
-        //     if (DriverStation.getAlliance().get() == Alliance.Red) {
-        //         // Flip the assumed robot position if we are on the red alliance
-        //         position = new Pose2d(
-        //             Field.translateRobotPoseToRed(position.getTranslation()), 
-        //             // Rotate angle by 180
-        //             position.getRotation().plus(new Rotation2d(Math.PI))
-        //         );
-        //     }
-        // }
-
-        // return Optional.ofNullable(position);
     }
 
     @Override
     public void periodic() {
-
+        // If we have a target, add the vision requirement to the drivetrain
+        Optional<Pose2d> positionSample = getPositionFromTargets();
+        if (positionSample.isPresent()) {
+            SwerveDrive.getInstance().robotPoseEstimator.addVisionMeasurement(
+                positionSample.get(), Timer.getFPGATimestamp()
+            );
+        }
     }
 }

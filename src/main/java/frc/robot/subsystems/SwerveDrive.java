@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.ArrayList;
+
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -12,6 +14,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -20,8 +23,6 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Swerve;
 import frc.robot.auto.pathing.DriveSubsystem;
-import frc.robot.odometry.OdometryHandler;
-import frc.robot.odometry.SwerveDriveInverseKinematics;
 import frc.robot.subsystems.swerve.SwerveModule;
 import frc.robot.subsystems.swerve.SwerveMotors;
 
@@ -37,44 +38,20 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
     // Pass swerve tab into modules to allow each of them to display relevant 
     // data, whatever that may be
     FrontLeftModule = new SwerveModule(
-      new SwerveMotors(
-        Swerve.FrontLeft.driveID, 
-        Swerve.FrontLeft.steerID, 
-        Swerve.FrontLeft.CANCoderID, 
-        Swerve.FrontLeft.defaultCalibration
-      ), 
-      Swerve.FrontLeft.trackPosition, 
-      Swerve.FrontLeft.class.getSimpleName()
+      new SwerveMotors(Swerve.FrontLeft.driveID, Swerve.FrontLeft.steerID, Swerve.FrontLeft.CANCoderID), 
+      Swerve.FrontLeft.trackPosition, Swerve.FrontLeft.class.getSimpleName()
     ),
     FrontRightModule = new SwerveModule(
-      new SwerveMotors(
-        Swerve.FrontRight.driveID, 
-        Swerve.FrontRight.steerID, 
-        Swerve.FrontRight.CANCoderID, 
-        Swerve.FrontRight.defaultCalibration
-      ), 
-      Swerve.FrontRight.trackPosition, 
-      Swerve.FrontRight.class.getSimpleName()
+      new SwerveMotors(Swerve.FrontRight.driveID, Swerve.FrontRight.steerID, Swerve.FrontRight.CANCoderID), 
+      Swerve.FrontRight.trackPosition, Swerve.FrontRight.class.getSimpleName()
     ),
     BackLeftModule = new SwerveModule(
-      new SwerveMotors(
-        Swerve.BackLeft.driveID, 
-        Swerve.BackLeft.steerID, 
-        Swerve.BackLeft.CANCoderID, 
-        Swerve.BackLeft.defaultCalibration
-      ), 
-      Swerve.BackLeft.trackPosition, 
-      Swerve.BackLeft.class.getSimpleName()
+      new SwerveMotors(Swerve.BackLeft.driveID, Swerve.BackLeft.steerID, Swerve.BackLeft.CANCoderID), 
+      Swerve.BackLeft.trackPosition, Swerve.BackLeft.class.getSimpleName()
     ),
     BackRightModule = new SwerveModule(
-      new SwerveMotors(
-        Swerve.BackRight.driveID, 
-        Swerve.BackRight.steerID, 
-        Swerve.BackRight.CANCoderID, 
-        Swerve.BackRight.defaultCalibration
-      ), 
-      Swerve.BackRight.trackPosition, 
-      Swerve.BackRight.class.getSimpleName()
+      new SwerveMotors(Swerve.BackRight.driveID, Swerve.BackRight.steerID, Swerve.BackRight.CANCoderID), 
+      Swerve.BackRight.trackPosition, Swerve.BackRight.class.getSimpleName()
     );
 
   SwerveDriveKinematics kinematics;
@@ -83,24 +60,18 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
 
   // Entries for motion graphing
   GenericEntry 
-    xPositionEntry = swerveTab.add("xPosition", 0
-      ).withPosition(3, 4).withSize(2, 1).getEntry(), 
-    yPositionEntry = swerveTab.add("yPosition", 0
-      ).withPosition(5, 4).withSize(2, 1).getEntry(), 
-    rotationEntry = swerveTab.add("Rotation", 0
-      ).withPosition(3, 0).withSize(4, 4).withWidget("Gyro").getEntry(),
+    xPositionEntry = swerveTab.add("xPosition", 0).withPosition(3, 4).withSize(2, 1).getEntry(), 
+    yPositionEntry = swerveTab.add("yPosition", 0).withPosition(5, 4).withSize(2, 1).getEntry(), 
+    rotationEntry = swerveTab.add("Rotation", 0).withPosition(3, 0).withSize(4, 4).withWidget("Gyro").getEntry(),
 
-    xVelocityEntry = swerveTab.add("xVelocity", 0
-      ).withPosition(0, 4).withSize(3, 1).getEntry(), 
-    yVelocityEntry = swerveTab.add("yVelocity", 0
-      ).withPosition(0, 5).withSize(3, 1).getEntry(), 
-    rotationVelocityEntry = swerveTab.add("rotationVelocity", 0
-      ).withPosition(0, 0).withSize(3, 4).withWidget("Gyro").getEntry();
+    xVelocityEntry = swerveTab.add("xVelocity", 0).withPosition(0, 4).withSize(3, 1).getEntry(), 
+    yVelocityEntry = swerveTab.add("yVelocity", 0).withPosition(0, 5).withSize(3, 1).getEntry(), 
+    rotationVelocityEntry = swerveTab.add("rotationVelocity", 0).withPosition(0, 0).withSize(3, 4).withWidget("Gyro").getEntry();
 
   /**
    * Object to track the robots position via inverse kinematics
    */
-  public static SwerveDriveInverseKinematics inverseKinematics;
+  public SwerveDrivePoseEstimator robotPoseEstimator;
 
   static SwerveDrive instance;
 
@@ -121,24 +92,45 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
       SwerveModule.getTrackPositions()
     );
 
-    inverseKinematics = SwerveDriveInverseKinematics.getInstance(navxGyro);
-
     navxGyro.setAngleAdjustment(-Swerve.forwardAngle.getDegrees());
+
+    /**
+     * Define with default values, this may be rebuilt when the auto
+     * runs to account for choosing an auto position.
+     */
+    setPosition(new Pose2d());
 
     // Construct field widget
     swerveTab.add("Robot Position", fieldWidget
       ).withPosition(7, 0).withSize(18, 10);
   }
 
+  /**
+   * @return distance and angle each swerve module has driven
+   */
+  SwerveModulePosition[] getModulePositions() {
+    ArrayList<SwerveModulePosition> positions = new ArrayList<SwerveModulePosition>();
+    for (SwerveModule swerveModule : SwerveModule.instances) {
+      positions.add(
+        new SwerveModulePosition(
+          // grab current drive distance and direction
+          swerveModule.swerveMotors.getDriveDistanceMeters(), swerveModule.swerveMotors.getRotation2d()
+        )
+      );
+    }
+    // Pass out as array
+    return positions.toArray(new SwerveModulePosition[0]);
+  }
+
   @Override
   public void periodic() {
-
-    inverseKinematics.periodic();
+    // Update pose estimation
+    robotPoseEstimator.update(navxGyro.getRotation2d(), getModulePositions());
 
     // Displaying position values
-    xPositionEntry.setDouble(OdometryHandler.getBestPosition().getX());
-    yPositionEntry.setDouble(OdometryHandler.getBestPosition().getY());
-    rotationEntry.setDouble(navxGyro.getRotation2d().getDegrees());
+    xPositionEntry.setDouble(robotPoseEstimator.getEstimatedPosition().getX());
+    yPositionEntry.setDouble(robotPoseEstimator.getEstimatedPosition().getY());
+    rotationEntry.setDouble(robotPoseEstimator.getEstimatedPosition().getRotation().getDegrees());
 
     fieldWidget.setRobotPose(
       new Pose2d(
@@ -171,7 +163,7 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
   }
 
   public Pose2d getPosition() {
-    return OdometryHandler.getBestPosition();
+    return robotPoseEstimator.getEstimatedPosition();
   }
 
   /**
@@ -184,6 +176,12 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
   }
 
   public void setPosition(Pose2d position) {
-    inverseKinematics.setPosition(position);
+    // Rebuild pose estimator with more relevant values
+    robotPoseEstimator = new SwerveDrivePoseEstimator(
+      kinematics, 
+      navxGyro.getRotation2d(), 
+      getModulePositions(),
+      position
+    );
   }
 }
