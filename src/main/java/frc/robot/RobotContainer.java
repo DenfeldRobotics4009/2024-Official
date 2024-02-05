@@ -8,7 +8,7 @@ import frc.robot.Constants.Swerve;
 import frc.robot.auto.pathing.AutoShuffleboardTab;
 import frc.robot.auto.pathing.PathingConstants;
 import frc.robot.commands.Drive;
-import frc.robot.odometry.AprilTagOdometry;
+import frc.robot.subsystems.AprilTagOdometry;
 import frc.robot.subsystems.SwerveDrive;
 
 import org.photonvision.PhotonCamera;
