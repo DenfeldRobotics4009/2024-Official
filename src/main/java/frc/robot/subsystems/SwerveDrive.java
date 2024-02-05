@@ -17,6 +17,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -125,7 +126,7 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
   @Override
   public void periodic() {
     // Update pose estimation
-    robotPoseEstimator.update(navxGyro.getRotation2d(), getModulePositions());
+    robotPoseEstimator.updateWithTime(Timer.getFPGATimestamp(), navxGyro.getRotation2d(), getModulePositions());
 
     // Displaying position values
     xPositionEntry.setDouble(robotPoseEstimator.getEstimatedPosition().getX());
