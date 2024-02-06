@@ -53,8 +53,8 @@ public class Drive extends Command {
       radPSec = m_controls.getTurn() * SwerveModule.maxRadPerSecond;
     }
 
-    double precisionFactor = 1;
-    if (m_controls.getPrecisionMode()) {precisionFactor = 0.5;}
+    double precisionFactor = 0.35;
+    if (m_controls.getPrecisionMode()) {precisionFactor = 0.75;}
 
     ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
       new ChassisSpeeds(

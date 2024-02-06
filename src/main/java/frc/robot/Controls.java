@@ -53,7 +53,7 @@ public class Controls {
      * @return boolean
      */
     public boolean getPrecisionMode() {
-        return driveController.getLeftStickButton();
+        return driveController.getRightTriggerAxis() > 0.1;
     }
 
     /**
