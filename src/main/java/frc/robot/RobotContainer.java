@@ -34,6 +34,8 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+
+    driveTrain.setDefaultCommand(new Drive(driveTrain, controls));
     
     // Pass drivetrain into pathing algorithm
     PathingConstants.setForwardAngle(Swerve.forwardAngle);
@@ -57,7 +59,6 @@ public class RobotContainer {
    */
   private void configureBindings() {
     controls.getSteerButton(1).whileTrue(new Shoot(turret, controls));
-    controls.getSteerButton(1).whileTrue(new Drive(driveTrain, controls));
   }
 
   /**

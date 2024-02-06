@@ -4,32 +4,56 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Controls;
+import frc.robot.subsystems.SwerveDrive;
 import frc.robot.subsystems.Turret;
+import frc.robot.subsystems.swerve.SwerveModule;
 
 public class Shoot extends Command {
 
   Turret turret;
   Controls controls;
+  SwerveDrive swerveDrive;
+  double angle;
 
   /** Creates a new Shoot. */
-  public Shoot(Turret turret, Controls controls) {
+  public Shoot(Turret turret, Controls controls, SwerveDrive swerveDrive) {
     this.turret = turret;
     this.controls = controls;
+    this.swerveDrive = swerveDrive;
     addRequirements(turret);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SmartDashboard.putNumber("Flywheel power", controls.steer.getThrottle());
-    turret.setFlyWheelSpeed(controls.steer.getThrottle());
+    //SmartDashboard.putNumber("Flywheel power", controls.steer.getThrottle());
+    //turret.setFlyWheelSpeed(controls.steer.getThrottle());
+    //get flywheels are up to speed
+    turret.setFlyWheelSpeed(0.9);
+    //aim shooter
+    angle = 0; // todo: implement april tags
+    turret.setAngle(angle);
+    //aim drive train
+        ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
+      new ChassisSpeeds(
+        controls.getForward() * SwerveModule.maxMetersPerSecond,
+        controls.getLateral() * SwerveModule.maxMetersPerSecond,
+        controls.getTurn() * SwerveModule.maxRadPerSecond
+      ), 
+      SwerveDrive.navxGyro.getRotation2d()
+    );
+    swerveDrive.drive(speeds);
+    //if flywheels up to speed, shooter aimed, drive train aimed, then feed in
   }
 
   // Called once the command ends or is interrupted.

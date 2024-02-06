@@ -8,6 +8,8 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkMax;
 
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -16,8 +18,12 @@ public class Turret extends SubsystemBase {
   // Example spark initialization
   // CANSparkMax motor = new CANSparkMax(id, MotorType.kBrushless);
 
-  public CANSparkFlex leftMotor = new CANSparkFlex(Constants.Turret.leftMotorID, MotorType.kBrushless);
-  public CANSparkFlex rightMotor = new CANSparkFlex(Constants.Turret.rightMotorID, MotorType.kBrushless);
+  private CANSparkFlex topMotor = new CANSparkFlex(Constants.Turret.topMotorID, MotorType.kBrushless);
+  private CANSparkFlex bottomMotor = new CANSparkFlex(Constants.Turret.bottomMotorID, MotorType.kBrushless);
+  private CANSparkMax feeder = new CANSparkMax(Constants.Turret.feederMotorID, MotorType.kBrushless);
+  private CANSparkMax aim = new CANSparkMax(Constants.Turret.aimMotorID, MotorType.kBrushless);
+  private PIDController pidController = new PIDController(.1, .1, .01);
+  private double targetAngle = 0;
   static Turret instance;
 
   /**
@@ -36,6 +42,9 @@ public class Turret extends SubsystemBase {
 
   @Override
   public void periodic() {
+    double speed = pidController.calculate(aim.getEncoder().getPosition()*2*Math.PI, targetAngle);
+    MathUtil.clamp(speed, -1, 1);
+    aim.set(speed);
     // This method will be called once per scheduler run
   }
 
@@ -44,8 +53,22 @@ public class Turret extends SubsystemBase {
    * @param percentPower [-1, 1]
    */
   public void setFlyWheelSpeed(double percentPower) {
-    leftMotor.set(percentPower);
-    rightMotor.set(-percentPower);
+    topMotor.set(percentPower);
+    bottomMotor.set(-percentPower);
 
   }
+    public void feed() {
+    feeder.set(Constants.Turret.feederSpeed);
+  }
+      public void stopFeed() {
+    feeder.set(0);
+  }
+
+  public void setAngle(double angle) {
+    targetAngle = angle;
+  }
+  public boolean atShootSpeed(double shootSpeed){
+    return (topMotor.getEncoder().getVelocity()>=shootSpeed) && (bottomMotor.getEncoder().getVelocity()>=shootSpeed);
+  }
+
 }
