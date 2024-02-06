@@ -61,6 +61,14 @@ public class Controls {
         return new JoystickButton(steer, id);
     }
 
+    /**
+     * @param id button id
+     * @return JoystickButton on operate joystick
+     */
+    public JoystickButton getOperatorButton(int id) {
+        return new JoystickButton(operate, id);
+    }
+
     private static double deadband(double value, double deadband) {
         if (Math.abs(value) > deadband) {
             if (value > 0.0) {

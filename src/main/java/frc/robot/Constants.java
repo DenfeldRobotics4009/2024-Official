@@ -42,6 +42,9 @@ public final class Constants {
         public static int feederMotorID = 80;
         public static double feederSpeed = 20;
         public static int aimMotorID = 81;
+        public static double aimTolerance = 0.01;
+        public static double minimumFlywheelSpeed = 0;
+        public static double maxShootSpeed = 1000;
     }
     public static final class Intake {
         public static int intakeMotorID = 40;

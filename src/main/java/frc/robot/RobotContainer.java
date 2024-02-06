@@ -58,7 +58,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    controls.getSteerButton(1).whileTrue(new Shoot(turret, controls));
+    controls.getOperatorButton(1).whileTrue(new Shoot(turret, controls, driveTrain));
   }
 
   /**

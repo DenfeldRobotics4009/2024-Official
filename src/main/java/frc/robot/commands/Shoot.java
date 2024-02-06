@@ -24,7 +24,7 @@ public class Shoot extends Command {
     this.turret = turret;
     this.controls = controls;
     this.swerveDrive = swerveDrive;
-    addRequirements(turret);
+    addRequirements(turret, swerveDrive);
   }
 
   // Called when the command is initially scheduled.
@@ -39,7 +39,7 @@ public class Shoot extends Command {
     //SmartDashboard.putNumber("Flywheel power", controls.steer.getThrottle());
     //turret.setFlyWheelSpeed(controls.steer.getThrottle());
     //get flywheels are up to speed
-    turret.setFlyWheelSpeed(0.9);
+    boolean atShooterSpeed = turret.setFlyWheelSpeed(2400);
     //aim shooter
     angle = 0; // todo: implement april tags
     turret.setAngle(angle);
@@ -54,12 +54,18 @@ public class Shoot extends Command {
     );
     swerveDrive.drive(speeds);
     //if flywheels up to speed, shooter aimed, drive train aimed, then feed in
+    if (atShooterSpeed && turret.atTargetAngle() && controls.getOperatorButton(4).getAsBoolean()) {
+      turret.feed();
+    }
+    else {
+      turret.stopFeed();
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    turret.setFlyWheelSpeed(0);
+    turret.stopShooter();
   }
 
   // Returns true when the command should end.

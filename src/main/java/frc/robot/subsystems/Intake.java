@@ -15,7 +15,8 @@ public class Intake extends SubsystemBase {
     public CANSparkFlex rotateMotor = new CANSparkFlex(Constants.Intake.rotateMotorID, MotorType.kBrushless);
     static Intake instance;
     public CANcoder rotateEncoder = new CANcoder(63);
-    public positionOptions position = positionOptions.SOURCE;
+    public positionOptions intakePosition = positionOptions.SOURCE;
+    public PIDController intakePIDController = new PIDController(.1, 0.1, 0.01);
     
   
     /**
@@ -33,32 +34,9 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
-  
-    switch (position) {
-        case SOURCE:
-        if(rotateEncoder.getAbsolutePosition().getValueAsDouble() > Constants.Intake.source){
-            rotateDown();
-        }else{
-            rotateUp();
-        } 
-            break;
-        case GROUND:
-        if(rotateEncoder.getAbsolutePosition().getValueAsDouble() > Constants.Intake.ground){
-            rotateDown();
-        }else{
-            rotateUp();
-        } 
-        case DEPOSIT:
-        if(rotateEncoder.getAbsolutePosition().getValueAsDouble() > Constants.Intake.deposit){
-            rotateDown();
-        }else{
-            rotateUp();
-        } 
-    
-        default:
-            break;
-    }
-    
+    double currentIntakePosition = rotateEncoder.getAbsolutePosition().getValueAsDouble();
+    intakePIDController.setSetpoint(intakePosition.position);
+    intakeMotor.set(intakePIDController.calculate(currentIntakePosition));
   }
     /**
    * Sets the speed of the flywheels
@@ -71,17 +49,21 @@ public class Intake extends SubsystemBase {
     intakeMotor.set(-Constants.Intake.intakeMotorPower);
   }
   public enum positionOptions{
-    GROUND,
-    SOURCE,
-    DEPOSIT
+    GROUND (Constants.Intake.ground),
+    SOURCE (Constants.Intake.source),
+    DEPOSIT (Constants.Intake.deposit);
+    public double position;
+    private positionOptions(double position) {
+      this.position = position;
+    }
     }
  public void rotateUp() {
     rotateMotor.set(Constants.Intake.rotateMotorPower);
   }
-public void rotateDown() {
+  public void rotateDown() {
     rotateMotor.set(-Constants.Intake.rotateMotorPower);
   }
-public void setPosition(positionOptions position){
-    this.position = position;
-}
+  public void setPosition(positionOptions position){
+    intakePosition = position;
+  }
 }
