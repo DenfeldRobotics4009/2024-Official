@@ -2,12 +2,17 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.subsystems.SwerveDrive;
 
 public class Controls {
 
-    public final XboxController driveController = new XboxController(0);
-    
+    public final Joystick drive = new Joystick(0), steer = new Joystick(1);
+    public final XboxController driveController = new XboxController(3);
+
+    SendableChooser<Integer> driveMode = new SendableChooser<Integer>();
+
     static Controls instance;
 
     public static Controls GetInstance() {
@@ -21,14 +26,27 @@ public class Controls {
     /**
      * Creates a new controls object
      */
-    private Controls() {}
+    private Controls() {
+
+        driveMode.setDefaultOption("Joystick", 0);
+        driveMode.addOption("XBox", 1);
+
+        SwerveDrive.GetInstance().swerveTab.add(driveMode);
+    }
 
     /**
      * Y axis of the drive joystick
      * @return double
      */
     public double getForward() {
-        return modifyAxis(-driveController.getLeftY(), 0.15);
+        switch (driveMode.getSelected()) {
+            case 0:
+                return modifyAxis(-drive.getY(), 0.15);        
+            case 1:
+                return modifyAxis(-driveController.getLeftY(), 0.15); 
+            default:
+                return 0;
+        }
     }
 
     /**
@@ -36,7 +54,14 @@ public class Controls {
      * @return double
      */
     public double getLateral() {
-        return modifyAxis(-driveController.getLeftX(), 0.15);
+        switch (driveMode.getSelected()) {
+            case 0:
+                return modifyAxis(-drive.getX(), 0.15);        
+            case 1:
+                return modifyAxis(-driveController.getLeftX(), 0.15); 
+            default:
+                return 0;
+        }
     }
 
     /**
@@ -44,16 +69,41 @@ public class Controls {
      * @return double
      */
     public double getTurn() {
-        return modifyAxis(driveController.getRightX(), 0.15);
+        switch (driveMode.getSelected()) {
+            case 0:
+                return modifyAxis(steer.getX(), 0.15);        
+            case 1:
+                return modifyAxis(driveController.getRightX(), 0.15); 
+            default:
+                return 0;
+        }
     }
 
     /**
      * Trigger value of the driver joystick, 
-     * indicating prescision mode
+     * indicating precision mode
      * @return boolean
      */
     public boolean getPrecisionMode() {
-        return driveController.getRightTriggerAxis() > 0.1;
+        switch (driveMode.getSelected()) {
+            case 0:
+                return drive.getTrigger();        
+            case 1:
+                return driveController.getRightTriggerAxis() > 0.1; 
+            default:
+                return false;
+        }
+    }
+
+    public int getPOV() {
+        switch (driveMode.getSelected()) {
+            case 0:
+                return steer.getPOV();        
+            case 1:
+                return driveController.getPOV(); 
+            default:
+                return -1;
+        }
     }
 
     /**
@@ -61,7 +111,7 @@ public class Controls {
      * @return JoystickButton on drive joystick
      */
     public JoystickButton getDriverButton(int id) {
-        return new JoystickButton(driveController, id);
+        return new JoystickButton(drive, id);
     }
 
     private static double deadband(double value, double deadband) {

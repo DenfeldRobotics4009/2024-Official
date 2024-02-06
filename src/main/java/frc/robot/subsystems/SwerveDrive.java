@@ -26,8 +26,8 @@ import frc.robot.subsystems.swerve.SwerveMotors;
 
 public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
 
-  final ShuffleboardTab swerveTab = Shuffleboard.getTab("Swerve");
-  final Field2d feildWidget = new Field2d();
+  public final ShuffleboardTab swerveTab = Shuffleboard.getTab("Swerve");
+  final Field2d fieldWidget = new Field2d();
 
   // Construct swerve modules
   final SwerveModule
@@ -123,7 +123,7 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
     navxGyro.setAngleAdjustment(-Swerve.forwardAngle.getDegrees());
 
     // Construct feild widget
-    swerveTab.add("Robot Position", feildWidget
+    swerveTab.add("Robot Position", fieldWidget
       ).withPosition(7, 0).withSize(18, 10);
   }
 
@@ -137,7 +137,7 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
     yPositionEntry.setDouble(inverseKinematics.getPosition().getY());
     rotationEntry.setDouble(navxGyro.getRotation2d().getDegrees());
 
-    feildWidget.setRobotPose(
+    fieldWidget.setRobotPose(
       new Pose2d(
         getPosition().getTranslation().plus(new Translation2d(1.8, 0.4)), new Rotation2d()
       )
