@@ -72,7 +72,7 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
   /**
    * Object to track the robots position via inverse kinematics
    */
-  public SwerveDrivePoseEstimator robotPoseEstimator;
+  private SwerveDrivePoseEstimator robotPoseEstimator;
 
   static SwerveDrive instance;
 
@@ -186,5 +186,9 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
       getModulePositions(),
       position
     );
+  }
+
+  public void addVisionMeasurement(Pose2d visionPosition, double timestampSeconds) {
+    robotPoseEstimator.addVisionMeasurement(velocity, timestampSeconds);
   }
 }

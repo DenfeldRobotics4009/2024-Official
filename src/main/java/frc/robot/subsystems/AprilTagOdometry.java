@@ -151,7 +151,7 @@ public class AprilTagOdometry extends SubsystemBase {
         // If we have a target, add the vision requirement to the drivetrain
         Optional<Pose2d> positionSample = getPositionFromTargets();
         if (positionSample.isPresent()) {
-            SwerveDrive.getInstance().robotPoseEstimator.addVisionMeasurement(
+            SwerveDrive.getInstance().addVisionMeasurement(
                 positionSample.get(), Timer.getFPGATimestamp()
             );
         }
