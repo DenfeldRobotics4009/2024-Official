@@ -36,10 +36,10 @@ public final class Constants {
         public static double climberMotorPower = 0.5;  
     }
     public static final class Turret {
-        public static int topMotorID = 59;
+        public static int topMotorID = 57;
         public static int bottomMotorID = 58; 
         public static double spin = 0.9;
-        public static int feederMotorID = 80;
+        public static int feederMotorID = 59;
         public static double feederSpeed = 20;
         public static int aimMotorID = 81;
         public static double aimTolerance = 0.01;

@@ -65,7 +65,7 @@ public class Turret extends SubsystemBase {
     MathUtil.clamp(speed, -1, 1);
     topMotor.set(speed);
     bottomMotor.set(-speed);
-    return (topMotor.getEncoder().getVelocity()>=rpm) && (bottomMotor.getEncoder().getVelocity()<=rpm);
+    return (topMotor.getEncoder().getVelocity()>=(rpm)) && (bottomMotor.getEncoder().getVelocity()<=(-rpm));
   }
     public void feed() {
     feeder.set(Constants.Turret.feederSpeed);
