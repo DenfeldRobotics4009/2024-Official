@@ -39,8 +39,8 @@ public class Drive extends Command {
 
     double radPSec;
 
-    double precisionFactor = 0.35;
-    if (m_controls.getPrecisionMode()) {precisionFactor = 0.75;}
+    double precisionFactor = 0.75;
+    if (m_controls.getPrecisionMode()) {precisionFactor = 0.35;}
 
     // If the hat is held in a direction
     if (m_controls.getPOV() != -1) {

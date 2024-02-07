@@ -9,7 +9,7 @@ import frc.robot.subsystems.SwerveDrive;
 public class Controls {
 
     public final Joystick drive = new Joystick(0), steer = new Joystick(1);
-    public final XboxController driveController = new XboxController(3);
+    public final XboxController driveController = new XboxController(2);
 
     SendableChooser<Integer> driveMode = new SendableChooser<Integer>();
 
@@ -89,7 +89,7 @@ public class Controls {
             case 0:
                 return drive.getTrigger();        
             case 1:
-                return driveController.getRightTriggerAxis() > 0.1; 
+                return !(driveController.getRightTriggerAxis() > 0.1); 
             default:
                 return false;
         }

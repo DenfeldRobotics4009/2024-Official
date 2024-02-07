@@ -5,10 +5,12 @@
 package frc.robot.auto;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.auto.pathing.FollowPath;
 import frc.robot.auto.paths.ExamplePath;
 import frc.robot.auto.util.SetDrivePosition;
+import frc.robot.commands.ExampleCommand;
 
 public enum Autos {
 
@@ -30,6 +32,13 @@ public enum Autos {
 
             // This command will run until the end of the path is reached.
             new FollowPath(new ExamplePath())
+        )
+    ),
+
+    ExampleAuto2(
+        new SequentialCommandGroup(
+            new PrintCommand("1"),
+            new PrintCommand("2")
         )
     );
 

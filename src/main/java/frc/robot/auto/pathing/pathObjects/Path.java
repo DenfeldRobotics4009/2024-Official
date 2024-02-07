@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import frc.robot.auto.pathing.PathingConstants;
 import frc.robot.auto.util.Field;
+import frc.robot.commands.Drive;
 
 public class Path {
 
@@ -55,7 +56,7 @@ public class Path {
         System.out.println("Processing path " + this.toString());
 
         // Flip all points to the corresponding side
-        if (DriverStation.getAlliance().get() == Alliance.Red) {
+        if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
             System.out.println("Flipping point coordinates to red alliance");
             for (PathPoint pathPoint : Points) {
                 pathPoint.posMeters = Field.translateRobotPoseToRed(pathPoint.posMeters);
