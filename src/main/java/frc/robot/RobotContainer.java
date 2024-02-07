@@ -7,14 +7,12 @@ package frc.robot;
 import frc.robot.Constants.Swerve;
 import frc.robot.auto.pathing.AutoShuffleboardTab;
 import frc.robot.auto.pathing.PathingConstants;
-import frc.robot.commands.CalibrateGyroFromAprilTags;
 import frc.robot.commands.Drive;
-import frc.robot.odometry.AprilTagOdometry;
+import frc.robot.subsystems.AprilTagOdometry;
 import frc.robot.subsystems.SwerveDrive;
 
 import org.photonvision.PhotonCamera;
 
-import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -29,7 +27,7 @@ public class RobotContainer {
 
   // Create a new april-tag camera, this is a subsystem.
   final AprilTagOdometry cam2 = new AprilTagOdometry(
-    new PhotonCamera("Microsoft_LifeCam_HD-3000-2"), Constants.AprilTagOdometry.cameraPose);
+    new PhotonCamera("Microsoft_LifeCam_HD-3000-1"), Constants.AprilTagOdometry.cameraPose);
   
   final Controls controls = Controls.getInstance();
   final SwerveDrive driveTrain = SwerveDrive.getInstance();
@@ -64,7 +62,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    controls.getDriverButton(11).onTrue(new CalibrateGyroFromAprilTags(cam2));
+
   }
 
   /**

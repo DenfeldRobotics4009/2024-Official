@@ -4,6 +4,8 @@
 
 package frc.robot.auto.util;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 
 public class Field {
@@ -25,10 +27,21 @@ public class Field {
      * @param bluePosition
      * @return
      */
-    public static Translation2d translateRobotPoseToRed(Translation2d bluePosition) {
-        return new Translation2d(
-            fieldLengthMeters - bluePosition.getX(), 
-            fieldWidthMeters - bluePosition.getY()
+    public static Pose2d translateRobotPoseToRed(Pose2d bluePosition) {
+        return new Pose2d(
+            new Translation2d(fieldLengthMeters - bluePosition.getX(), fieldWidthMeters - bluePosition.getY()),
+            bluePosition.getRotation().plus(new Rotation2d(Math.PI))
         );
+    }
+
+    /**
+     * Translates a position relative to the blue 
+     * alliance zero to a position relative to a red
+     * alliance zero.
+     * @param bluePosition
+     * @return
+     */
+    public static Translation2d translateRobotPoseToRed(Translation2d bluePosition) {
+        return new Translation2d(fieldLengthMeters - bluePosition.getX(), fieldWidthMeters - bluePosition.getY());
     }
 }
