@@ -27,7 +27,7 @@ public class RobotContainer {
 
   // Create a new april-tag camera, this is a subsystem.
   final AprilTagOdometry cam2 = new AprilTagOdometry(
-    new PhotonCamera("Microsoft_LifeCam_HD-3000-2"), Constants.AprilTagOdometry.cameraPose);
+    new PhotonCamera("Microsoft_LifeCam_HD-3000-1"), Constants.AprilTagOdometry.cameraPose);
   
   final Controls controls = Controls.getInstance();
   final SwerveDrive driveTrain = SwerveDrive.getInstance();

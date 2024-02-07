@@ -44,7 +44,7 @@ public class Drive extends Command {
       // Units are in degrees for POV hat, thus use degrees from navx
       radPSec = MathUtil.clamp(
           Math.toRadians( directionTuner.calculate(
-            SwerveDrive.navxGyro.getRotation2d().times(-1).getDegrees(), 
+            m_drivetrain.getPosition().getRotation().times(-1).getDegrees(), 
             m_controls.steer.getPOV()
           )),
           -SwerveModule.maxRadPerSecond, SwerveModule.maxRadPerSecond
@@ -59,7 +59,7 @@ public class Drive extends Command {
         m_controls.getLateral() * SwerveModule.maxMetersPerSecond,
         radPSec
       ), 
-      SwerveDrive.navxGyro.getRotation2d()
+      m_drivetrain.getPosition().getRotation()
     );
     m_drivetrain.drive(speeds);
   }

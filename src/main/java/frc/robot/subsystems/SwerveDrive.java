@@ -101,7 +101,7 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
      */
     setPosition(new Pose2d());
 
-    
+    robotPoseEstimator.resetPosition(navxGyro.getRotation2d(), getModulePositions(), new Pose2d());
 
     // Construct field widget
     swerveTab.add("Robot Position", fieldWidget
@@ -189,6 +189,6 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
   }
 
   public void addVisionMeasurement(Pose2d visionPosition, double timestampSeconds) {
-    robotPoseEstimator.addVisionMeasurement(velocity, timestampSeconds);
+    robotPoseEstimator.addVisionMeasurement(visionPosition, timestampSeconds);
   }
 }

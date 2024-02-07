@@ -22,8 +22,10 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.auto.util.Field;
 
 /**
  * This class will manage processes related to photon vision,
@@ -143,7 +145,13 @@ public class AprilTagOdometry extends SubsystemBase {
         if (estimatedPose.isEmpty()) {
             return Optional.empty();
         }
-        return Optional.of(estimatedPose.get().estimatedPose.toPose2d());
+
+        Pose2d estimatedPose2d = estimatedPose.get().estimatedPose.toPose2d();
+        // Rotate if were on the red team
+        if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
+            estimatedPose2d = Field.translateRobotPoseToRed(estimatedPose2d);
+        }
+        return Optional.of(estimatedPose2d);
     }
 
     @Override
