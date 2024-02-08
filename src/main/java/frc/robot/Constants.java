@@ -21,11 +21,8 @@ import edu.wpi.first.math.geometry.Translation3d;
 public final class Constants {
 
     public static final class AprilTagOdometry {
-        public static double maxSampleAge = 0.01; // seconds
         public static double maxSpeed = 0.001; // power
         public static double maxRotation = 0.001; // power
-        public static double maxDistance = 2; // meters
-        public static double maxMedianBetweenSamples = 0.10; // meters
         public static Transform3d cameraPose = new Transform3d(
             new Translation3d(0, 0, 0.694), // TODO convert to meters
             new Rotation3d(0, 0, 0)

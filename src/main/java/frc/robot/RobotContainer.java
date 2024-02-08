@@ -9,6 +9,7 @@ import frc.robot.auto.pathing.AutoShuffleboardTab;
 import frc.robot.auto.pathing.PathingConstants;
 import frc.robot.commands.Drive;
 import frc.robot.subsystems.AprilTagOdometry;
+import frc.robot.subsystems.NoteCamera;
 import frc.robot.subsystems.SwerveDrive;
 
 import org.photonvision.PhotonCamera;
@@ -26,8 +27,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
 
   // Create a new april-tag camera, this is a subsystem.
-  final AprilTagOdometry cam2 = new AprilTagOdometry(
+  final AprilTagOdometry cam1 = new AprilTagOdometry(
     new PhotonCamera("Microsoft_LifeCam_HD-3000-1"), Constants.AprilTagOdometry.cameraPose);
+  final NoteCamera cam2 = new NoteCamera(new PhotonCamera("Microsoft_LifeCam_HD-3000-2"));
   
   final Controls controls = Controls.getInstance();
   final SwerveDrive driveTrain = SwerveDrive.getInstance();
