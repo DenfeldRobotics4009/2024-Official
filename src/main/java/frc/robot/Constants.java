@@ -45,6 +45,13 @@ public final class Constants {
         public static double aimTolerance = 0.01;
         public static double minimumFlywheelSpeed = 0;
         public static double maxShootSpeed = 1000;
+
+        public static double flyWheelP = 0.00045;
+        public static double flyWheelI = 0;
+        public static double flyWheelD = 0;
+        public static double flyWheelF = 0.00015;
+
+        public static double flyWheelTolerance = 400; // RPM
     }
     public static final class Intake {
         public static int intakeMotorID = 40;

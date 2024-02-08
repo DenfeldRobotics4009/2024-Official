@@ -7,9 +7,12 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.ControlType;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -20,10 +23,13 @@ public class Turret extends SubsystemBase {
 
   private CANSparkFlex topMotor = new CANSparkFlex(Constants.Turret.topMotorID, MotorType.kBrushless);
   private CANSparkFlex bottomMotor = new CANSparkFlex(Constants.Turret.bottomMotorID, MotorType.kBrushless);
+  SparkPIDController topFlywheelPidController = topMotor.getPIDController();
+  SparkPIDController bottomFlywheelPidController = bottomMotor.getPIDController();
+
   private CANSparkMax feeder = new CANSparkMax(Constants.Turret.feederMotorID, MotorType.kBrushless);
+
   private CANSparkMax aim = new CANSparkMax(Constants.Turret.aimMotorID, MotorType.kBrushless);
   private PIDController aimPIDController = new PIDController(.1, .1, .01);
-  private PIDController flywheelPIDController = new PIDController(.1, 0.1, 0.01);
   private double targetAngle = 0;
   static Turret instance;
 
@@ -41,6 +47,21 @@ public class Turret extends SubsystemBase {
   /** Creates a new Turret. */
   private Turret() {
     aimPIDController.setTolerance(Constants.Turret.aimTolerance);
+
+    topMotor.setOpenLoopRampRate(0.1);
+    bottomMotor.setOpenLoopRampRate(0.1);
+
+    // Set PID values for flywheels using spark maxes, we are
+    // using these PID controllers as they support feed forward.
+    topFlywheelPidController.setP(Constants.Turret.flyWheelP);
+    topFlywheelPidController.setI(Constants.Turret.flyWheelI);
+    topFlywheelPidController.setD(Constants.Turret.flyWheelD);
+    topFlywheelPidController.setFF(Constants.Turret.flyWheelF);
+
+    bottomFlywheelPidController.setP(Constants.Turret.flyWheelP);
+    bottomFlywheelPidController.setI(Constants.Turret.flyWheelI);
+    bottomFlywheelPidController.setD(Constants.Turret.flyWheelD);
+    bottomFlywheelPidController.setFF(Constants.Turret.flyWheelF);
   }
 
   @Override
@@ -49,11 +70,10 @@ public class Turret extends SubsystemBase {
     MathUtil.clamp(speed, -1, 1);
     aim.set(speed);
     // This method will be called once per scheduler run
-
   }
 
   public boolean atTargetAngle() {
-    return aimPIDController.atSetpoint();
+    return true; //aimPIDController.atSetpoint();
   }
 
   /**
@@ -61,14 +81,18 @@ public class Turret extends SubsystemBase {
    * @param percentPower [-1, 1]
    */
   public boolean setFlyWheelSpeed(double rpm) {
-    double speed = flywheelPIDController.calculate(aim.getEncoder().getVelocity(), rpm);
-    MathUtil.clamp(speed, -1, 1);
-    topMotor.set(speed);
-    bottomMotor.set(-speed);
-    return (topMotor.getEncoder().getVelocity()>=(rpm)) && (bottomMotor.getEncoder().getVelocity()<=(-rpm));
+    // Set pid values, this automatically drives the motor
+    bottomFlywheelPidController.setReference(-rpm, ControlType.kVelocity);
+    topFlywheelPidController.setReference(rpm, ControlType.kVelocity);
+
+    // Check tolerance
+    return (
+      topMotor.getEncoder().getVelocity() >= (rpm-Constants.Turret.flyWheelTolerance) && 
+      bottomMotor.getEncoder().getVelocity() <= (Constants.Turret.flyWheelTolerance-rpm)
+    );
   }
     public void feed() {
-    feeder.set(Constants.Turret.feederSpeed);
+    feeder.set(-Constants.Turret.feederSpeed);
   }
       public void stopFeed() {
     feeder.set(0);

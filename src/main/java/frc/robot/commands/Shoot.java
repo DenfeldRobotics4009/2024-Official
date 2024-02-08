@@ -39,7 +39,7 @@ public class Shoot extends Command {
     //SmartDashboard.putNumber("Flywheel power", controls.steer.getThrottle());
     //turret.setFlyWheelSpeed(controls.steer.getThrottle());
     //get flywheels are up to speed
-    boolean atShooterSpeed = turret.setFlyWheelSpeed(2400);
+    boolean atShooterSpeed = turret.setFlyWheelSpeed(6000);
     //aim shooter
     angle = 0; // todo: implement april tags
     turret.setAngle(angle);
