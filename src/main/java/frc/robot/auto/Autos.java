@@ -51,7 +51,7 @@ public enum Autos {
             new FollowPath(new StartToSecondNote()) 
         )
     ),
-    ShootLeft(
+    OnePieceLeft(
         new SequentialCommandGroup(
 
             /**
@@ -64,10 +64,10 @@ public enum Autos {
                 new ExampleCommand(new ExampleSubsystem()), //Shooter.getInstance()
 
             // This command will run until the end of the path is reached.
-            new FollowPath(new ShootLeft()) 
+            new FollowPath(new OnePieceLeft()) 
         )
     ),
-    ShootCenter(
+    OnePieceCenter(
         new SequentialCommandGroup(
 
             /**
@@ -80,10 +80,10 @@ public enum Autos {
                 new ExampleCommand(new ExampleSubsystem()), //Shooter.getInstance()
 
             // This command will run until the end of the path is reached.
-            new FollowPath(new ShootCenter()) 
+            new FollowPath(new OnePieceCenter()) 
         )
     ),
-    ShootRight(
+    OnePieceRight(
         new SequentialCommandGroup(
 
             /**
@@ -96,10 +96,10 @@ public enum Autos {
                 new ExampleCommand(new ExampleSubsystem()), //Shooter.getInstance()
 
             // This command will run until the end of the path is reached.
-            new FollowPath(new ShootRight()) 
+            new FollowPath(new OnePieceRight()) 
         )
     ),
-    LeftBackUpTwoPiece(
+    LeftNearLeft(
         new SequentialCommandGroup(
 
             /**
@@ -112,10 +112,10 @@ public enum Autos {
                 new ExampleCommand(new ExampleSubsystem()), //Shooter.getInstance()
 
             // This command will run until the end of the path is reached.
-            new FollowPath(new LeftBackUpTwoPiece()) 
+            new FollowPath(new LeftNearLeft()) 
         )
     ),
-    CenterBackUpTwoPiece(
+    CenterNearRight(
         new SequentialCommandGroup(
 
             /**
@@ -128,9 +128,105 @@ public enum Autos {
                 new ExampleCommand(new ExampleSubsystem()), //Shooter.getInstance()
 
             // This command will run until the end of the path is reached.
-            new FollowPath(new CenterBackUpTwoPiece()) 
+            new FollowPath(new CenterNearRight()) 
         )
-    );  
+    ),  
+    RightMidCenterRight(
+        new SequentialCommandGroup(
+
+            /**
+             * This command sets the original position of the robot,
+             * as when the robot powers on it will set its position
+             * initially to (0, 0)
+             */
+            new SetDrivePosition(new Pose2d(1.946,1.622,new Rotation2d(0))), //starts at these points (might need to tweak)
+                //angle to AprilTag and shoot
+                new ExampleCommand(new ExampleSubsystem()), //Shooter.getInstance()
+
+            // This command will run until the end of the path is reached.
+            new FollowPath(new RightMidCenterRight()) 
+        )
+    ),
+    LeftnearLeftNearCenter(
+        new SequentialCommandGroup(
+
+            /**
+             * This command sets the original position of the robot,
+             * as when the robot powers on it will set its position
+             * initially to (0, 0)
+             */
+            new SetDrivePosition(new Pose2d(1.946,1.622,new Rotation2d(0))), //starts at these points (might need to tweak)
+                //angle to AprilTag and shoot
+                new ExampleCommand(new ExampleSubsystem()), //Shooter.getInstance()
+
+            // This command will run until the end of the path is reached.
+            new FollowPath(new LeftNearLeftNearCenter()) 
+        )
+    ),
+    CenterNearRightNearCenter(
+        new SequentialCommandGroup(
+
+            /**
+             * This command sets the original position of the robot,
+             * as when the robot powers on it will set its position
+             * initially to (0, 0)
+             */
+            new SetDrivePosition(new Pose2d(1.946,1.622,new Rotation2d(0))), //starts at these points (might need to tweak)
+                //angle to AprilTag and shoot
+                new ExampleCommand(new ExampleSubsystem()), //Shooter.getInstance()
+
+            // This command will run until the end of the path is reached.
+            new FollowPath(new CenterNearRightNearCenter()) 
+        )
+    ),
+    RightMidCenterMidLeft(
+        new SequentialCommandGroup(
+
+            /**
+             * This command sets the original position of the robot,
+             * as when the robot powers on it will set its position
+             * initially to (0, 0)
+             */
+            new SetDrivePosition(new Pose2d(1.946,1.622,new Rotation2d(0))), //starts at these points (might need to tweak)
+                //angle to AprilTag and shoot
+                new ExampleCommand(new ExampleSubsystem()), //Shooter.getInstance()
+
+            // This command will run until the end of the path is reached.
+            new FollowPath(new RightMidCenterMidLeft()) 
+        )
+    ),
+    RightMidCenterMidRight(
+        new SequentialCommandGroup(
+
+            /**
+             * This command sets the original position of the robot,
+             * as when the robot powers on it will set its position
+             * initially to (0, 0)
+             */
+            new SetDrivePosition(new Pose2d(1.946,1.622,new Rotation2d(0))), //starts at these points (might need to tweak)
+                //angle to AprilTag and shoot
+                new ExampleCommand(new ExampleSubsystem()), //Shooter.getInstance()
+
+            // This command will run until the end of the path is reached.
+            new FollowPath(new RightMidCenterMidRight()) 
+        )
+    ),
+    LeftNearLeftMidLeft(
+        new SequentialCommandGroup(
+
+            /**
+             * This command sets the original position of the robot,
+             * as when the robot powers on it will set its position
+             * initially to (0, 0)
+             */
+            new SetDrivePosition(new Pose2d(1.946,1.622,new Rotation2d(0))), //starts at these points (might need to tweak)
+                //angle to AprilTag and shoot
+                new ExampleCommand(new ExampleSubsystem()), //Shooter.getInstance()
+
+            // This command will run until the end of the path is reached.
+            new FollowPath(new LeftNearLeftMidLeft()) 
+        )
+    );
 
     /* ----------------- */
 
