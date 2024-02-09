@@ -14,14 +14,14 @@ import frc.robot.auto.pathing.pathObjects.PathPoint;
  * Example pure pursuit path, showing a basic
  * and readable implementation.
  */
-public class ExamplePath extends Path {
+public class StartToSecondNote extends Path {
     /**
      * Drives the robot 1.5 meters along the x
      * axis (which should be forward, if the settings
      * are properly configured within the PathingConstants
      * class), at the robots maximum speed.
      */
-    public ExamplePath() {
+    public StartToSecondNote() {
         /**
          * Initializes Path super with the given
          * set of points, the first point passed
@@ -29,14 +29,14 @@ public class ExamplePath extends Path {
          */
         super(            
             new PathPoint(
-                new Translation2d(0, 0),               // Position (meters)
+                new Translation2d(1, 6),               // Position (meters)
                 new Rotation2d(Math.toRadians(0)),     // Rotation (rad)
-                2,    // Speed (m/s)
-                new PrintCommand("Past point 0")       // Command 
+                5,    // Speed (m/s)
+                new PrintCommand("Lower Intake")       // Command 
             ),
             new PathPoint(
-                new Translation2d(1.5, 0),
-                new Rotation2d(Math.toRadians(180)), 
+                new Translation2d(3, 6),
+                new Rotation2d(Math.toRadians(0)), 
                 0, 
                 new PrintCommand("Past point 1")
             )

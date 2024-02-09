@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class PathPoint {
 
-    public final Translation2d posMeters;
+    public Translation2d posMeters;
     public Rotation2d orientation; // Implemented by path constructor
 
     public double speedMetersPerSecond; // Corrected by path constructor

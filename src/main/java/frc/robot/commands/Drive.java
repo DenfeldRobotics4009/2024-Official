@@ -39,13 +39,16 @@ public class Drive extends Command {
 
     double radPSec;
 
+    double precisionFactor = 0.75;
+    if (m_controls.getPrecisionMode()) {precisionFactor = 0.35;}
+
     // If the hat is held in a direction
-    if (m_controls.steer.getPOV() != -1) {
+    if (m_controls.getPOV() != -1) {
       // Units are in degrees for POV hat, thus use degrees from navx
       radPSec = MathUtil.clamp(
           Math.toRadians( directionTuner.calculate(
             SwerveDrive.navxGyro.getRotation2d().times(-1).getDegrees(), 
-            m_controls.steer.getPOV()
+            m_controls.getPOV()
           )),
           -SwerveModule.maxRadPerSecond, SwerveModule.maxRadPerSecond
         );
@@ -55,9 +58,9 @@ public class Drive extends Command {
 
     ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
       new ChassisSpeeds(
-        m_controls.getForward() * SwerveModule.maxMetersPerSecond,
-        m_controls.getLateral() * SwerveModule.maxMetersPerSecond,
-        radPSec
+        m_controls.getForward() * SwerveModule.maxMetersPerSecond * precisionFactor,
+        m_controls.getLateral() * SwerveModule.maxMetersPerSecond * precisionFactor,
+        radPSec * precisionFactor
       ), 
       SwerveDrive.navxGyro.getRotation2d()
     );

@@ -26,73 +26,71 @@ import frc.robot.subsystems.swerve.SwerveMotors;
 
 public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
 
-  final ShuffleboardTab swerveTab = Shuffleboard.getTab("Swerve");
-  final Field2d feildWidget = new Field2d();
+  public final ShuffleboardTab swerveTab = Shuffleboard.getTab("Swerve");
+  final Field2d fieldWidget = new Field2d();
 
   // Construct swerve modules
-  final SwerveModule
     // Pass swerve tab into modules to allow each of them to display relevant 
     // data, whatever that may be
-    FrontLeftModule = new SwerveModule(
-      new SwerveMotors(
-        Swerve.FrontLeft.driveID, 
-        Swerve.FrontLeft.steerID, 
-        Swerve.FrontLeft.CANCoderID, 
-        Swerve.FrontLeft.defaultCalibration
-      ), 
-      Swerve.FrontLeft.trackPosition, 
-      Swerve.FrontLeft.class.getSimpleName()
-    ),
-    FrontRightModule = new SwerveModule(
-      new SwerveMotors(
-        Swerve.FrontRight.driveID, 
-        Swerve.FrontRight.steerID, 
-        Swerve.FrontRight.CANCoderID, 
-        Swerve.FrontRight.defaultCalibration
-      ), 
-      Swerve.FrontRight.trackPosition, 
-      Swerve.FrontRight.class.getSimpleName()
-    ),
-    BackLeftModule = new SwerveModule(
-      new SwerveMotors(
-        Swerve.BackLeft.driveID, 
-        Swerve.BackLeft.steerID, 
-        Swerve.BackLeft.CANCoderID, 
-        Swerve.BackLeft.defaultCalibration
-      ), 
-      Swerve.BackLeft.trackPosition, 
-      Swerve.BackLeft.class.getSimpleName()
-    ),
-    BackRightModule = new SwerveModule(
-      new SwerveMotors(
-        Swerve.BackRight.driveID, 
-        Swerve.BackRight.steerID, 
-        Swerve.BackRight.CANCoderID, 
-        Swerve.BackRight.defaultCalibration
-      ), 
-      Swerve.BackRight.trackPosition, 
-      Swerve.BackRight.class.getSimpleName()
-    );
+  final SwerveModule FrontLeftModule = new SwerveModule(
+    new SwerveMotors(
+      Swerve.FrontLeft.driveID, 
+      Swerve.FrontLeft.steerID, 
+      Swerve.FrontLeft.CANCoderID, 
+      Swerve.FrontLeft.defaultCalibration
+    ), 
+    Swerve.FrontLeft.trackPosition, 
+    Swerve.FrontLeft.class.getSimpleName()
+  );
+  final SwerveModule FrontRightModule = new SwerveModule(
+    new SwerveMotors(
+      Swerve.FrontRight.driveID, 
+      Swerve.FrontRight.steerID, 
+      Swerve.FrontRight.CANCoderID, 
+      Swerve.FrontRight.defaultCalibration
+    ), 
+    Swerve.FrontRight.trackPosition, 
+    Swerve.FrontRight.class.getSimpleName()
+  );
+  final SwerveModule BackLeftModule = new SwerveModule(
+    new SwerveMotors(
+      Swerve.BackLeft.driveID, 
+      Swerve.BackLeft.steerID, 
+      Swerve.BackLeft.CANCoderID, 
+      Swerve.BackLeft.defaultCalibration
+    ), 
+    Swerve.BackLeft.trackPosition, 
+    Swerve.BackLeft.class.getSimpleName()
+  );
+  final SwerveModule BackRightModule = new SwerveModule(
+    new SwerveMotors(
+      Swerve.BackRight.driveID, 
+      Swerve.BackRight.steerID, 
+      Swerve.BackRight.CANCoderID, 
+      Swerve.BackRight.defaultCalibration
+    ), 
+    Swerve.BackRight.trackPosition, 
+    Swerve.BackRight.class.getSimpleName()
+  );
 
   SwerveDriveKinematics kinematics;
 
   public static AHRS navxGyro = new AHRS();
 
   // Entries for motion graphing
-  GenericEntry 
-    xPositionEntry = swerveTab.add("xPosition", 0
-      ).withPosition(3, 4).withSize(2, 1).getEntry(), 
-    yPositionEntry = swerveTab.add("yPosition", 0
-      ).withPosition(5, 4).withSize(2, 1).getEntry(), 
-    rotationEntry = swerveTab.add("Rotation", 0
-      ).withPosition(3, 0).withSize(4, 4).withWidget("Gyro").getEntry(),
+  GenericEntry xPositionEntry = swerveTab.add("xPosition", 0
+    ).withPosition(3, 4).withSize(2, 1).getEntry();
+  GenericEntry  yPositionEntry = swerveTab.add("yPosition", 0
+    ).withPosition(5, 4).withSize(2, 1).getEntry();
+  GenericEntry  rotationEntry = swerveTab.add("Rotation", 0
+    ).withPosition(3, 0).withSize(4, 4).withWidget("Gyro").getEntry();
 
-    xVelocityEntry = swerveTab.add("xVelocity", 0
-      ).withPosition(0, 4).withSize(3, 1).getEntry(), 
-    yVelocityEntry = swerveTab.add("yVelocity", 0
-      ).withPosition(0, 5).withSize(3, 1).getEntry(), 
-    rotationVelocityEntry = swerveTab.add("rotationVelocity", 0
-      ).withPosition(0, 0).withSize(3, 4).withWidget("Gyro").getEntry();
+  GenericEntry  xVelocityEntry = swerveTab.add("xVelocity", 0
+    ).withPosition(0, 4).withSize(3, 1).getEntry();
+  GenericEntry  yVelocityEntry = swerveTab.add("yVelocity", 0
+    ).withPosition(0, 5).withSize(3, 1).getEntry();
+  GenericEntry  rotationVelocityEntry = swerveTab.add("rotationVelocity", 0
+    ).withPosition(0, 0).withSize(3, 4).withWidget("Gyro").getEntry();
 
   /**
    * Object to track the robots position via inverse kinematics
@@ -101,7 +99,7 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
 
   static SwerveDrive instance;
 
-  public static SwerveDrive GetInstance() {
+  public static SwerveDrive getInstance() {
     if (instance == null) {
       instance = new SwerveDrive();
     }
@@ -123,7 +121,7 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
     navxGyro.setAngleAdjustment(-Swerve.forwardAngle.getDegrees());
 
     // Construct feild widget
-    swerveTab.add("Robot Position", feildWidget
+    swerveTab.add("Robot Position", fieldWidget
       ).withPosition(7, 0).withSize(18, 10);
   }
 
@@ -137,7 +135,7 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
     yPositionEntry.setDouble(inverseKinematics.getPosition().getY());
     rotationEntry.setDouble(navxGyro.getRotation2d().getDegrees());
 
-    feildWidget.setRobotPose(
+    fieldWidget.setRobotPose(
       new Pose2d(
         getPosition().getTranslation().plus(new Translation2d(1.8, 0.4)), new Rotation2d()
       )
