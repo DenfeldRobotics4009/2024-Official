@@ -76,6 +76,8 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
 
   public static AHRS navxGyro = new AHRS();
 
+  Pose2d velocity = new Pose2d();
+
   // Entries for motion graphing
   GenericEntry xPositionEntry = swerveTab.add("xPosition", 0
     ).withPosition(3, 4).withSize(2, 1).getEntry();
@@ -175,6 +177,11 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
     yVelocityEntry.setDouble(Speeds.vyMetersPerSecond);
     rotationVelocityEntry.setDouble(Math.toDegrees(Speeds.omegaRadiansPerSecond));
 
+    velocity = new Pose2d(
+      new Translation2d(Speeds.vxMetersPerSecond, Speeds.vyMetersPerSecond),
+      new Rotation2d(Speeds.omegaRadiansPerSecond)
+    );
+
     SwerveModuleState[] states = kinematics.toSwerveModuleStates(Speeds);
     for (int i = 0; i < 4; i++) {
       SwerveModule.instances.get(i).drive(states[i]);
@@ -185,14 +192,14 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
     return robotPoseEstimator.getEstimatedPosition();
   }
 
-  // /**
-  //  * Grabs velocity from generic entry table,
-  //  * not from sensor collections
-  //  * @return A Pose2d with translation values bounded from -1 to 1
-  //  */
-  // public Pose2d getVelocity() {
-  //   return velocity;
-  // }
+  /**
+   * Grabs velocity from generic entry table,
+   * not from sensor collections
+   * @return A Pose2d with translation values bounded from -1 to 1
+   */
+  public Pose2d getVelocity() {
+    return velocity;
+  }
 
   public void setPosition(Pose2d position) {
     // Rebuild pose estimator with more relevant values
