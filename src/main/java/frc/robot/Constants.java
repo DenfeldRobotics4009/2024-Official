@@ -21,7 +21,7 @@ public final class Constants {
         public static int armIntakeMotorID = 63;
         public static int armShooterMotorLeftID = 64;
         public static int armShooterMotorRightID = 65;
-        public static int armMotorID = 66;
+        public static int armMotorID = 80;
         public static double armIntakeMotorPower = 0.4;
         public static double source = 1000;
         public static double ground = 500;
@@ -41,7 +41,7 @@ public final class Constants {
         public static double spin = 0.9;
         public static int feederMotorID = 59;
         public static double feederSpeed = 20;
-        public static int aimMotorID = 81;
+        public static int aimMotorID = 40;
         public static double aimTolerance = 0.01;
         public static double minimumFlywheelSpeed = 0;
         public static double maxShootSpeed = 1000;

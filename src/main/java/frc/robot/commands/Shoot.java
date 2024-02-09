@@ -41,8 +41,8 @@ public class Shoot extends Command {
     //get flywheels are up to speed
     boolean atShooterSpeed = turret.setFlyWheelSpeed(6000);
     //aim shooter
-    angle = 0; // todo: implement april tags
-    turret.setAngle(angle);
+    angle = controls.operate.getThrottle(); // todo: implement april tags
+    turret.setAngle(angle * 100);
     //aim drive train
         ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
       new ChassisSpeeds(

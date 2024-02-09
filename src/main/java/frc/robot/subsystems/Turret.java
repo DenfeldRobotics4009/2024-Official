@@ -29,7 +29,7 @@ public class Turret extends SubsystemBase {
   private CANSparkMax feeder = new CANSparkMax(Constants.Turret.feederMotorID, MotorType.kBrushless);
 
   private CANSparkMax aim = new CANSparkMax(Constants.Turret.aimMotorID, MotorType.kBrushless);
-  private PIDController aimPIDController = new PIDController(.1, .1, .01);
+  private PIDController aimPIDController = new PIDController(.01, 0, 0);
   private double targetAngle = 0;
   static Turret instance;
 
@@ -47,6 +47,8 @@ public class Turret extends SubsystemBase {
   /** Creates a new Turret. */
   private Turret() {
     aimPIDController.setTolerance(Constants.Turret.aimTolerance);
+
+    aim.getEncoder().setPosition(0);
 
     topMotor.setOpenLoopRampRate(0.1);
     bottomMotor.setOpenLoopRampRate(0.1);
@@ -66,6 +68,7 @@ public class Turret extends SubsystemBase {
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("Aim Angle", aim.getEncoder().getPosition()*2*Math.PI);
     double speed = aimPIDController.calculate(aim.getEncoder().getPosition()*2*Math.PI, targetAngle);
     MathUtil.clamp(speed, -1, 1);
     aim.set(speed);
