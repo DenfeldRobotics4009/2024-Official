@@ -8,14 +8,15 @@ import frc.robot.subsystems.SwerveDrive;
 
 public class Controls {
 
-    public final Joystick drive = new Joystick(0), steer = new Joystick(1);
+    public final Joystick drive = new Joystick(0);
+    public final Joystick steer = new Joystick(1);
     public final XboxController driveController = new XboxController(2);
 
     SendableChooser<Integer> driveMode = new SendableChooser<Integer>();
 
     static Controls instance;
 
-    public static Controls GetInstance() {
+    public static Controls getInstance() {
         if (instance == null) {
             instance = new Controls();
         }
@@ -31,7 +32,7 @@ public class Controls {
         driveMode.setDefaultOption("Joystick", 0);
         driveMode.addOption("XBox", 1);
 
-        SwerveDrive.GetInstance().swerveTab.add(driveMode);
+        SwerveDrive.getInstance().swerveTab.add(driveMode);
     }
 
     /**

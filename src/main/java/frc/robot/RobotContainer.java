@@ -22,8 +22,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   
-  final Controls controls = Controls.GetInstance();
-  final SwerveDrive driveTrain = SwerveDrive.GetInstance();
+  final Controls controls = Controls.getInstance();
+  final SwerveDrive driveTrain = SwerveDrive.getInstance();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
