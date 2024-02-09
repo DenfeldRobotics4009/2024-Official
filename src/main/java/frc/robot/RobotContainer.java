@@ -9,7 +9,13 @@ import frc.robot.auto.pathing.AutoShuffleboardTab;
 import frc.robot.auto.pathing.PathingConstants;
 import frc.robot.commands.Drive;
 import frc.robot.subsystems.SwerveDrive;
+import frc.robot.Constants.Swerve;
+import frc.robot.auto.pathing.AutoShuffleboardTab;
+import frc.robot.auto.pathing.PathingConstants;
+import frc.robot.commands.Drive;
+import frc.robot.subsystems.SwerveDrive;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -28,7 +34,22 @@ public class RobotContainer {
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
+  /**
+   * The container for the robot. Contains subsystems, OI devices, and commands.
+   */
   public RobotContainer() {
+
+    driveTrain.setDefaultCommand(
+      new Drive(driveTrain, controls)
+    );
+
+    // Pass drivetrain into pathing algorithm
+    PathingConstants.setForwardAngle(Swerve.forwardAngle);
+    PathingConstants.setDriveSubsystem(driveTrain);
+    // Initialize auto tab
+    AutoShuffleboardTab.getInstance();
+
+    // Configure the button bindings
 
     driveTrain.setDefaultCommand(
       new Drive(driveTrain, controls)
@@ -43,6 +64,7 @@ public class RobotContainer {
     // Configure the button bindings
     configureBindings();
   }
+
 
 
   /**
@@ -63,6 +85,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
+    return AutoShuffleboardTab.getInstance().getSelectedAuto();
     return AutoShuffleboardTab.getInstance().getSelectedAuto();
   }
 }
