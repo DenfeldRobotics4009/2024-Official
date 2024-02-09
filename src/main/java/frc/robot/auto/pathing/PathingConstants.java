@@ -8,6 +8,16 @@ import edu.wpi.first.math.geometry.Rotation2d;
 
 /** Add your docs here. */
 public class PathingConstants {
+
+    public static double endpointTolerance = 0.2;
+    /**
+     * Sets the default allowed distance from the robot to the
+     * last point in the path for the path command to end.
+     * @param tolerance
+     */
+    public static void setDefaultEndpointTolerance(double tolerance) {
+        PathingConstants.endpointTolerance = FollowPath.Clamp(tolerance, 1, 0);
+    }
     
     public static Rotation2d forwardAngle = new Rotation2d();
     /**

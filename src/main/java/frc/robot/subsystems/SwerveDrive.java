@@ -29,45 +29,67 @@ import frc.robot.subsystems.swerve.SwerveMotors;
 
 public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
 
-  final ShuffleboardTab swerveTab = Shuffleboard.getTab("Swerve");
+  public final ShuffleboardTab swerveTab = Shuffleboard.getTab("Swerve");
   final Field2d fieldWidget = new Field2d();
 
-  Pose2d velocity = new Pose2d();
-
   // Construct swerve modules
-  final SwerveModule
     // Pass swerve tab into modules to allow each of them to display relevant 
     // data, whatever that may be
-    FrontLeftModule = new SwerveModule(
-      new SwerveMotors(Swerve.FrontLeft.driveID, Swerve.FrontLeft.steerID, Swerve.FrontLeft.CANCoderID), 
-      Swerve.FrontLeft.trackPosition, Swerve.FrontLeft.class.getSimpleName()
-    ),
-    FrontRightModule = new SwerveModule(
-      new SwerveMotors(Swerve.FrontRight.driveID, Swerve.FrontRight.steerID, Swerve.FrontRight.CANCoderID), 
-      Swerve.FrontRight.trackPosition, Swerve.FrontRight.class.getSimpleName()
-    ),
-    BackLeftModule = new SwerveModule(
-      new SwerveMotors(Swerve.BackLeft.driveID, Swerve.BackLeft.steerID, Swerve.BackLeft.CANCoderID), 
-      Swerve.BackLeft.trackPosition, Swerve.BackLeft.class.getSimpleName()
-    ),
-    BackRightModule = new SwerveModule(
-      new SwerveMotors(Swerve.BackRight.driveID, Swerve.BackRight.steerID, Swerve.BackRight.CANCoderID), 
-      Swerve.BackRight.trackPosition, Swerve.BackRight.class.getSimpleName()
-    );
+  final SwerveModule FrontLeftModule = new SwerveModule(
+    new SwerveMotors(
+      Swerve.FrontLeft.driveID, 
+      Swerve.FrontLeft.steerID, 
+      Swerve.FrontLeft.CANCoderID
+    ), 
+    Swerve.FrontLeft.trackPosition, 
+    Swerve.FrontLeft.class.getSimpleName()
+  );
+  final SwerveModule FrontRightModule = new SwerveModule(
+    new SwerveMotors(
+      Swerve.FrontRight.driveID, 
+      Swerve.FrontRight.steerID, 
+      Swerve.FrontRight.CANCoderID
+    ), 
+    Swerve.FrontRight.trackPosition, 
+    Swerve.FrontRight.class.getSimpleName()
+  );
+  final SwerveModule BackLeftModule = new SwerveModule(
+    new SwerveMotors(
+      Swerve.BackLeft.driveID, 
+      Swerve.BackLeft.steerID, 
+      Swerve.BackLeft.CANCoderID
+    ), 
+    Swerve.BackLeft.trackPosition, 
+    Swerve.BackLeft.class.getSimpleName()
+  );
+  final SwerveModule BackRightModule = new SwerveModule(
+    new SwerveMotors(
+      Swerve.BackRight.driveID, 
+      Swerve.BackRight.steerID, 
+      Swerve.BackRight.CANCoderID
+    ), 
+    Swerve.BackRight.trackPosition, 
+    Swerve.BackRight.class.getSimpleName()
+  );
 
   SwerveDriveKinematics kinematics;
 
   public static AHRS navxGyro = new AHRS();
 
   // Entries for motion graphing
-  GenericEntry 
-    xPositionEntry = swerveTab.add("xPosition", 0).withPosition(3, 4).withSize(2, 1).getEntry(), 
-    yPositionEntry = swerveTab.add("yPosition", 0).withPosition(5, 4).withSize(2, 1).getEntry(), 
-    rotationEntry = swerveTab.add("Rotation", 0).withPosition(3, 0).withSize(4, 4).withWidget("Gyro").getEntry(),
+  GenericEntry xPositionEntry = swerveTab.add("xPosition", 0
+    ).withPosition(3, 4).withSize(2, 1).getEntry();
+  GenericEntry  yPositionEntry = swerveTab.add("yPosition", 0
+    ).withPosition(5, 4).withSize(2, 1).getEntry();
+  GenericEntry  rotationEntry = swerveTab.add("Rotation", 0
+    ).withPosition(3, 0).withSize(4, 4).withWidget("Gyro").getEntry();
 
-    xVelocityEntry = swerveTab.add("xVelocity", 0).withPosition(0, 4).withSize(3, 1).getEntry(), 
-    yVelocityEntry = swerveTab.add("yVelocity", 0).withPosition(0, 5).withSize(3, 1).getEntry(), 
-    rotationVelocityEntry = swerveTab.add("rotationVelocity", 0).withPosition(0, 0).withSize(3, 4).withWidget("Gyro").getEntry();
+  GenericEntry  xVelocityEntry = swerveTab.add("xVelocity", 0
+    ).withPosition(0, 4).withSize(3, 1).getEntry();
+  GenericEntry  yVelocityEntry = swerveTab.add("yVelocity", 0
+    ).withPosition(0, 5).withSize(3, 1).getEntry();
+  GenericEntry  rotationVelocityEntry = swerveTab.add("rotationVelocity", 0
+    ).withPosition(0, 0).withSize(3, 4).withWidget("Gyro").getEntry();
 
   /**
    * Object to track the robots position via inverse kinematics
@@ -145,21 +167,15 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
   /**
    * Drives the robot in a robot oriented manner, if field oriented is
    * desired, inputs must be rotated by calling function accordingly.
-   * @param speeds Robot relative chassis speeds on a scale from 0 to 1.
+   * @param Speeds Robot relative chassis speeds on a scale from 0 to 1.
    */
-  public void drive(ChassisSpeeds speeds) {
+  public void drive(ChassisSpeeds Speeds) {
 
-    xVelocityEntry.setDouble(speeds.vxMetersPerSecond);
-    yVelocityEntry.setDouble(speeds.vyMetersPerSecond);
-    rotationVelocityEntry.setDouble(Math.toDegrees(speeds.omegaRadiansPerSecond));
+    xVelocityEntry.setDouble(Speeds.vxMetersPerSecond);
+    yVelocityEntry.setDouble(Speeds.vyMetersPerSecond);
+    rotationVelocityEntry.setDouble(Math.toDegrees(Speeds.omegaRadiansPerSecond));
 
-    velocity = new Pose2d(
-      speeds.vxMetersPerSecond, 
-      speeds.vyMetersPerSecond, 
-      new Rotation2d(speeds.omegaRadiansPerSecond)
-    );
-
-    SwerveModuleState[] states = kinematics.toSwerveModuleStates(speeds);
+    SwerveModuleState[] states = kinematics.toSwerveModuleStates(Speeds);
     for (int i = 0; i < 4; i++) {
       SwerveModule.instances.get(i).drive(states[i]);
     }
@@ -169,14 +185,14 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
     return robotPoseEstimator.getEstimatedPosition();
   }
 
-  /**
-   * Grabs velocity from generic entry table,
-   * not from sensor collections
-   * @return A Pose2d with translation values bounded from -1 to 1
-   */
-  public Pose2d getVelocity() {
-    return velocity;
-  }
+  // /**
+  //  * Grabs velocity from generic entry table,
+  //  * not from sensor collections
+  //  * @return A Pose2d with translation values bounded from -1 to 1
+  //  */
+  // public Pose2d getVelocity() {
+  //   return velocity;
+  // }
 
   public void setPosition(Pose2d position) {
     // Rebuild pose estimator with more relevant values

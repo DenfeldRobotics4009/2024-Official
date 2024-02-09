@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import frc.robot.auto.pathing.PathingConstants;
 import frc.robot.auto.util.Field;
+import frc.robot.commands.Drive;
 
 public class Path {
 
@@ -28,7 +29,7 @@ public class Path {
      * initializer is the first point along the path.
      */
     public Path(PathPoint... Points) {
-        this(0.02, new ArrayList<PathPoint>(Arrays.asList(Points)));
+        this(PathingConstants.endpointTolerance, new ArrayList<PathPoint>(Arrays.asList(Points)));
     }
 
     /**

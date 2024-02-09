@@ -13,7 +13,7 @@ import frc.robot.subsystems.SwerveDrive;
 import frc.robot.subsystems.swerve.SwerveModule;
 
 public class Drive extends Command {
-  SwerveDrive driveTrain;
+  SwerveDrive drivetrain;
   Controls controls;
 
   // Tuner values are in degrees, and are converted after calculation
@@ -23,7 +23,7 @@ public class Drive extends Command {
   public Drive(SwerveDrive Drivetrain, Controls Controls) {
     addRequirements(Drivetrain);
 
-    driveTrain = Drivetrain;
+    drivetrain = Drivetrain;
     controls = Controls;
 
     directionTuner.enableContinuousInput(0, 360);
@@ -39,13 +39,16 @@ public class Drive extends Command {
 
     double radPSec;
 
+    double precisionFactor = 0.75;
+    if (controls.getPrecisionMode()) {precisionFactor = 0.35;}
+
     // If the hat is held in a direction
-    if (controls.steer.getPOV() != -1) {
+    if (controls.getPOV() != -1) {
       // Units are in degrees for POV hat, thus use degrees from navx
       radPSec = MathUtil.clamp(
           Math.toRadians( directionTuner.calculate(
-            driveTrain.getPosition().getRotation().times(-1).getDegrees(), 
-            controls.steer.getPOV()
+            SwerveDrive.navxGyro.getRotation2d().times(-1).getDegrees(), 
+            controls.getPOV()
           )),
           -SwerveModule.maxRadPerSecond, SwerveModule.maxRadPerSecond
         );
@@ -55,19 +58,19 @@ public class Drive extends Command {
 
     ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
       new ChassisSpeeds(
-        controls.getForward() * SwerveModule.maxMetersPerSecond,
-        controls.getLateral() * SwerveModule.maxMetersPerSecond,
-        radPSec
+        controls.getForward() * SwerveModule.maxMetersPerSecond * precisionFactor,
+        controls.getLateral() * SwerveModule.maxMetersPerSecond * precisionFactor,
+        radPSec * precisionFactor
       ), 
-      driveTrain.getPosition().getRotation()
+      SwerveDrive.navxGyro.getRotation2d()
     );
-    driveTrain.drive(speeds);
+    drivetrain.drive(speeds);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    driveTrain.drive(new ChassisSpeeds());
+    drivetrain.drive(new ChassisSpeeds());
   }
 
   // Returns true when the command should end.
