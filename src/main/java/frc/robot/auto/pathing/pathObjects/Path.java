@@ -29,7 +29,7 @@ public class Path {
      * initializer is the first point along the path.
      */
     public Path(PathPoint... Points) {
-        this(0.02, new ArrayList<PathPoint>(Arrays.asList(Points)));
+        this(PathingConstants.endpointTolerance, new ArrayList<PathPoint>(Arrays.asList(Points)));
     }
 
     /**
