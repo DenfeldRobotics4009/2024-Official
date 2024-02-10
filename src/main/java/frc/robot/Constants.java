@@ -5,7 +5,10 @@
 package frc.robot;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -16,6 +19,15 @@ import edu.wpi.first.math.geometry.Translation2d;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+    public static final class AprilTagOdometry {
+        public static double maxSpeed = 0.001; // power
+        public static double maxRotation = 0.001; // power
+        public static Transform3d cameraPose = new Transform3d(
+            new Translation3d(0, 0, 0.694), // TODO convert to meters
+            new Rotation3d(0, 0, 0)
+        );
+    }
 
     public static final class Swerve {
 
