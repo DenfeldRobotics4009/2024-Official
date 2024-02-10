@@ -9,8 +9,10 @@ import frc.robot.auto.pathing.AutoShuffleboardTab;
 import frc.robot.auto.pathing.PathingConstants;
 import frc.robot.commands.Drive;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.Intake;
 import frc.robot.commands.Shoot;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.subsystems.Turret;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -36,6 +38,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   
   final Turret turret = Turret.getInstance();
+  final IntakeArm intake = IntakeArm.getInstance();
 
   // Create a new april-tag camera, this is a subsystem.
   final AprilTagOdometry cam1 = new AprilTagOdometry(
@@ -87,7 +90,9 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    controls.getOperatorButton(1).whileTrue(new Shoot(turret, controls, driveTrain));
+    //controls.getOperatorButton(1).whileTrue(new Shoot(turret, controls, driveTrain));
+
+    controls.getOperatorButton(2).whileTrue(new Intake(intake));
   }
 
   /**

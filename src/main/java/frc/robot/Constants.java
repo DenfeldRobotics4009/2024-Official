@@ -65,12 +65,12 @@ public final class Constants {
         public static double flyWheelSpeed = 5440; // RPM
     }
     public static final class Intake {
-        public static int intakeMotorID = 45;
-        public static int rotateMotorID = 46; 
+        public static int intakeMotorID = 12;
+        public static int rotateMotorID = 10; 
         public static double rotateMotorPower = 0.5;
         public static double intakeMotorPower = 0.5;
-        public static double ground = 10;
-        public static double deposit = 2;
+        public static double ground = -39.5;
+        public static double deposit = -10;
     }
     public static final class AprilTagOdometry {
         public static double maxSpeed = 0.001; // power

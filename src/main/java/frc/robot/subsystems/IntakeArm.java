@@ -2,21 +2,22 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.CANSparkFlex;
+import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 
 public class IntakeArm extends SubsystemBase {
     public CANSparkFlex intakeMotor = new CANSparkFlex(Constants.Intake.intakeMotorID, MotorType.kBrushless);
-    public CANSparkFlex rotateMotor = new CANSparkFlex(Constants.Intake.rotateMotorID, MotorType.kBrushless);
+    public CANSparkMax rotateMotor = new CANSparkMax(Constants.Intake.rotateMotorID, MotorType.kBrushless);
     static IntakeArm instance;
-    public CANcoder rotateEncoder = new CANcoder(63);
     public positionOptions intakePosition = positionOptions.STARTING;
-    public PIDController intakePIDController = new PIDController(.1, 0.1, 0.01);
+    public PIDController intakePIDController = new PIDController(.1, 0, 0);
     
   
     /**
@@ -34,8 +35,10 @@ public class IntakeArm extends SubsystemBase {
 
   @Override
   public void periodic() {
-    double currentIntakePosition = rotateEncoder.getAbsolutePosition().getValueAsDouble();
+    double currentIntakePosition = rotateMotor.getEncoder().getPosition();
+    SmartDashboard.putNumber("Pos", currentIntakePosition);
     intakePIDController.setSetpoint(intakePosition.position);
+    SmartDashboard.putNumber("Goal", intakePosition.position);
     intakeMotor.set(intakePIDController.calculate(currentIntakePosition));
   }
 
