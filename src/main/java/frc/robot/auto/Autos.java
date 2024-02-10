@@ -36,21 +36,6 @@ public enum Autos {
             // This command will run until the end of the path is reached.
             new FollowPath(new ExamplePath())
         )
-    ),
-     TwoNoteAuto(
-        new SequentialCommandGroup(
-
-            /**
-             * This command sets the original position of the robot,
-             * as when the robot powers on it will set its position
-             * initially to (0, 0)
-             */
-            new SetDrivePosition(new Pose2d(1.0,6.0,new Rotation2d(0))),
-                new ExampleCommand(new ExampleSubsystem()), //Shooter.getInstance()
-
-            // This command will run until the end of the path is reached.
-            new FollowPath(new StartToSecondNote()) 
-        )
     );
 
     /* ----------------- */
