@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.Controls;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.subsystems.Turret;
@@ -36,13 +37,12 @@ public class Shoot extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //SmartDashboard.putNumber("Flywheel power", controls.steer.getThrottle());
-    //turret.setFlyWheelSpeed(controls.steer.getThrottle());
+    
     //get flywheels are up to speed
-    boolean atShooterSpeed = turret.setFlyWheelSpeed(6000);
+    boolean atShooterSpeed = turret.setFlyWheelSpeed(Constants.Turret.flyWheelSpeed);
     //aim shooter
-    angle = controls.operate.getThrottle(); // todo: implement april tags
-    turret.setAngle(angle * 100);
+    angle = -controls.operate.getThrottle() * Constants.Turret.aimRangeFrom0; // todo: implement april tags
+    turret.setAngle(angle);
     //aim drive train
         ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
       new ChassisSpeeds(

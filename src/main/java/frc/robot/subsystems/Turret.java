@@ -12,6 +12,8 @@ import com.revrobotics.CANSparkBase.ControlType;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -32,6 +34,13 @@ public class Turret extends SubsystemBase {
   private PIDController aimPIDController = new PIDController(.01, 0, 0);
   private double targetAngle = 0;
   static Turret instance;
+
+  // This sensor detects notes within the barrel
+  AnalogInput barrelSensor = new AnalogInput(Constants.Turret.barrelSensorID);
+
+  // Limit switch for aim mechanism
+  DigitalInput aimLimitSwitch = new DigitalInput(Constants.Turret.aimLimitSwitchID);
+  boolean limitSwitchToggle = false;
 
   /**
    * @return singleton instance of Turret
@@ -72,7 +81,18 @@ public class Turret extends SubsystemBase {
     double speed = aimPIDController.calculate(aim.getEncoder().getPosition()*2*Math.PI, targetAngle);
     MathUtil.clamp(speed, -1, 1);
     aim.set(speed);
-    // This method will be called once per scheduler run
+
+    SmartDashboard.putBoolean("Sensor", getBarrelSensor());
+
+    // Check the limit switch to reset aim encoder
+    if (aimLimitSwitch.get()) {
+      if (!limitSwitchToggle) {
+        aim.getEncoder().setPosition(0);
+      }
+      limitSwitchToggle = true;
+    } else {
+      limitSwitchToggle = false;
+    }
   }
 
   public boolean atTargetAngle() {
@@ -102,10 +122,14 @@ public class Turret extends SubsystemBase {
   }
 
   public void setAngle(double angle) {
-    targetAngle = angle;
+    targetAngle = MathUtil.clamp(angle, Constants.Turret.aimRangeFrom0, 0);
   }
   public void stopShooter() {
     topMotor.set(0);
     bottomMotor.set(0);
+  }
+
+  public boolean getBarrelSensor() {
+    return barrelSensor.getVoltage() < Constants.Turret.sensorVoltageHigh; 
   }
 }
