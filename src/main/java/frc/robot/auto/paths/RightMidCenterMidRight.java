@@ -29,13 +29,13 @@ public class RightMidCenterMidRight extends Path {
          */
         super(            
             new PathPoint(
-                new Translation2d(1.946,1.622),               // Position (meters)
+                new Translation2d(0,1.622),               // Position (meters)
                 new Rotation2d(Math.toRadians(0)),     // Rotation (rad)
                 5,    // Speed (m/s)
                 new PrintCommand("Shoot")       // Command 
             ),
             new PathPoint(
-                new Translation2d(8.1083,2.433),               // Position (meters)
+                new Translation2d(8.108,2.433),               // Position (meters)
                 new Rotation2d(Math.toRadians(0)),     // Rotation (rad)
                 5,    // Speed (m/s)
                 new PrintCommand("Shoot")       // Command 
@@ -43,7 +43,7 @@ public class RightMidCenterMidRight extends Path {
             new PathPoint(
                 new Translation2d(8.108,0.811),               // Position (meters)
                 new Rotation2d(Math.toRadians(Math.PI/2)),     // Rotation (rad)
-                5,    // Speed (m/s)
+                1,    // Speed (m/s)
                 new PrintCommand("Shoot")       // Command 
             )
         );

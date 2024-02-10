@@ -29,15 +29,15 @@ public class LeftNearLeft extends Path {
          */
         super(            
             new PathPoint(
-                new Translation2d(1.946,7.054),               // Position (meters)
+                new Translation2d(0,7.054),               // Position (meters)
                 new Rotation2d(Math.toRadians(0)),     // Rotation (rad)
-                5,    // Speed (m/s)
+                1,    // Speed (m/s)
                 new PrintCommand("Shoot")       // Command 
             ),
             new PathPoint(
                 new Translation2d(2.838,7.054),               // Position (meters)
                 new Rotation2d(Math.toRadians(0)),     // Rotation (rad)
-                5,    // Speed (m/s)
+                1,    // Speed (m/s)
                 new PrintCommand("Shoot")       // Command 
             )
         );
