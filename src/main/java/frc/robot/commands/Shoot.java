@@ -4,11 +4,20 @@
 
 package frc.robot.commands;
 
+import java.util.List;
+
+import org.photonvision.targeting.PhotonTrackedTarget;
+
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Controls;
+import frc.robot.subsystems.AprilTagOdometry;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.subsystems.Turret;
 import frc.robot.subsystems.swerve.SwerveModule;
@@ -18,10 +27,13 @@ public class Shoot extends Command {
   Turret turret;
   Controls controls;
   SwerveDrive swerveDrive;
-  double angle;
 
   /** Creates a new Shoot. */
-  public Shoot(Turret turret, Controls controls, SwerveDrive swerveDrive) {
+  public Shoot(
+    Turret turret, 
+    Controls controls, 
+    SwerveDrive swerveDrive
+  ) {
     this.turret = turret;
     this.controls = controls;
     this.swerveDrive = swerveDrive;
@@ -37,14 +49,28 @@ public class Shoot extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
+    // Grab target position from april tag
+    Translation2d targetPose = new Translation2d();
+    if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
+      targetPose = AprilTagOdometry.aprilTagFieldLayout.getTagPose(4).get().getTranslation().toTranslation2d();
+    } else {
+      targetPose = AprilTagOdometry.aprilTagFieldLayout.getTagPose(7).get().getTranslation().toTranslation2d();
+    }
+    // Calculate distance
+    double distance = targetPose.getDistance(swerveDrive.getPosition().getTranslation());
     
     //get flywheels are up to speed
     boolean atShooterSpeed = turret.setFlyWheelSpeed(Constants.Turret.flyWheelSpeed);
     //aim shooter
-    angle = -controls.operate.getThrottle() * Constants.Turret.aimRangeFrom0; // todo: implement april tags
+    double angle = -controls.operate.getThrottle() * Constants.Turret.aimRangeFrom0; // todo: implement april tags
     turret.setAngle(angle);
+
+    SmartDashboard.putNumber("Distance to target", distance);
+    SmartDashboard.putNumber("Shooter Angle", angle);
+
     //aim drive train
-        ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
+    ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
       new ChassisSpeeds(
         controls.getForward() * SwerveModule.maxMetersPerSecond,
         controls.getLateral() * SwerveModule.maxMetersPerSecond,

@@ -36,7 +36,7 @@ import frc.robot.auto.util.Field;
  */
 public class AprilTagOdometry extends SubsystemBase {
 
-    AprilTagFieldLayout aprilTagFieldLayout;
+    public static AprilTagFieldLayout aprilTagFieldLayout;
 
     PhotonPoseEstimator photonPoseEstimator;
     PhotonCamera camera;
