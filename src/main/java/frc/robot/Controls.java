@@ -1,23 +1,55 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.subsystems.SwerveDrive;
 
 public class Controls {
 
     public final Joystick drive = new Joystick(0);
     public final Joystick steer = new Joystick(1);
-    public final Joystick operate = new Joystick(2);
+    public final Joystick operate = new Joystick(3);
 
-    public Controls() {}
+    public final XboxController driveController = new XboxController(2);
 
+    SendableChooser<Integer> driveMode = new SendableChooser<Integer>();
+
+    static Controls instance;
+
+    public static Controls getInstance() {
+        if (instance == null) {
+            instance = new Controls();
+        }
+
+        return instance;
+    }
+
+    /**
+     * Creates a new controls object
+     */
+    private Controls() {
+
+        driveMode.setDefaultOption("Joystick", 0);
+        driveMode.addOption("XBox", 1);
+
+        SwerveDrive.getInstance().swerveTab.add(driveMode);
+    }
 
     /**
      * Y axis of the drive joystick
      * @return double
      */
     public double getForward() {
-        return modifyAxis(-drive.getY(), 0.15);
+        switch (driveMode.getSelected()) {
+            case 0:
+                return modifyAxis(-drive.getY(), 0.15);        
+            case 1:
+                return modifyAxis(-driveController.getLeftY(), 0.15); 
+            default:
+                return 0;
+        }
     }
 
     /**
@@ -25,7 +57,14 @@ public class Controls {
      * @return double
      */
     public double getLateral() {
-        return modifyAxis(-drive.getX(), 0.15);
+        switch (driveMode.getSelected()) {
+            case 0:
+                return modifyAxis(-drive.getX(), 0.15);        
+            case 1:
+                return modifyAxis(-driveController.getLeftX(), 0.15); 
+            default:
+                return 0;
+        }
     }
 
     /**
@@ -33,18 +72,43 @@ public class Controls {
      * @return double
      */
     public double getTurn() {
-        return 0;//steer.getZ(), 0.15);
+        switch (driveMode.getSelected()) {
+            case 0:
+                return modifyAxis(steer.getX(), 0.15);        
+            case 1:
+                return modifyAxis(driveController.getRightX(), 0.15); 
+            default:
+                return 0;
+        }
     }
 
     /**
      * Trigger value of the driver joystick, 
-     * indicating prescision mode
+     * indicating precision mode
      * @return boolean
      */
     public boolean getPrecisionMode() {
-        return drive.getTrigger();
+        switch (driveMode.getSelected()) {
+            case 0:
+                return drive.getTrigger();        
+            case 1:
+                return !(driveController.getRightTriggerAxis() > 0.1); 
+            default:
+                return false;
+        }
     }
-    
+
+    public int getPOV() {
+        switch (driveMode.getSelected()) {
+            case 0:
+                return steer.getPOV();        
+            case 1:
+                return driveController.getPOV(); 
+            default:
+                return -1;
+        }
+    }
+
     /**
      * @param id button id
      * @return JoystickButton on drive joystick

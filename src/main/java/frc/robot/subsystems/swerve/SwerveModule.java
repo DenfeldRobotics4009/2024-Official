@@ -2,15 +2,11 @@ package frc.robot.subsystems.swerve;
 
 import java.util.ArrayList;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 public class SwerveModule {
@@ -51,14 +47,7 @@ public class SwerveModule {
      */
     private Translation2d AccumulatedRelativePositionMeters = new Translation2d();
 
-    final GenericEntry calibrationEntry;
-
     public static ShuffleboardTab swerveModuleTab = Shuffleboard.getTab("Swerve Modules");
-
-    public static ShuffleboardLayout calibrationAngleEntryGroup = 
-        swerveModuleTab.getLayout("Calibration Angle (Degrees)", BuiltInLayouts.kList)
-            .withPosition(0, 0)
-            .withSize(5, 4);
 
     public static ArrayList<SwerveModule> instances = new ArrayList<SwerveModule>();
 
@@ -98,10 +87,6 @@ public class SwerveModule {
 
         // Set maximum rotation speed
         maxRadPerSecond = maxMetersPerSecond / Math.hypot(robotTrack.getX() / 2.0, robotTrack.getY() / 2.0);
-
-        // Add calibration entry, persistent for safety
-        calibrationEntry = calibrationAngleEntryGroup
-            .add(name + " Calibration", swerveMotors.defaultAngleOffset.getDegrees()).getEntry();
     }
 
     /**
@@ -239,9 +224,6 @@ public class SwerveModule {
      */
     public void drive(SwerveModuleState State) {
 
-        // Update calibration from entries
-        swerveMotors.defaultAngleOffset = new Rotation2d(Math.toRadians(calibrationEntry.getDouble(0)));
-
         SwerveModuleState OptimizedState = optimizeState(State, swerveMotors.getRotation2d());
 
         // Set drive motor
@@ -336,8 +318,8 @@ public class SwerveModule {
      * 
      * @param Position Field relative position of robot.
      */
-    public void setFieldRelativePositionFromRobotPosition(Pose2d Position) {
-        AccumulatedRelativePositionMeters = Position.getTranslation().plus(robotTrackPosition);
+    public void setFieldRelativePositionFromRobotPosition(Translation2d Position) {
+        AccumulatedRelativePositionMeters = Position.plus(robotTrackPosition);
     }
 
     

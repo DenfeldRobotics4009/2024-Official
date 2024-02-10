@@ -15,6 +15,15 @@ import frc.robot.subsystems.SwerveDrive;
 import frc.robot.subsystems.Turret;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.subsystems.AprilTagOdometry;
+import frc.robot.subsystems.NoteCamera;
+import frc.robot.subsystems.SwerveDrive;
+
+import org.photonvision.PhotonCamera;
+
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -26,17 +35,37 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   
-  final Controls controls = new Controls();
-  final SwerveDrive driveTrain = SwerveDrive.GetInstance();
   final Turret turret = Turret.getInstance();
+
+  // Create a new april-tag camera, this is a subsystem.
+  final AprilTagOdometry cam1 = new AprilTagOdometry(
+    new PhotonCamera("Microsoft_LifeCam_HD-3000-1"), Constants.AprilTagOdometry.cameraPose);
+  final NoteCamera cam2 = new NoteCamera(new PhotonCamera("Microsoft_LifeCam_HD-3000-2"));
+  
+  final Controls controls = Controls.getInstance();
+  final SwerveDrive driveTrain = SwerveDrive.getInstance();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
 
-    driveTrain.setDefaultCommand(new Drive(driveTrain, controls));
-    
+    driveTrain.setDefaultCommand(
+      new Drive(driveTrain, controls)
+    );
+
+    // Pass drivetrain into pathing algorithm
+    PathingConstants.setForwardAngle(Swerve.forwardAngle);
+    PathingConstants.setDriveSubsystem(driveTrain);
+    // Initialize auto tab
+    AutoShuffleboardTab.getInstance();
+
+    // Configure the button bindings
+
+    driveTrain.setDefaultCommand(
+      new Drive(driveTrain, controls)
+    );
+
     // Pass drivetrain into pathing algorithm
     PathingConstants.setForwardAngle(Swerve.forwardAngle);
     PathingConstants.setDriveSubsystem(driveTrain);
