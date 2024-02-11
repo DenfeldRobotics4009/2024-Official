@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Controls;
+import frc.robot.ShotProfile;
 import frc.robot.auto.util.Field;
 import frc.robot.subsystems.AprilTagOdometry;
 import frc.robot.subsystems.IntakeArm;
@@ -66,29 +67,20 @@ public class Shoot extends Command {
   @Override
   public void execute() {
 
-    // Grab target position from april tag
-    Translation2d targetPose = new Translation2d();
-    int speakerID;
-    if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
-      speakerID = 4;
-    } else {
-      speakerID = 7;
-    }
-    targetPose = AprilTagOdometry.aprilTagFieldLayout.getTagPose(speakerID).get().getTranslation().toTranslation2d();
-    targetPose = Field.translateRobotPoseToRed(targetPose);
     // Calculate distance
-    double distance = targetPose.getDistance(swerveDrive.getPosition().getTranslation());
+    double distance = camera.getDistanceToSpeaker();
+    // Convert joystick value into a shooter angle
+    double angle = -controls.operate.getThrottle() * Constants.Turret.aimRangeFrom0;
+    if (ShotProfile.getHeightFromDistance(distance).isPresent()) {
+      angle = -ShotProfile.getHeightFromDistance(distance).get() * Constants.Turret.aimRangeFrom0;
+    }
     
     //get flywheels are up to speed
     boolean atShooterSpeed = turret.setFlyWheelSpeed(Constants.Turret.flyWheelSpeed);
     //aim shooter
-    double angle = -controls.operate.getThrottle() * Constants.Turret.aimRangeFrom0; // todo: implement april tags
     if (intake.atTargetAngle()) {
       turret.setAngle(angle);
     }
-
-    SmartDashboard.putNumber("Distance to target", distance);
-    SmartDashboard.putNumber("Shooter Angle", angle);
 
     //aim drive train
     ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(

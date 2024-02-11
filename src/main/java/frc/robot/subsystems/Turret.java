@@ -84,6 +84,8 @@ public class Turret extends SubsystemBase {
 
     SmartDashboard.putBoolean("Sensor", getBarrelSensor());
 
+    SmartDashboard.putNumber("Shooter Angle (Radians)", aim.getEncoder().getPosition()*2*Math.PI);
+
     // Check the limit switch to reset aim encoder
     if (aimLimitSwitch.get()) {
       if (!limitSwitchToggle) {

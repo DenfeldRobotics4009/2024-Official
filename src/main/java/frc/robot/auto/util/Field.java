@@ -7,6 +7,8 @@ package frc.robot.auto.util;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public class Field {
 
@@ -43,5 +45,12 @@ public class Field {
      */
     public static Translation2d translateRobotPoseToRed(Translation2d bluePosition) {
         return new Translation2d(fieldLengthMeters - bluePosition.getX(), fieldWidthMeters - bluePosition.getY());
+    }
+
+    /**
+     * @return true if the robot is on the red alliance
+     */
+    public static boolean isRedAlliance() {
+        return DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red;
     }
 }
