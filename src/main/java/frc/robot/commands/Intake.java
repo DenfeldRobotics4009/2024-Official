@@ -20,7 +20,6 @@ public class Intake extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    SmartDashboard.putNumber("AA", 0);
     intake.setPosition(positionOptions.GROUND);
   }
 

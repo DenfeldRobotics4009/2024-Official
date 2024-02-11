@@ -10,7 +10,10 @@ import frc.robot.auto.pathing.PathingConstants;
 import frc.robot.commands.Drive;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.Intake;
+import frc.robot.commands.Outtake;
+import frc.robot.commands.ResetIntake;
 import frc.robot.commands.Shoot;
+import frc.robot.commands.Transfer;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.SwerveDrive;
@@ -90,9 +93,15 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    //controls.getOperatorButton(1).whileTrue(new Shoot(turret, controls, driveTrain));
+    controls.getOperatorButton(1).whileTrue(new Shoot(turret, controls, driveTrain, cam1, intake));
 
     controls.getOperatorButton(2).whileTrue(new Intake(intake));
+
+    controls.getOperatorButton(5).onTrue(new ResetIntake(intake, turret));
+
+    controls.getOperatorButton(3).onTrue(new Transfer(turret, intake));
+
+    controls.getOperatorButton(6).whileTrue(new Outtake(intake));
   }
 
   /**

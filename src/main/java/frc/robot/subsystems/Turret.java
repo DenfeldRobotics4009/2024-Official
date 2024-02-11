@@ -30,7 +30,7 @@ public class Turret extends SubsystemBase {
 
   private CANSparkMax feeder = new CANSparkMax(Constants.Turret.feederMotorID, MotorType.kBrushless);
 
-  private CANSparkMax aim = new CANSparkMax(Constants.Turret.aimMotorID, MotorType.kBrushless);
+  public CANSparkMax aim = new CANSparkMax(Constants.Turret.aimMotorID, MotorType.kBrushless);
   private PIDController aimPIDController = new PIDController(.01, 0, 0);
   private double targetAngle = 0;
   static Turret instance;
@@ -96,7 +96,7 @@ public class Turret extends SubsystemBase {
   }
 
   public boolean atTargetAngle() {
-    return true; //aimPIDController.atSetpoint();
+    return aimPIDController.atSetpoint();
   }
 
   /**

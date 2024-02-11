@@ -5,9 +5,12 @@
 package frc.robot.commands;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.opencv.photo.Photo;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -17,9 +20,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Controls;
+import frc.robot.auto.util.Field;
 import frc.robot.subsystems.AprilTagOdometry;
+import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.subsystems.Turret;
+import frc.robot.subsystems.IntakeArm.positionOptions;
 import frc.robot.subsystems.swerve.SwerveModule;
 
 public class Shoot extends Command {
@@ -27,23 +33,33 @@ public class Shoot extends Command {
   Turret turret;
   Controls controls;
   SwerveDrive swerveDrive;
+  AprilTagOdometry camera;
+  IntakeArm intake;
+
+  PIDController aimingPidController = new PIDController(0.1, 0, 0);
 
   /** Creates a new Shoot. */
   public Shoot(
     Turret turret, 
     Controls controls, 
-    SwerveDrive swerveDrive
+    SwerveDrive swerveDrive,
+    AprilTagOdometry camera,
+    IntakeArm intake
   ) {
     this.turret = turret;
     this.controls = controls;
     this.swerveDrive = swerveDrive;
-    addRequirements(turret, swerveDrive);
+    this.camera = camera;
+    this.intake = intake;
+    addRequirements(turret, swerveDrive, intake);
+
+    aimingPidController.setSetpoint(0);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
+    intake.setPosition(positionOptions.DEPOSIT);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -52,11 +68,14 @@ public class Shoot extends Command {
 
     // Grab target position from april tag
     Translation2d targetPose = new Translation2d();
+    int speakerID;
     if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
-      targetPose = AprilTagOdometry.aprilTagFieldLayout.getTagPose(4).get().getTranslation().toTranslation2d();
+      speakerID = 4;
     } else {
-      targetPose = AprilTagOdometry.aprilTagFieldLayout.getTagPose(7).get().getTranslation().toTranslation2d();
+      speakerID = 7;
     }
+    targetPose = AprilTagOdometry.aprilTagFieldLayout.getTagPose(speakerID).get().getTranslation().toTranslation2d();
+    targetPose = Field.translateRobotPoseToRed(targetPose);
     // Calculate distance
     double distance = targetPose.getDistance(swerveDrive.getPosition().getTranslation());
     
@@ -69,12 +88,25 @@ public class Shoot extends Command {
     SmartDashboard.putNumber("Distance to target", distance);
     SmartDashboard.putNumber("Shooter Angle", angle);
 
+    double turn = controls.getTurn() * SwerveModule.maxRadPerSecond;
+
+    Optional<PhotonTrackedTarget> target = Optional.empty();
+    List<PhotonTrackedTarget> targets = camera.getTargets();
+    for (PhotonTrackedTarget photonTrackedTarget : targets) {
+      if (photonTrackedTarget.getFiducialId() == speakerID) {
+        target = Optional.of(photonTrackedTarget);
+      }
+    }
+    if (target.isPresent()) {
+      turn = -aimingPidController.calculate(target.get().getYaw() + -5);
+    }
+
     //aim drive train
     ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
       new ChassisSpeeds(
         controls.getForward() * SwerveModule.maxMetersPerSecond,
         controls.getLateral() * SwerveModule.maxMetersPerSecond,
-        controls.getTurn() * SwerveModule.maxRadPerSecond
+        turn
       ), 
       SwerveDrive.navxGyro.getRotation2d()
     );

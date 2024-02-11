@@ -39,7 +39,7 @@ public class AprilTagOdometry extends SubsystemBase {
     public static AprilTagFieldLayout aprilTagFieldLayout;
 
     PhotonPoseEstimator photonPoseEstimator;
-    PhotonCamera camera;
+    public PhotonCamera camera;
 
 
     /**
@@ -58,7 +58,6 @@ public class AprilTagOdometry extends SubsystemBase {
     public AprilTagOdometry(PhotonCamera camera, Transform3d robotToCamera) {
 
         this.camera = camera;
-        
         try {
 
             aprilTagFieldLayout = AprilTagFieldLayout.loadFromResource(

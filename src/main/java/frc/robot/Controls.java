@@ -103,6 +103,8 @@ public class Controls {
             case 0:
                 return steer.getPOV();        
             case 1:
+                if (driveController.getLeftStickButton()) return 0;
+                if (driveController.getRightStickButton()) return 180; 
                 return driveController.getPOV(); 
             default:
                 return -1;

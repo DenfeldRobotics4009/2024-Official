@@ -17,7 +17,7 @@ public class IntakeArm extends SubsystemBase {
     public CANSparkMax rotateMotor = new CANSparkMax(Constants.Intake.rotateMotorID, MotorType.kBrushless);
     static IntakeArm instance;
     public positionOptions intakePosition = positionOptions.STARTING;
-    public PIDController intakePIDController = new PIDController(.1, 0, 0);
+    public PIDController intakePIDController = new PIDController(.02, 0, 0);
     
   
     /**
@@ -31,7 +31,10 @@ public class IntakeArm extends SubsystemBase {
       return instance;
     }
      /** Creates a new Intake. */
-  private IntakeArm() {}
+  private IntakeArm() {
+
+    rotateMotor.getEncoder().setPosition(0);
+  }
 
   @Override
   public void periodic() {
@@ -39,11 +42,14 @@ public class IntakeArm extends SubsystemBase {
     SmartDashboard.putNumber("Pos", currentIntakePosition);
     intakePIDController.setSetpoint(intakePosition.position);
     SmartDashboard.putNumber("Goal", intakePosition.position);
-    intakeMotor.set(intakePIDController.calculate(currentIntakePosition));
+    rotateMotor.set(intakePIDController.calculate(currentIntakePosition));
   }
 
   public void setIntake() {
     intakeMotor.set(Constants.Intake.intakeMotorPower);
+  }
+  public void setIntake(double power) {
+    intakeMotor.set(power);
   }
   public void setOuttake(){
     intakeMotor.set(-Constants.Intake.intakeMotorPower);
