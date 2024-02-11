@@ -83,30 +83,19 @@ public class Shoot extends Command {
     boolean atShooterSpeed = turret.setFlyWheelSpeed(Constants.Turret.flyWheelSpeed);
     //aim shooter
     double angle = -controls.operate.getThrottle() * Constants.Turret.aimRangeFrom0; // todo: implement april tags
-    turret.setAngle(angle);
+    if (intake.atTargetAngle()) {
+      turret.setAngle(angle);
+    }
 
     SmartDashboard.putNumber("Distance to target", distance);
     SmartDashboard.putNumber("Shooter Angle", angle);
-
-    double turn = controls.getTurn() * SwerveModule.maxRadPerSecond;
-
-    Optional<PhotonTrackedTarget> target = Optional.empty();
-    List<PhotonTrackedTarget> targets = camera.getTargets();
-    for (PhotonTrackedTarget photonTrackedTarget : targets) {
-      if (photonTrackedTarget.getFiducialId() == speakerID) {
-        target = Optional.of(photonTrackedTarget);
-      }
-    }
-    if (target.isPresent()) {
-      turn = -aimingPidController.calculate(target.get().getYaw() + -5);
-    }
 
     //aim drive train
     ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
       new ChassisSpeeds(
         controls.getForward() * SwerveModule.maxMetersPerSecond,
         controls.getLateral() * SwerveModule.maxMetersPerSecond,
-        turn
+        controls.getTurn() * SwerveModule.maxRadPerSecond
       ), 
       SwerveDrive.navxGyro.getRotation2d()
     );

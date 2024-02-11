@@ -13,8 +13,10 @@ public class Controls {
     public final Joystick operate = new Joystick(3);
 
     public final XboxController driveController = new XboxController(2);
+    //public final XboxController operateController = new XboxController(4);
 
     SendableChooser<Integer> driveMode = new SendableChooser<Integer>();
+    //SendableChooser<Integer> operateMode = new SendableChooser<Integer>();
 
     static Controls instance;
 
@@ -31,10 +33,14 @@ public class Controls {
      */
     private Controls() {
 
-        driveMode.setDefaultOption("Joystick", 0);
-        driveMode.addOption("XBox", 1);
+        driveMode.setDefaultOption("Joystick Driver", 0);
+        driveMode.addOption("XBox Driver", 1);
+
+        // operateMode.setDefaultOption("Joystick Operator", 0);
+        // operateMode.addOption("XBox Operator", 1);
 
         SwerveDrive.getInstance().swerveTab.add(driveMode);
+        //SwerveDrive.getInstance().swerveTab.add(operateMode);
     }
 
     /**

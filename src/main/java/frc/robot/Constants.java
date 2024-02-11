@@ -45,7 +45,8 @@ public final class Constants {
         public static int feederMotorID = 59;
         public static double feederSpeed = 20;
         public static int aimMotorID = 40;
-        public static double aimTolerance = 3;
+        
+        public static double pidTolerance = 3;
         public static double aimRangeFrom0 = -133;
         public static double transferAngle = -100;
         public static double minimumFlywheelSpeed = 0;
@@ -71,6 +72,8 @@ public final class Constants {
         public static double intakeMotorPower = -0.5;
         public static double ground = -37;
         public static double deposit = -15;
+
+        public static double pidTolerance = 3;
     }
     public static final class AprilTagOdometry {
         public static double maxSpeed = 0.001; // power

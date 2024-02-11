@@ -55,7 +55,7 @@ public class Turret extends SubsystemBase {
 
   /** Creates a new Turret. */
   private Turret() {
-    aimPIDController.setTolerance(Constants.Turret.aimTolerance);
+    aimPIDController.setTolerance(Constants.Turret.pidTolerance);
 
     aim.getEncoder().setPosition(0);
 

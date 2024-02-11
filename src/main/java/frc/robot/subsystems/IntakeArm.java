@@ -34,6 +34,8 @@ public class IntakeArm extends SubsystemBase {
   private IntakeArm() {
 
     rotateMotor.getEncoder().setPosition(0);
+
+    intakePIDController.setTolerance(Constants.Intake.pidTolerance);
   }
 
   @Override
@@ -56,6 +58,10 @@ public class IntakeArm extends SubsystemBase {
   }
   public void stop() {
     intakeMotor.set(0);
+  }
+
+  public boolean atTargetAngle() {
+    return intakePIDController.atSetpoint();
   }
 
 
