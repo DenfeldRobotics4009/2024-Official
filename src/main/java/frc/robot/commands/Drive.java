@@ -13,8 +13,8 @@ import frc.robot.subsystems.SwerveDrive;
 import frc.robot.subsystems.swerve.SwerveModule;
 
 public class Drive extends Command {
-  SwerveDrive m_drivetrain;
-  Controls m_controls;
+  SwerveDrive drivetrain;
+  Controls controls;
 
   // Tuner values are in degrees, and are converted after calculation
   PIDController directionTuner = new PIDController(4, 0, 0);
@@ -23,8 +23,8 @@ public class Drive extends Command {
   public Drive(SwerveDrive Drivetrain, Controls Controls) {
     addRequirements(Drivetrain);
 
-    m_drivetrain = Drivetrain;
-    m_controls = Controls;
+    drivetrain = Drivetrain;
+    controls = Controls;
 
     directionTuner.enableContinuousInput(0, 360);
   }
@@ -39,35 +39,38 @@ public class Drive extends Command {
 
     double radPSec;
 
+    double precisionFactor = 0.75;
+    if (controls.getPrecisionMode()) {precisionFactor = 0.35;}
+
     // If the hat is held in a direction
-    if (m_controls.steer.getPOV() != -1) {
+    if (controls.getPOV() != -1) {
       // Units are in degrees for POV hat, thus use degrees from navx
       radPSec = MathUtil.clamp(
           Math.toRadians( directionTuner.calculate(
             SwerveDrive.navxGyro.getRotation2d().times(-1).getDegrees(), 
-            m_controls.steer.getPOV()
+            controls.getPOV()
           )),
           -SwerveModule.maxRadPerSecond, SwerveModule.maxRadPerSecond
         );
     } else {
-      radPSec = m_controls.getTurn() * SwerveModule.maxRadPerSecond;
+      radPSec = controls.getTurn() * SwerveModule.maxRadPerSecond;
     }
 
     ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
       new ChassisSpeeds(
-        m_controls.getForward() * SwerveModule.maxMetersPerSecond,
-        m_controls.getLateral() * SwerveModule.maxMetersPerSecond,
-        radPSec
+        controls.getForward() * SwerveModule.maxMetersPerSecond * precisionFactor,
+        controls.getLateral() * SwerveModule.maxMetersPerSecond * precisionFactor,
+        radPSec * precisionFactor
       ), 
       SwerveDrive.navxGyro.getRotation2d()
     );
-    m_drivetrain.drive(speeds);
+    drivetrain.drive(speeds);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_drivetrain.drive(new ChassisSpeeds());
+    drivetrain.drive(new ChassisSpeeds());
   }
 
   // Returns true when the command should end.

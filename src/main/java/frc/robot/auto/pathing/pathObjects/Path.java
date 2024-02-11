@@ -28,7 +28,7 @@ public class Path {
      * initializer is the first point along the path.
      */
     public Path(PathPoint... Points) {
-        this(0.02, new ArrayList<PathPoint>(Arrays.asList(Points)));
+        this(PathingConstants.endpointTolerance, new ArrayList<PathPoint>(Arrays.asList(Points)));
     }
 
     /**
@@ -55,7 +55,7 @@ public class Path {
         System.out.println("Processing path " + this.toString());
 
         // Flip all points to the corresponding side
-        if (DriverStation.getAlliance().get() == Alliance.Red) {
+        if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
             System.out.println("Flipping point coordinates to red alliance");
             for (PathPoint pathPoint : Points) {
                 pathPoint.posMeters = Field.translateRobotPoseToRed(pathPoint.posMeters);
