@@ -29,9 +29,9 @@ public class OnePieceCenter extends Path {
          */
         super(            
             new PathPoint(
-                new Translation2d(1.946,4.176),               // Position (meters)
+                new Translation2d(0,4.176),               // Position (meters)
                 new Rotation2d(Math.toRadians(0)),     // Rotation (rad)
-                5,    // Speed (m/s)
+                1,    // Speed (m/s)
                 new PrintCommand("Shoot")       // Command 
             )
         );

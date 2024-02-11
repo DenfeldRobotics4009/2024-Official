@@ -29,22 +29,22 @@ public class CenterNearRightNearCenter extends Path {
          */
         super(            
             new PathPoint(
-                new Translation2d(1.946,7.054),               // Position (meters)
+                new Translation2d(0,7.054),               // Starting Position (meters)
                 new Rotation2d(Math.toRadians(0)),     // Rotation (rad)
-                5,    // Speed (m/s)
-                new PrintCommand("Shoot")       // Command 
+                1,    // Speed (m/s)
+                new PrintCommand("Started here")       // Command 
             ),
             new PathPoint(
                 new Translation2d(2.757,4.054),               // Position (meters)
                 new Rotation2d(Math.toRadians(0)),     // Rotation (rad)
-                5,    // Speed (m/s)
-                new PrintCommand("Shoot")       // Command 
+                1,    // Speed (m/s)
+                new PrintCommand("Arrived at NearRight")       // Command 
             ),
             new PathPoint(
                 new Translation2d(1.946,5.433),               // Position (meters)
                 new Rotation2d(Math.toRadians(Math.PI/2)),     // Rotation (rad)
-                5,    // Speed (m/s)
-                new PrintCommand("Shoot")       // Command 
+                1,    // Speed (m/s)
+                new PrintCommand("Arrived at NearCenter")       // Command 
             )
         );
     }

@@ -31,7 +31,7 @@ public class ExamplePath extends Path {
             new PathPoint(
                 new Translation2d(0, 0),               // Position (meters)
                 new Rotation2d(Math.toRadians(0)),     // Rotation (rad)
-                2,    // Speed (m/s)
+                0,    // Speed (m/s)
                 new PrintCommand("Past point 0")       // Command 
             ),
             new PathPoint(
