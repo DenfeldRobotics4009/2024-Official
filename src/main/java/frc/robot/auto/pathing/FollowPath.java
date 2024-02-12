@@ -64,11 +64,6 @@ public class FollowPath extends Command {
         PathState state = getPathState(robotPose);
         // The target relative to the robots current position
         Translation2d deltaLocation = state.goalPose.getTranslation().minus(robotPose.getTranslation());
-
-        // System.out.println(" ");
-        // System.out.println("Goal pose: " + state.goalPose);
-        // System.out.println("Current pose: " + robotPose);
-
         // Clamp state speed so the end of the path can be consistently reached
         // Clamped between [Const Max, 5 cm/s]
         double clampedSpeed = Clamp(
@@ -89,7 +84,6 @@ public class FollowPath extends Command {
             PathingConstants.lookAheadScalar * clampedSpeed,
             1, 0.2
         );
-
         // Construct chassis speeds from state values
         // Convert field oriented to robot oriented
         ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
@@ -98,12 +92,12 @@ public class FollowPath extends Command {
                 axisSpeeds.getX(),
                 axisSpeeds.getY(),
                 // Rotate by the angle between
-                signedAngleBetween(
+                -signedAngleBetween(
                     // Angle from current to goal
                     state.goalPose.getRotation(),
                     // Rotate back by forward constant
                     robotPose.getRotation()
-                ).getRadians() * PathingConstants.turningProportion
+                ) * PathingConstants.turningProportion
             ), 
             // Rotate from current direction
             robotPose.getRotation()
@@ -352,9 +346,9 @@ public class FollowPath extends Command {
      * @return the angle from A to B
      * on the interval [pi, -pi), in radians
      */
-    public static Rotation2d signedAngleBetween(Rotation2d A, Rotation2d B) {
-        return new Rotation2d(
-            (B.getRadians() - A.getRadians() + Math.PI) % (Math.PI * 2) - Math.PI
+    public static double signedAngleBetween(Rotation2d A, Rotation2d B) {
+        return (
+            A.minus(B).getRadians()
         );
     }
 }

@@ -14,31 +14,44 @@ import frc.robot.auto.pathing.pathObjects.PathPoint;
  * Example pure pursuit path, showing a basic
  * and readable implementation.
  */
-public class RightMidCenterRightMidRight extends Path {
+public class Center2Piece extends Path {
     /**
      * Drives the robot 1.5 meters along the x
      * axis (which should be forward, if the settings
      * are properly configured within the PathingConstants
      * class), at the robots maximum speed.
      */
-    public RightMidCenterRightMidRight() {
+    public Center2Piece() {
         /**
          * Initializes Path super with the given
          * set of points, the first point passed
          * into super is the first point along the path.
          */
         super(            
+            0.5, // End tolerance
             new PathPoint(
-                new Translation2d(0,1.622),               // Position (meters)
-                new Rotation2d(Math.toRadians(0)),     // Rotation (rad)
-                1,    // Speed (m/s)
+                new Translation2d(0,0),               // Position (meters)
+                new Rotation2d(Math.toRadians(180)),     // Rotation (rad)
+                3,    // Speed (m/s)
                 new PrintCommand("Shoot")       // Command 
             ),
             new PathPoint(
-                new Translation2d(8.108,2.433),               // Position (meters)
-                new Rotation2d(Math.toRadians(0)),     // Rotation (rad)
+                new Translation2d(1.5,0),               // Position (meters)
+                new Rotation2d(Math.toRadians(180)),     // Rotation (rad)
+                2,    // Speed (m/s)
+                new PrintCommand("Intake")       // Command 
+            ),
+            new PathPoint(
+                new Translation2d(0.5,-1),               // Position (meters)
+                new Rotation2d(Math.toRadians(180)),     // Rotation (rad)
                 1,    // Speed (m/s)
-                new PrintCommand("Shoot")       // Command 
+                new PrintCommand("Transfer to next")       // Command 
+            ),
+            new PathPoint(
+                new Translation2d(1.5,-2),               // Position (meters)
+                new Rotation2d(Math.toRadians(180)),     // Rotation (rad)
+                0,    // Speed (m/s)
+                new PrintCommand("Intake")       // Command 
             )
         );
     }

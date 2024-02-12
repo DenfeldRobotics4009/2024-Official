@@ -177,7 +177,7 @@ public enum Autos {
             new FollowPath(new RightMidCenterRightMidCenter()) 
         )
     ),
-    RightMidCenterRightMidRight( // To tune
+    Center2Piece( // To tune
         new SequentialCommandGroup(
 
             /**
@@ -185,13 +185,13 @@ public enum Autos {
              * as when the robot powers on it will set its position
              * initially to (0, 0)
              */
-            new SetDrivePosition(new Pose2d(1.946,1.622,new Rotation2d(0))), //starts at these points (might need to tweak)
+            new SetDrivePosition(new Pose2d(0, 0, new Rotation2d(Math.toRadians(180)))),///new Pose2d(1.946,1.622,new Rotation2d(0))), //starts at these points (might need to tweak)
 
             // This command will run until the end of the path is reached.
-            new FollowPath(new RightMidCenterRightMidRight()) 
+            new FollowPath(new Center2Piece()) 
         )
     ),
-    LeftNearLeftMidLeft( // To tune
+    Left3Peice( // To tune
         new SequentialCommandGroup(
 
             /**
