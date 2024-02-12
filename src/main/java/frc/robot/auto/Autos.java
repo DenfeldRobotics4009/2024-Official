@@ -188,7 +188,7 @@ public enum Autos {
             new SetDrivePosition(new Pose2d(0, 0, new Rotation2d(Math.toRadians(180)))),///new Pose2d(1.946,1.622,new Rotation2d(0))), //starts at these points (might need to tweak)
 
             // This command will run until the end of the path is reached.
-            new FollowPath(new Center2Piece()) 
+            new FollowPath(new CenterNearCenter()) 
         )
     ),
     Left3Peice( // To tune

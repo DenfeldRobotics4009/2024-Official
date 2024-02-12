@@ -14,14 +14,14 @@ import frc.robot.auto.pathing.pathObjects.PathPoint;
  * Example pure pursuit path, showing a basic
  * and readable implementation.
  */
-public class Center2Piece extends Path {
+public class CenterNearCenter extends Path {
     /**
      * Drives the robot 1.5 meters along the x
      * axis (which should be forward, if the settings
      * are properly configured within the PathingConstants
      * class), at the robots maximum speed.
      */
-    public Center2Piece() {
+    public CenterNearCenter() {
         /**
          * Initializes Path super with the given
          * set of points, the first point passed
