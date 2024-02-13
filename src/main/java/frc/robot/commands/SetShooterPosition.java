@@ -5,53 +5,58 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.IntakeSubsystem.intakePosition;
 
-public class Transfer extends Command {
-  final Shooter shooter;
+public class SetShooterPosition extends Command {
+
   final IntakeSubsystem intake;
+  final Shooter shooter;
+  final double shooterPosition;
 
   /**
-   * Runs the transfer from intake to shooter, this
-   * command should run after the positions of the
-   * shooter and intake are set.
-   * @param shooter
+   * Sets the intake to the transfer position to allow
+   * for shooter movement. The shooter will only be
+   * moved when the intake has reached transfer position
    * @param intake
+   * @param shooter
    */
-  public Transfer(Shooter shooter, IntakeSubsystem intake) {
-    addRequirements(shooter, intake);
+  public SetShooterPosition(
+    IntakeSubsystem intake, 
+    Shooter shooter, 
+    double shooterPosition
+  ) {
+    addRequirements(intake, shooter);
 
-    this.shooter = shooter;
     this.intake = intake;
+    this.shooter = shooter;
+    this.shooterPosition = shooterPosition;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
+    intake.setPosition(IntakeSubsystem.intakePosition.DEPOSIT);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.setIntake();
-    shooter.feed();
-  
+    if (intake.atTargetAngle()) {
+      shooter.setPosition(shooterPosition);
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    intake.stop();
-    shooter.stopFeed();
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
+  /**
+   * End when the shooter has reached position
+   */
   public boolean isFinished() {
-    return shooter.getBarrelSensor();
+    return shooter.atTargetAngle();
   }
 }

@@ -5,12 +5,12 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.IntakeArm;
+import frc.robot.subsystems.IntakeSubsystem;
 
 public class Outtake extends Command {
-  IntakeArm intake;
+  IntakeSubsystem intake;
   /** Creates a new Intake. */
-  public Outtake(IntakeArm intake) {
+  public Outtake(IntakeSubsystem intake) {
     addRequirements(intake);
     this.intake = intake;
   }

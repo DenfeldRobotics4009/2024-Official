@@ -4,55 +4,43 @@
 
 package frc.robot.commands;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.opencv.photo.Photo;
-import org.photonvision.targeting.PhotonTrackedTarget;
-
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Controls;
 import frc.robot.ShotProfile;
-import frc.robot.auto.util.Field;
 import frc.robot.subsystems.AprilTagOdometry;
-import frc.robot.subsystems.IntakeArm;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.SwerveDrive;
-import frc.robot.subsystems.Turret;
-import frc.robot.subsystems.IntakeArm.positionOptions;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.IntakeSubsystem.intakePosition;
 import frc.robot.subsystems.swerve.SwerveModule;
 
 public class Shoot extends Command {
 
-  Turret turret;
+  Shooter shooter;
   Controls controls;
   SwerveDrive swerveDrive;
   AprilTagOdometry camera;
-  IntakeArm intake;
+  IntakeSubsystem intake;
 
   PIDController aimingPidController = new PIDController(0.1, 0, 0);
 
   /** Creates a new Shoot. */
   public Shoot(
-    Turret turret, 
+    Shooter shooter, 
     Controls controls, 
     SwerveDrive swerveDrive,
     AprilTagOdometry camera,
-    IntakeArm intake
+    IntakeSubsystem intake
   ) {
-    this.turret = turret;
+    this.shooter = shooter;
     this.controls = controls;
     this.swerveDrive = swerveDrive;
     this.camera = camera;
     this.intake = intake;
-    addRequirements(turret, swerveDrive, intake);
+    addRequirements(shooter, swerveDrive, intake);
 
     aimingPidController.setSetpoint(0);
   }
@@ -60,7 +48,7 @@ public class Shoot extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    intake.setPosition(positionOptions.DEPOSIT);
+    intake.setPosition(intakePosition.DEPOSIT);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -70,16 +58,16 @@ public class Shoot extends Command {
     // Calculate distance
     double distance = camera.getDistanceToSpeaker();
     // Convert joystick value into a shooter angle
-    double angle = -controls.operate.getThrottle() * Constants.Turret.aimRangeFrom0;
+    double angle = -controls.operate.getThrottle() * Constants.Shooter.aimRangeFrom0;
     if (ShotProfile.getHeightFromDistance(distance).isPresent()) {
-      angle = -ShotProfile.getHeightFromDistance(distance).get() * Constants.Turret.aimRangeFrom0;
+      //angle = -ShotProfile.getHeightFromDistance(distance).get() * Constants.Turret.aimRangeFrom0;
     }
     
     //get flywheels are up to speed
-    boolean atShooterSpeed = turret.setFlyWheelSpeed(Constants.Turret.flyWheelSpeed);
+    boolean atShooterSpeed = shooter.setFlyWheelSpeed(Constants.Shooter.flyWheelSpeed);
     //aim shooter
     if (intake.atTargetAngle()) {
-      turret.setAngle(angle);
+      shooter.setPosition(angle);
     }
 
     //aim drive train
@@ -93,18 +81,18 @@ public class Shoot extends Command {
     );
     swerveDrive.drive(speeds);
     //if flywheels up to speed, shooter aimed, drive train aimed, then feed in
-    if (atShooterSpeed && turret.atTargetAngle() && controls.getOperatorButton(4).getAsBoolean()) {
-      turret.feed();
+    if (controls.getOperatorButton(4).getAsBoolean()) {
+      shooter.feed();
     }
     else {
-      turret.stopFeed();
+      shooter.stopFeed();
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    turret.stopShooter();
+    shooter.stopShooter();
   }
 
   // Returns true when the command should end.

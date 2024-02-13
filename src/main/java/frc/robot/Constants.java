@@ -20,6 +20,8 @@ import edu.wpi.first.math.geometry.Translation3d;
  */
 public final class Constants {
 
+    public static double laserSensorVoltageHigh = 0.6;
+
     public static final class Arm {
         public static int armIntakeMotorID = 63;
         public static int armShooterMotorLeftID = 64;
@@ -38,7 +40,7 @@ public final class Constants {
         public static double up = 500;
         public static double climberMotorPower = 0.5;  
     }
-    public static final class Turret {
+    public static final class Shooter {
         public static int topMotorID = 57;
         public static int bottomMotorID = 58; 
         public static double spin = 0.9;
@@ -46,9 +48,11 @@ public final class Constants {
         public static double feederSpeed = 20;
         public static int aimMotorID = 40;
         
-        public static double pidTolerance = 3;
+        public static double pidTolerance = 10;
+
         public static double aimRangeFrom0 = -133;
         public static double transferAngle = -100;
+        
         public static double minimumFlywheelSpeed = 0;
         public static double maxShootSpeed = 1000;
 
@@ -59,8 +63,7 @@ public final class Constants {
 
         public static double flyWheelTolerance = 400; // RPM
 
-        public static int barrelSensorID = 0;
-        public static double sensorVoltageHigh = 0.6;
+        public static int barrelLaserSensorID = 0;
 
         public static int aimLimitSwitchID = 0;
 
@@ -70,10 +73,15 @@ public final class Constants {
         public static int intakeMotorID = 12;
         public static int rotateMotorID = 10; 
         public static double intakeMotorPower = -0.5;
+
         public static double ground = -37;
         public static double deposit = -15;
 
         public static double pidTolerance = 3;
+
+        public static int intakeLaserSensorID = 1;
+        public static int intakeInnerLimitSwitchID = 1;
+        public static int intakeOuterLimitSwitchID = 2;
     }
     public static final class AprilTagOdometry {
         public static double maxSpeed = 0.001; // power

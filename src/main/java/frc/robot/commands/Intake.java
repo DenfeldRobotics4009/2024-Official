@@ -6,13 +6,16 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.IntakeArm;
-import frc.robot.subsystems.IntakeArm.positionOptions;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.IntakeSubsystem.intakePosition;
 
 public class Intake extends Command {
-  IntakeArm intake;
-  /** Creates a new Intake. */
-  public Intake(IntakeArm intake) {
+  IntakeSubsystem intake;
+  /**
+   * Runs the intake until the sensor is activated
+   * @param intake
+   */
+  public Intake(IntakeSubsystem intake) {
     addRequirements(intake);
     this.intake = intake;
   }
@@ -20,7 +23,7 @@ public class Intake extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    intake.setPosition(positionOptions.GROUND);
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -33,12 +36,11 @@ public class Intake extends Command {
   @Override
   public void end(boolean interrupted) {
     intake.stop();
-    intake.setPosition(positionOptions.DEPOSIT);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return intake.getIntakeSensor();
   }
 }

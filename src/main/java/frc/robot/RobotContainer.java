@@ -12,14 +12,17 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.Intake;
 import frc.robot.commands.Outtake;
 import frc.robot.commands.ResetIntake;
+import frc.robot.commands.SetIntakePosition;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.Transfer;
 import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.IntakeArm;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.SwerveDrive;
-import frc.robot.subsystems.Turret;
+import frc.robot.subsystems.IntakeSubsystem.intakePosition;
+import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.AprilTagOdometry;
 import frc.robot.subsystems.NoteCamera;
 import frc.robot.subsystems.SwerveDrive;
@@ -40,8 +43,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   
-  final Turret turret = Turret.getInstance();
-  final IntakeArm intake = IntakeArm.getInstance();
+  final Shooter turret = Shooter.getInstance();
+  final IntakeSubsystem intake = IntakeSubsystem.getInstance();
 
   // Create a new april-tag camera, this is a subsystem.
   final AprilTagOdometry cam1 = new AprilTagOdometry(
@@ -92,13 +95,21 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    // TODO FIGURE OUT BUTTON BINDINGS
     controls.getOperatorButton(1).whileTrue(new Shoot(turret, controls, driveTrain, cam1, intake));
 
     controls.getOperatorButton(2).whileTrue(new Intake(intake));
 
+    controls.getOperatorButton(2).whileTrue(
+      new SequentialCommandGroup(
+        new SetIntakePosition(intake, turret, intakePosition.GROUND.get()),
+        new Intake(intake)
+      )
+    );
+
     controls.getOperatorButton(5).onTrue(new ResetIntake(intake, turret));
 
-    controls.getOperatorButton(3).onTrue(new Transfer(turret, intake));
+    controls.getOperatorButton(3).whileTrue(new Transfer(turret, intake));
 
     controls.getOperatorButton(6).whileTrue(new Outtake(intake));
   }
