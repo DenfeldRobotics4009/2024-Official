@@ -12,6 +12,8 @@ import frc.robot.auto.util.SetDrivePosition;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.auto.paths.*;
+import frc.robot.auto.paths.leftStart.threePiece.LeftNearLeftMidLeft;
+import frc.robot.auto.paths.rightStart.threePiece.RightMidCenterRightMidCenter;
 
 public enum Autos {
 
@@ -188,7 +190,7 @@ public enum Autos {
             new SetDrivePosition(new Pose2d(0, 0, new Rotation2d(Math.toRadians(180)))),///new Pose2d(1.946,1.622,new Rotation2d(0))), //starts at these points (might need to tweak)
 
             // This command will run until the end of the path is reached.
-            new FollowPath(new CenterNearCenter()) 
+            new FollowPath(new CenterNearCenterNearRight()) 
         )
     ),
     Left3Peice( // To tune

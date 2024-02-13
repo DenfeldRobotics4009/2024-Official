@@ -2,11 +2,12 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.auto.paths;
+package frc.robot.auto.paths.rightStart.fourPiece;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
+import frc.robot.Constants;
 import frc.robot.auto.pathing.pathObjects.Path;
 import frc.robot.auto.pathing.pathObjects.PathPoint;
 
@@ -14,14 +15,14 @@ import frc.robot.auto.pathing.pathObjects.PathPoint;
  * Example pure pursuit path, showing a basic
  * and readable implementation.
  */
-public class ExamplePath extends Path {
+public class RightMidCenterMidCenterRightMidRight extends Path {
     /**
      * Drives the robot 1.5 meters along the x
      * axis (which should be forward, if the settings
      * are properly configured within the PathingConstants
      * class), at the robots maximum speed.
      */
-    public ExamplePath() {
+    public RightMidCenterMidCenterRightMidRight() {
         /**
          * Initializes Path super with the given
          * set of points, the first point passed
@@ -29,17 +30,24 @@ public class ExamplePath extends Path {
          */
         super(            
             new PathPoint(
-                new Translation2d(0, 0),               // Position (meters)
-                new Rotation2d(Math.toRadians(0)),     // Rotation (rad)
-                0,    // Speed (m/s)
-                new PrintCommand("Past point 0")       // Command 
+                Constants.Paths.START_RIGHT,               // Starting Position (meters)
+                new Rotation2d(Math.toRadians(Math.PI/2)),     // Start Rotation (rad)
+                1,    // Speed (m/s)
+                new PrintCommand("Started in Starting Position")       // Command 
             ),
             new PathPoint(
-                new Translation2d(1.5, 0),
-                new Rotation2d(Math.toRadians(0)), 
-                0, 
-                new PrintCommand("Past point 1")
+                new Translation2d(1.865,1.622),               // Position (meters)
+                new Rotation2d(Math.toRadians(0)),     // Rotation (rad)
+                1,    // Speed (m/s)
+                new PrintCommand("Shoot")       // Command 
+            ),
+            new PathPoint(
+                new Translation2d(4.459,2.027),               // Position (meters)
+                new Rotation2d(Math.toRadians(0)),     // Rotation (rad)
+                1,    // Speed (m/s)
+                new PrintCommand("Shoot")       // Command 
             )
+
         );
     }
 
