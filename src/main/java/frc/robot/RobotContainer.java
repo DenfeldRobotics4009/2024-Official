@@ -99,7 +99,12 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // TODO FIGURE OUT BUTTON BINDINGS
-    controls.getOperatorButton(1).whileTrue(new Shoot(turret, controls, driveTrain, cam1, intake));
+    controls.getOperatorButton(1).whileTrue(
+      new SequentialCommandGroup(
+        new SetIntakePosition(intake, turret, intakePosition.DEPOSIT.get()),
+        new Shoot(turret, controls, driveTrain, cam1)
+      )
+    );
 
     //controls.getOperatorButton(2).whileTrue(new Intake(intake));
 

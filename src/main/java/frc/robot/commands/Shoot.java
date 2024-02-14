@@ -23,7 +23,6 @@ public class Shoot extends Command {
   Controls controls;
   SwerveDrive swerveDrive;
   AprilTagOdometry camera;
-  IntakeSubsystem intake;
 
   PIDController aimingPidController = new PIDController(0.1, 0, 0);
 
@@ -32,15 +31,14 @@ public class Shoot extends Command {
     Shooter shooter, 
     Controls controls, 
     SwerveDrive swerveDrive,
-    AprilTagOdometry camera,
-    IntakeSubsystem intake
+    AprilTagOdometry camera
   ) {
     this.shooter = shooter;
     this.controls = controls;
     this.swerveDrive = swerveDrive;
     this.camera = camera;
-    this.intake = intake;
-    addRequirements(shooter, swerveDrive, intake);
+    
+    addRequirements(shooter, swerveDrive);
 
     aimingPidController.setSetpoint(0);
   }
@@ -48,7 +46,7 @@ public class Shoot extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    intake.setPosition(intakePosition.DEPOSIT);
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -65,10 +63,6 @@ public class Shoot extends Command {
     
     //get flywheels are up to speed
     boolean atShooterSpeed = shooter.setFlyWheelSpeed(Constants.Shooter.flyWheelSpeed);
-    //aim shooter
-    if (intake.atTargetAngle()) {
-      shooter.setPosition(angle);
-    }
 
     //aim drive train
     ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
