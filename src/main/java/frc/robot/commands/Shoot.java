@@ -62,6 +62,7 @@ public class Shoot extends Command {
     }
     
     //get flywheels are up to speed
+    shooter.setPosition(angle);
     boolean atShooterSpeed = shooter.setFlyWheelSpeed(Constants.Shooter.flyWheelSpeed);
 
     //aim drive train
