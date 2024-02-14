@@ -8,33 +8,22 @@ import frc.robot.Constants.Swerve;
 import frc.robot.auto.pathing.AutoShuffleboardTab;
 import frc.robot.auto.pathing.PathingConstants;
 import frc.robot.commands.Drive;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.Intake;
+import frc.robot.commands.MoveIntakeFirst;
+import frc.robot.commands.MoveShooterFirst;
 import frc.robot.commands.Outtake;
-import frc.robot.commands.ResetIntake;
-import frc.robot.commands.SetArmPositions;
-import frc.robot.commands.SetIntakePosition;
-import frc.robot.commands.SetShooterPosition;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.Transfer;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.subsystems.IntakeSubsystem.intakePosition;
 import frc.robot.subsystems.Shooter.shooterPosition;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.AprilTagOdometry;
 import frc.robot.subsystems.NoteCamera;
-import frc.robot.subsystems.SwerveDrive;
-
 import org.photonvision.PhotonCamera;
-
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -101,35 +90,33 @@ public class RobotContainer {
     // TODO FIGURE OUT BUTTON BINDINGS
     controls.getOperatorButton(1).whileTrue(
       new SequentialCommandGroup(
-        new SetIntakePosition(intake, turret, intakePosition.DEPOSIT.get()),
+        new MoveIntakeFirst(intake, turret, intakePosition.DEPOSIT.get(), shooterPosition.GROUND.get()),
         new Shoot(turret, controls, driveTrain, cam1)
       )
     );
 
     //controls.getOperatorButton(2).whileTrue(new Intake(intake));
 
+    /**
+     * Full intake process, canceled when button is released.
+     * Intake extends outward -> shooter moves to transfer -> intake motors run
+     * -> move shooter to transfer (will end immediately) -> move intake to transfer
+     * -> run transfer process.
+     */
     controls.getOperatorButton(2).whileTrue(
       new SequentialCommandGroup(
-        new SetIntakePosition(intake, turret, intakePosition.GROUND.get()),
-        new SetArmPositions(intake, turret, intakePosition.GROUND.get(), shooterPosition.DEPOSIT.get()),
-        new Intake(intake),
-        new SetArmPositions(intake, turret, intakePosition.DEPOSIT.get(), shooterPosition.DEPOSIT.get()),
+        new MoveIntakeFirst(intake, turret, intakePosition.GROUND.get(), shooterPosition.DEPOSIT.get()),
+        new Intake(intake), // Continue until a piece is picked up
+        // Initiate transfer positions
+        new MoveShooterFirst(intake, turret, intakePosition.DEPOSIT.get(), shooterPosition.DEPOSIT.get()),
         new Transfer(turret, intake),
-        new SetShooterPosition(intake, turret, 0),
-        new SetArmPositions(intake, turret, 0, 0)
+        new MoveShooterFirst(intake, turret, intakePosition.STARTING.get(), shooterPosition.GROUND.get())
       )
     );
 
-    controls.getOperatorButton(11).whileTrue(
-      new SequentialCommandGroup(
-        new SetIntakePosition(intake, turret, intakePosition.GROUND.get()),
-        new Intake(intake)
-        //new SetShooterPosition(intake, turret, shooterPosition.DEPOSIT.get()),
-        //new Transfer(turret, intake)
-      )
+    controls.getOperatorButton(5).onTrue(
+      new MoveShooterFirst(intake, turret, intakePosition.STARTING.get(), shooterPosition.GROUND.get())
     );
-
-    controls.getOperatorButton(5).onTrue(new ResetIntake(intake, turret));
 
     controls.getOperatorButton(3).whileTrue(new Transfer(turret, intake));
 
