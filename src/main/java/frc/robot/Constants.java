@@ -22,6 +22,8 @@ public final class Constants {
 
     public static double laserSensorVoltageHigh = 0.6;
 
+    public static double inchesInMeter = 39.3700787402;
+
     public static final class Arm {
         public static int armIntakeMotorID = 63;
         public static int armShooterMotorLeftID = 64;

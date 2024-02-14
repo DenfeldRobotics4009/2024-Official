@@ -58,7 +58,7 @@ public class Shoot extends Command {
     // Convert joystick value into a shooter angle
     double angle = -controls.operate.getThrottle() * Constants.Shooter.aimRangeFrom0;
     if (ShotProfile.getHeightFromDistance(distance).isPresent()) {
-      //angle = -ShotProfile.getHeightFromDistance(distance).get() * Constants.Turret.aimRangeFrom0;
+      angle = ShotProfile.getHeightFromDistance(distance).get();
     }
     
     //get flywheels are up to speed
