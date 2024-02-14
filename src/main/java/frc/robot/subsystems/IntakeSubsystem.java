@@ -37,8 +37,8 @@ public class IntakeSubsystem extends SubsystemBase {
 
   static IntakeSubsystem instance;
 
-  public double currentIntakePosition = intakePosition.STARTING.get();
-  public PIDController intakePIDController = new PIDController(.02, 0, 0);
+  public double goalIntakePosition = intakePosition.STARTING.get();
+  public PIDController intakePIDController = new PIDController(.045, 0, 0);
 
   // When tripped, there is a piece within the intake
   AnalogInput intakeLaserSensor = new AnalogInput(Constants.Intake.intakeLaserSensorID);
@@ -72,16 +72,6 @@ public class IntakeSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
 
-    double currentIntakePosition = rotateMotor.getEncoder().getPosition();
-    SmartDashboard.putNumber("Pos", currentIntakePosition);
-    intakePIDController.setSetpoint(currentIntakePosition);
-    SmartDashboard.putNumber("Goal", currentIntakePosition);
-
-    // For testing
-    SmartDashboard.putBoolean("AtIntakeAngle", atTargetAngle());
-
-    rotateMotor.set(intakePIDController.calculate(currentIntakePosition));
-
     // Catch limits from switches, calibrate encoder from values
     if (intakeInnerLimitSwitch.get()) {
       if (!intakeInnerSwitchToggle) {
@@ -93,16 +83,28 @@ public class IntakeSubsystem extends SubsystemBase {
       intakeInnerSwitchToggle = false;
     }
 
-    // Catch outer limits
-    if (intakeOuterLimitSwitch.get()) {
-      if (!intakeOuterSwitchToggle) {
-        // The arm is fully extended outside the robot
-        rotateMotor.getEncoder().setPosition(intakePosition.GROUND.get());
-        intakeOuterSwitchToggle = true;
-      }
-    } else {
-      intakeOuterSwitchToggle = false;
-    }
+    // // Catch outer limits
+    // if (intakeOuterLimitSwitch.get()) {
+    //   if (!intakeOuterSwitchToggle) {
+    //     // The arm is fully extended outside the robot
+    //     rotateMotor.getEncoder().setPosition(intakePosition.GROUND.get());
+    //     intakeOuterSwitchToggle = true;
+    //   }
+    // } else {
+    //   intakeOuterSwitchToggle = false;
+    // }
+
+    // currentIntakePosition = rotateMotor.getEncoder().getPosition();
+    SmartDashboard.putNumber("Pos", rotateMotor.getEncoder().getPosition());
+    intakePIDController.setSetpoint(goalIntakePosition);
+    SmartDashboard.putNumber("Goal", goalIntakePosition);
+
+    // For testing
+    SmartDashboard.putBoolean("AtIntakeAngle", atTargetAngle());
+
+    SmartDashboard.putBoolean("Sensor", getIntakeSensor());
+
+    rotateMotor.set(intakePIDController.calculate(rotateMotor.getEncoder().getPosition()));
   }
 
   public void setIntake() {
@@ -122,15 +124,19 @@ public class IntakeSubsystem extends SubsystemBase {
     return intakePIDController.atSetpoint();
   }
 
+  public double getTargetAngle() {
+    return intakePIDController.getSetpoint();
+  }
+
   public boolean getIntakeSensor() {
-    return intakeLaserSensor.getVoltage() > Constants.laserSensorVoltageHigh;
+    return intakeLaserSensor.getVoltage() < Constants.laserSensorVoltageHigh;
   }
 
   public void setPosition(intakePosition position){
-    currentIntakePosition = position.get();
+    goalIntakePosition = position.get();
   }
 
   public void setPosition(double position){
-    currentIntakePosition = position;
+    goalIntakePosition = position;
   }
 }

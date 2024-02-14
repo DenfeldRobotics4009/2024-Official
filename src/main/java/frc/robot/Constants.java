@@ -45,10 +45,10 @@ public final class Constants {
         public static int bottomMotorID = 58; 
         public static double spin = 0.9;
         public static int feederMotorID = 59;
-        public static double feederSpeed = 20;
+        public static double feederSpeed = 1;
         public static int aimMotorID = 40;
         
-        public static double pidTolerance = 10;
+        public static double pidTolerance = 20;
 
         public static double aimRangeFrom0 = -133;
         public static double transferAngle = -100;
@@ -72,12 +72,12 @@ public final class Constants {
     public static final class Intake {
         public static int intakeMotorID = 12;
         public static int rotateMotorID = 10; 
-        public static double intakeMotorPower = -0.5;
+        public static double intakeMotorPower = -0.375;
 
         public static double ground = -37;
         public static double deposit = -15;
 
-        public static double pidTolerance = 3;
+        public static double pidTolerance = 8;
 
         public static int intakeLaserSensorID = 1;
         public static int intakeInnerLimitSwitchID = 1;

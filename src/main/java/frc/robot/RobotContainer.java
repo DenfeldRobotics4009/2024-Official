@@ -12,13 +12,16 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.Intake;
 import frc.robot.commands.Outtake;
 import frc.robot.commands.ResetIntake;
+import frc.robot.commands.SetArmPositions;
 import frc.robot.commands.SetIntakePosition;
+import frc.robot.commands.SetShooterPosition;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.Transfer;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.subsystems.IntakeSubsystem.intakePosition;
+import frc.robot.subsystems.Shooter.shooterPosition;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -98,12 +101,26 @@ public class RobotContainer {
     // TODO FIGURE OUT BUTTON BINDINGS
     controls.getOperatorButton(1).whileTrue(new Shoot(turret, controls, driveTrain, cam1, intake));
 
-    controls.getOperatorButton(2).whileTrue(new Intake(intake));
+    //controls.getOperatorButton(2).whileTrue(new Intake(intake));
 
     controls.getOperatorButton(2).whileTrue(
       new SequentialCommandGroup(
         new SetIntakePosition(intake, turret, intakePosition.GROUND.get()),
+        new SetArmPositions(intake, turret, intakePosition.GROUND.get(), shooterPosition.DEPOSIT.get()),
+        new Intake(intake),
+        new SetArmPositions(intake, turret, intakePosition.DEPOSIT.get(), shooterPosition.DEPOSIT.get()),
+        new Transfer(turret, intake),
+        new SetShooterPosition(intake, turret, 0),
+        new SetArmPositions(intake, turret, 0, 0)
+      )
+    );
+
+    controls.getOperatorButton(11).whileTrue(
+      new SequentialCommandGroup(
+        new SetIntakePosition(intake, turret, intakePosition.GROUND.get()),
         new Intake(intake)
+        //new SetShooterPosition(intake, turret, shooterPosition.DEPOSIT.get()),
+        //new Transfer(turret, intake)
       )
     );
 

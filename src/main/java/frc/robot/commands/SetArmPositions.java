@@ -8,11 +8,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.Shooter;
 
-public class SetIntakePosition extends Command {
+public class SetArmPositions extends Command {
 
   final IntakeSubsystem intake;
   final Shooter shooter;
   final double intakePosition;
+  final double shooterPosition;
 
   /**
    * Sets the intake to the transfer position to allow
@@ -21,32 +22,30 @@ public class SetIntakePosition extends Command {
    * @param intake
    * @param shooter
    */
-  public SetIntakePosition(
+  public SetArmPositions(
     IntakeSubsystem intake, 
     Shooter shooter, 
-    double intakePosition
+    double intakePosition,
+    double shooterPosition
   ) {
     addRequirements(intake, shooter);
 
     this.intake = intake;
     this.shooter = shooter;
     this.intakePosition = intakePosition;
-
-    System.out.println("Position: " + intakePosition);
+    this.shooterPosition = shooterPosition;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    shooter.setPosition(0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (shooter.atTargetAngle()) {
-      intake.setPosition(intakePosition);
-    }
+    intake.setPosition(intakePosition);
+    shooter.setPosition(shooterPosition);
   }
 
   // Called once the command ends or is interrupted.
@@ -59,6 +58,9 @@ public class SetIntakePosition extends Command {
    * End when the intake has reached position
    */
   public boolean isFinished() {
-    return intake.atTargetAngle() && intake.getTargetAngle() == intakePosition;
+    return (
+      intake.atTargetAngle() && intake.getTargetAngle() == intakePosition &&
+      shooter.atTargetAngle() && shooter.getTargetAngle() == shooterPosition
+    );
   }
 }

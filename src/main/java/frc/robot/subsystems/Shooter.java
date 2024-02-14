@@ -125,6 +125,10 @@ public class Shooter extends SubsystemBase {
     return aimPIDController.atSetpoint();
   }
 
+  public double getTargetAngle() {
+    return aimPIDController.getSetpoint();
+  }
+
   /**
    * Sets the speed of the flywheels
    * @param percentPower [-1, 1]

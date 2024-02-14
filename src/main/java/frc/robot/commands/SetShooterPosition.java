@@ -57,6 +57,6 @@ public class SetShooterPosition extends Command {
    * End when the shooter has reached position
    */
   public boolean isFinished() {
-    return shooter.atTargetAngle();
+    return shooter.atTargetAngle() && shooter.getTargetAngle() == shooterPosition;
   }
 }
