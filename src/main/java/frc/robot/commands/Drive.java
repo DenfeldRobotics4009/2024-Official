@@ -17,7 +17,7 @@ public class Drive extends Command {
   Controls controls;
 
   // Tuner values are in degrees, and are converted after calculation
-  PIDController directionTuner = new PIDController(4, 0, 0);
+  PIDController directionTuner = new PIDController(9, 0, 0);
 
   /** Creates a new Drive. */
   public Drive(SwerveDrive Drivetrain, Controls Controls) {
@@ -39,16 +39,16 @@ public class Drive extends Command {
 
     double radPSec;
 
-    double precisionFactor = 0.75;
+    double precisionFactor = 1;
     if (controls.getPrecisionMode()) {precisionFactor = 0.35;}
 
     // If the hat is held in a direction
-    if (controls.getPOV() != -1) {
+    if (controls.getDrivePOV() != -1) {
       // Units are in degrees for POV hat, thus use degrees from navx
       radPSec = MathUtil.clamp(
           Math.toRadians( directionTuner.calculate(
             SwerveDrive.navxGyro.getRotation2d().times(-1).getDegrees(), 
-            controls.getPOV()
+            controls.getDrivePOV()
           )),
           -SwerveModule.maxRadPerSecond, SwerveModule.maxRadPerSecond
         );
