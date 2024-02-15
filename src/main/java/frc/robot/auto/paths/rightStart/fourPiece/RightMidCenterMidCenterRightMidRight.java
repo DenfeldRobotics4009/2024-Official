@@ -36,16 +36,202 @@ public class RightMidCenterMidCenterRightMidRight extends Path {
                 new PrintCommand("Started in Starting Position")       // Command 
             ),
             new PathPoint(
-                new Translation2d(1.865,1.622),               // Position (meters)
+                new Translation2d(1.946,2.027),               // Position (meters)
+                new Rotation2d(Math.toRadians(Math.PI/2)),     // Rotation (rad)
+                1,    // Speed (m/s)
+                new PrintCommand("Shoot")       // Command 
+            ),
+            new PathPoint(
+                new Translation2d(3,2.433),               // Position (meters)
+                new Rotation2d(Math.toRadians(Math.PI/2)),     // Rotation (rad)
+                1,    // Speed (m/s)
+                new PrintCommand("Arrived at arc 1 point 1")       // Command 
+            ),
+            new PathPoint(
+                new Translation2d(3.649,2.919),               // Position (meters)
+                new Rotation2d(Math.toRadians(Math.PI/4)),     // Rotation (rad)
+                1,    // Speed (m/s)
+                new PrintCommand("Arrived at arc 1 point 2")       // Command 
+            ),
+            new PathPoint(
+                new Translation2d(4.135,3.324),               // Position (meters)
+                new Rotation2d(Math.toRadians(Math.PI/4)),     // Rotation (rad)
+                1,    // Speed (m/s)
+                new PrintCommand("Arrived at arc 1 point 3")       // Command 
+            ),
+            new PathPoint(
+                new Translation2d(4.865,3.892),               // Position (meters)
+                new Rotation2d(Math.toRadians(Math.PI/4)),     // Rotation (rad)
+                1,    // Speed (m/s)
+                new PrintCommand("Arrived at arc 1 point 4")       // Command 
+            ),
+            new PathPoint(
+                new Translation2d(5.676,4.135),               // Position (meters)
+                new Rotation2d(Math.toRadians(Math.PI/4)),     // Rotation (rad)
+                1,    // Speed (m/s)
+                new PrintCommand("Arrived at arc 1 point 5")       // Command 
+            ),
+            new PathPoint(
+                new Translation2d(6.487,4.297),               // Position (meters)
+                new Rotation2d(Math.toRadians(Math.PI/4)),     // Rotation (rad)
+                1,    // Speed (m/s)
+                new PrintCommand("Arrived at arc 1 point 6")       // Command 
+            ),
+            new PathPoint(
+                new Translation2d(7.298,4.459),               // Position (meters)
+                new Rotation2d(Math.toRadians(Math.PI/4)),     // Rotation (rad)
+                1,    // Speed (m/s)
+                new PrintCommand("Arrived at arc 1 point 7")       // Command 
+            ),
+            new PathPoint(
+                new Translation2d(8.189,4.216),               // Position (meters)
+                new Rotation2d(Math.toRadians(-Math.PI/2)),     // Rotation (rad)
+                1,    // Speed (m/s)
+                new PrintCommand("Intake")       // Command 
+            ),
+            new PathPoint(
+                new Translation2d(7.946,3.729),               // Position (meters)
+                new Rotation2d(Math.toRadians(0)),     // Rotation (rad)
+                1,    // Speed (m/s)
+                new PrintCommand("Arrived at arc 1 point 8")       // Command 
+            ),
+            new PathPoint(
+                new Translation2d(7.379,3.649),               // Position (meters)
+                new Rotation2d(Math.toRadians(0)),     // Rotation (rad)
+                1,    // Speed (m/s)
+                new PrintCommand("Arrived at arc 1 point 9")       // Command 
+            ),
+            new PathPoint(
+                new Translation2d(6.487,3.729),               // Position (meters)
+                new Rotation2d(Math.toRadians(0)),     // Rotation (rad)
+                1,    // Speed (m/s)
+                new PrintCommand("Arrived at arc 1 point 10")       // Command 
+            ),
+            new PathPoint(
+                new Translation2d(5.838,3.649),               // Position (meters)
+                new Rotation2d(Math.toRadians(0)),     // Rotation (rad)
+                1,    // Speed (m/s)
+                new PrintCommand("Arrived at arc 1 point 11")       // Command 
+            ),
+            new PathPoint(
+                new Translation2d(5.189,3.487),               // Position (meters)
+                new Rotation2d(Math.toRadians(0)),     // Rotation (rad)
+                1,    // Speed (m/s)
+                new PrintCommand("Arrived at arc 1 point 12")       // Command 
+            ),
+            new PathPoint(
+                new Translation2d(4.703,3.243),               // Position (meters)
+                new Rotation2d(Math.toRadians(0)),     // Rotation (rad)
+                1,    // Speed (m/s)
+                new PrintCommand("Arrived at arc 1 point 13")       // Command 
+            ),
+            new PathPoint(
+                new Translation2d(4.379,2.838),               // Position (meters)
+                new Rotation2d(Math.toRadians(0)),     // Rotation (rad)
+                1,    // Speed (m/s)
+                new PrintCommand("Arrived at arc 1 point 14")       // Command 
+            ),
+            new PathPoint(
+                new Translation2d(3.973,2.676),               // Position (meters)
                 new Rotation2d(Math.toRadians(0)),     // Rotation (rad)
                 1,    // Speed (m/s)
                 new PrintCommand("Shoot")       // Command 
             ),
             new PathPoint(
-                new Translation2d(4.459,2.027),               // Position (meters)
+                new Translation2d(4.626,2.433),               // Position (meters)
                 new Rotation2d(Math.toRadians(0)),     // Rotation (rad)
                 1,    // Speed (m/s)
-                new PrintCommand("Shoot")       // Command 
+                new PrintCommand("Arrived at arc 2 point 1")       // Command 
+            ),
+            new PathPoint(
+                new Translation2d(4.541,2.189),               // Position (meters)
+                new Rotation2d(Math.toRadians(0)),     // Rotation (rad)
+                1,    // Speed (m/s)
+                new PrintCommand("Arrived at arc 2 point 2")       // Command 
+            ),
+            new PathPoint(
+                new Translation2d(5.027,2.108),               // Position (meters)
+                new Rotation2d(Math.toRadians(0)),     // Rotation (rad)
+                1,    // Speed (m/s)
+                new PrintCommand("Arrived at arc 2 point 3")       // Command 
+            ),
+            new PathPoint(
+                new Translation2d(5.433,2.108),               // Position (meters)
+                new Rotation2d(Math.toRadians(0)),     // Rotation (rad)
+                1,    // Speed (m/s)
+                new PrintCommand("Arrived at arc 2 point 4")       // Command 
+            ),
+            new PathPoint(
+                new Translation2d(5.433,2.108),               // Position (meters)
+                new Rotation2d(Math.toRadians(0)),     // Rotation (rad)
+                1,    // Speed (m/s)
+                new PrintCommand("Arrived at arc 2 point 5")       // Command 
+            ),
+            new PathPoint(
+                new Translation2d(6.487,2.189),               // Position (meters)
+                new Rotation2d(Math.toRadians(0)),     // Rotation (rad)
+                1,    // Speed (m/s)
+                new PrintCommand("Arrived at arc 2 point 6")       // Command 
+            ),
+            new PathPoint(
+                new Translation2d(7.135,2.351),               // Position (meters)
+                new Rotation2d(Math.toRadians(0)),     // Rotation (rad)
+                1,    // Speed (m/s)
+                new PrintCommand("Arrived at arc 2 point 7")       // Command 
+            ),
+            new PathPoint(
+                new Translation2d(8.027,2.433),               // Position (meters)
+                new Rotation2d(Math.toRadians(0)),     // Rotation (rad)
+                1,    // Speed (m/s)
+                new PrintCommand("Arrived at arc 2 point 8")       // Command 
+            ),
+            new PathPoint(
+                new Translation2d(8.514,2.595),               // Position (meters)
+                new Rotation2d(Math.toRadians(0)),     // Rotation (rad)
+                1,    // Speed (m/s)
+                new PrintCommand("Intake")       // Command 
+            ),
+            new PathPoint(
+                new Translation2d(8.189,2.189),               // Position (meters)
+                new Rotation2d(Math.toRadians(0)),     // Rotation (rad)
+                1,    // Speed (m/s)
+                new PrintCommand("Arrived at arc 2 point 9")       // Command 
+            ),
+            new PathPoint(
+                new Translation2d(7.541,1.946),               // Position (meters)
+                new Rotation2d(Math.toRadians(0)),     // Rotation (rad)
+                1,    // Speed (m/s)
+                new PrintCommand("Arrived at arc 2 point 10")       // Command 
+            ),
+            new PathPoint(
+                new Translation2d(7.054,1.701),               // Position (meters)
+                new Rotation2d(Math.toRadians(0)),     // Rotation (rad)
+                1,    // Speed (m/s)
+                new PrintCommand("Arrived at arc 2 point 11")       // Command 
+            ),
+            new PathPoint(
+                new Translation2d(6.487,1.622),               // Position (meters)
+                new Rotation2d(Math.toRadians(0)),     // Rotation (rad)
+                1,    // Speed (m/s)
+                new PrintCommand("Arrived at arc 2 point 12")       // Command 
+            ),
+            new PathPoint(
+                new Translation2d(5.919,1.622),               // Position (meters)
+                new Rotation2d(Math.toRadians(0)),     // Rotation (rad)
+                1,    // Speed (m/s)
+                new PrintCommand("Arrived at arc 2 point 13")       // Command 
+            ),
+            new PathPoint(
+                new Translation2d(5.352,1.622),               // Position (meters)
+                new Rotation2d(Math.toRadians(0)),     // Rotation (rad)
+                1,    // Speed (m/s)
+                new PrintCommand("Arrived at arc 2 point 14")       // Command 
+            ),
+            new PathPoint(
+                new Translation2d(4.946,1.784),               // Position (meters)
+                new Rotation2d(Math.toRadians(0)),     // Rotation (rad)
+                1,    // Speed (m/s)
+                new PrintCommand("Arrived at arc 2 point 15")       // Command 
             )
 
         );
