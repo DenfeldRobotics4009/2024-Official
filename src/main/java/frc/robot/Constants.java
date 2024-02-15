@@ -50,7 +50,7 @@ public final class Constants {
         public static double feederSpeed = 1;
         public static int aimMotorID = 40;
         
-        public static double pidTolerance = 20;
+        public static double pidTolerance = 10;
 
         public static double aimRangeFrom0 = -133;
         public static double transferAngle = -100;
@@ -76,10 +76,10 @@ public final class Constants {
         public static int rotateMotorID = 10; 
         public static double intakeMotorPower = -0.375;
 
-        public static double ground = -33;
+        public static double ground = -30;
         public static double deposit = -15;
 
-        public static double pidTolerance = 8;
+        public static double pidTolerance = 4;
 
         public static int intakeLaserSensorID = 1;
         public static int intakeInnerLimitSwitchID = 1;

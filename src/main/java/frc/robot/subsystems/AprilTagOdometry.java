@@ -152,15 +152,6 @@ public class AprilTagOdometry extends SubsystemBase {
         if (aprilTagFieldLayout == null) {
             return Optional.empty();
         }
-
-        if (
-            Math.abs(SwerveDrive.getInstance().getVelocity().getTranslation().getNorm()) > 
-            Constants.AprilTagOdometry.maxSpeed &&
-            Math.abs(SwerveDrive.getInstance().getVelocity().getRotation().getRadians()) >
-            Constants.AprilTagOdometry.maxRotation
-        ) {
-            return Optional.empty();
-        }
         
         Optional<EstimatedRobotPose> estimatedPose = photonPoseEstimator.update();
         // Break if pose cannot be calculated
