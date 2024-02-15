@@ -5,6 +5,7 @@
 package frc.robot.auto;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -16,10 +17,10 @@ import frc.robot.auto.pathing.pathObjects.Path;
 import frc.robot.auto.pathing.pathObjects.PathState;
 
 public class FollowPathWithRotationSource extends FollowPath {
-  final AutoShoot command;
+  final Command command;
 
   /** Creates a new FollowPathWithRotationSource. */
-  public FollowPathWithRotationSource(Path path, AutoShoot command) {
+  public FollowPathWithRotationSource(Path path, Command command) {
     super(path);
     this.command = command;
   }
@@ -60,6 +61,11 @@ public class FollowPathWithRotationSource extends FollowPath {
         1, 0.2
     );
 
+    Rotation2d goalRotation = state.goalPose.getRotation();
+    if (command instanceof AutoShoot) {
+      goalRotation = ((AutoShoot)command).getGoalRotation();
+    }
+
     // Construct chassis speeds from state values
     // Convert field oriented to robot oriented
     ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
@@ -70,7 +76,7 @@ public class FollowPathWithRotationSource extends FollowPath {
             // Rotate by the angle between
             signedAngleBetween(
                 // Angle from current to goal
-                command.getGoalRotation(),
+                goalRotation,
                 // Rotate back by forward constant
                 robotPose.getRotation()
             ).getRadians() * PathingConstants.turningProportion

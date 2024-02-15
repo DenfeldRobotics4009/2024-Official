@@ -17,14 +17,4 @@ public interface AutoShoot {
      * @return Rotation2d of goal angle
      */
     public Rotation2d getGoalRotation();
-    
-    /**
-     * Schedules the command
-     */
-    public void schedule();
-
-    /**
-     * @returns true if the command should end
-     */
-    public boolean isFinished();
 }
