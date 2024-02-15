@@ -88,6 +88,15 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // TODO FIGURE OUT BUTTON BINDINGS
+
+    /**
+     * SHOOT
+     * 
+     * Moves intake to transfer position to avoid collision,
+     * then runs the shoot command to auto aim.
+     * 
+     * Feeding is triggered by POV UP
+     */
     controls.getOperatorButton(1).whileTrue(
       new SequentialCommandGroup(
         new MoveIntakeFirst(intake, turret, intakePosition.DEPOSIT.get(), shooterPosition.GROUND.get()),
@@ -95,9 +104,9 @@ public class RobotContainer {
       )
     );
 
-    //controls.getOperatorButton(2).whileTrue(new Intake(intake));
-
     /**
+     * INTAKE
+     * 
      * Full intake process, canceled when button is released.
      * Intake extends outward -> shooter moves to transfer -> intake motors run
      * -> move shooter to transfer (will end immediately) -> move intake to transfer
@@ -114,13 +123,38 @@ public class RobotContainer {
       )
     );
 
-    controls.getOperatorButton(5).onTrue(
+    /**
+     * RESET ARMS
+     * 
+     * Moves the shooter to 0 position, then moves the intake to the 0 position.
+     * This fully tucks all arms into the robot.
+     */
+    controls.getOperatorButton(4).onTrue(
       new MoveShooterFirst(intake, turret, intakePosition.STARTING.get(), shooterPosition.GROUND.get())
     );
 
-    controls.getOperatorButton(3).whileTrue(new Transfer(turret, intake));
+    /**
+     * TRANSFER
+     * 
+     * Bypasses the automatic intake process and just runs the transfer.
+     */
+    controls.getOperatorButton(6).whileTrue(new Transfer(turret, intake));
 
-    controls.getOperatorButton(6).whileTrue(new Outtake(intake));
+    /**
+     * OUTTAKE
+     * 
+     * Does not move the intake or shooter, only runs the outtake while
+     * the button is held.
+     */
+    controls.getOperatorButton(5).whileTrue(new Outtake(intake));
+
+    /**
+     * INTAKE
+     * 
+     * Does not move the intake or shooter, only runs the intake while
+     * the button is held, or until sensor is tripped.
+     */
+    controls.getOperatorButton(3).whileTrue(new Intake(intake));
   }
 
   /**

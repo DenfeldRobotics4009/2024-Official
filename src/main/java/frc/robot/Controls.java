@@ -104,7 +104,7 @@ public class Controls {
         }
     }
 
-    public int getPOV() {
+    public int getDrivePOV() {
         switch (driveMode.getSelected()) {
             case 0:
                 return steer.getPOV();        
@@ -115,6 +115,10 @@ public class Controls {
             default:
                 return -1;
         }
+    }
+
+    public int getOperatePOV() {
+        return operate.getPOV();        
     }
 
     /**

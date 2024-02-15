@@ -79,7 +79,7 @@ public class Shoot extends Command {
     );
     swerveDrive.drive(speeds);
     //if flywheels up to speed, shooter aimed, drive train aimed, then feed in
-    if (controls.getOperatorButton(4).getAsBoolean()) {
+    if (controls.getOperatePOV() == 0) {
       shooter.feed();
     }
     else {
