@@ -229,7 +229,7 @@ public class RightMidCenterMidCenterRightMidRight extends Path {
             ),
             new PathPoint(
                 new Translation2d(4.946,1.784),               // Position (meters)
-                new Rotation2d(Math.toRadians(0)),     // Rotation (rad)
+                new Rotation2d(Math.toRadians(0)),     //Rotation (rad)
                 1,    // Speed (m/s)
                 new PrintCommand("Arrived at arc 2 point 15")       // Command 
             )
