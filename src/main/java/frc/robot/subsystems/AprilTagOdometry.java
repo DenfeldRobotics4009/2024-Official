@@ -20,6 +20,7 @@ import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -36,11 +37,12 @@ import frc.robot.auto.util.Field;
  */
 public class AprilTagOdometry extends SubsystemBase {
 
-    AprilTagFieldLayout aprilTagFieldLayout;
+    public static AprilTagFieldLayout aprilTagFieldLayout;
 
     PhotonPoseEstimator photonPoseEstimator;
-    PhotonCamera camera;
+    public PhotonCamera camera;
 
+    final int speakerID;
 
     /**
      * Creates an april tag odometry source relating to a 
@@ -58,7 +60,6 @@ public class AprilTagOdometry extends SubsystemBase {
     public AprilTagOdometry(PhotonCamera camera, Transform3d robotToCamera) {
 
         this.camera = camera;
-        
         try {
 
             aprilTagFieldLayout = AprilTagFieldLayout.loadFromResource(
@@ -75,6 +76,14 @@ public class AprilTagOdometry extends SubsystemBase {
 
             e.printStackTrace();
         }
+
+        // Grab speaker id based on alliance position
+        if (Field.isRedAlliance()) {
+            speakerID = 4;
+        } else {
+            speakerID = 7;
+        }
+
     }
 
     public List<PhotonTrackedTarget> getTargets() {
@@ -125,18 +134,22 @@ public class AprilTagOdometry extends SubsystemBase {
         return Math.hypot(cameraToTarget.getX(), cameraToTarget.getY());
     }
 
+    /**
+     * @return Distance in meters
+     */
+    public double getDistanceToSpeaker() {
+        Translation2d targetPose = AprilTagOdometry.aprilTagFieldLayout.getTagPose(speakerID).get().getTranslation().toTranslation2d();
+        
+        if (Field.isRedAlliance()) {
+            targetPose = Field.translateRobotPoseToRed(targetPose);
+        }
+
+        return SwerveDrive.getInstance().getPosition().getTranslation().getDistance(targetPose);
+    }
+
     Optional<Pose2d> getPositionFromTargets() {
         // Catch if the layout was not able to be initialized
         if (aprilTagFieldLayout == null) {
-            return Optional.empty();
-        }
-
-        if (
-            Math.abs(SwerveDrive.getInstance().getVelocity().getTranslation().getNorm()) > 
-            Constants.AprilTagOdometry.maxSpeed &&
-            Math.abs(SwerveDrive.getInstance().getVelocity().getRotation().getRadians()) >
-            Constants.AprilTagOdometry.maxRotation
-        ) {
             return Optional.empty();
         }
         
