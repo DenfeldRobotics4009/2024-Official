@@ -80,7 +80,7 @@ public class Controls {
     public double getTurn() {
         switch (driveMode.getSelected()) {
             case 0:
-                return modifyAxis(drive.getZ(), 0.15);        
+                return modifyAxis(steer.getX(), 0.15);        
             case 1:
                 return modifyAxis(driveController.getRightX(), 0.15); 
             default:
