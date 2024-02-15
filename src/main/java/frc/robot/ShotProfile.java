@@ -39,6 +39,9 @@ public final class ShotProfile {
     public static Optional<Double> getHeightFromDistance(double distance) {
         distance = Utils.metersToInches(distance);
         System.out.println("Distance: " + distance);
+
+        if (distance < data[0].getX()) return Optional.empty(); // Distance is out of bounds
+
         for (int i = 0; i < data.length-1; i++) {
             if (distance >= data[i].getX() && distance <= data[i+1].getX()) {
                 return Optional.of(
@@ -46,6 +49,6 @@ public final class ShotProfile {
                 );
             }
         }
-        return Optional.empty(); // Angle cannot be assumed
+        return Optional.empty(); // Angle cannot be assumed, distance is out of bounds
     }
 }
