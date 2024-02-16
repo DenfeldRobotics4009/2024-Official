@@ -79,7 +79,7 @@ public class FollowPathWithRotationSource extends FollowPath {
                 goalRotation,
                 // Rotate back by forward constant
                 robotPose.getRotation()
-            ).getRadians() * PathingConstants.turningProportion
+            ) * PathingConstants.turningProportion
         ), 
         // Rotate from current direction
         robotPose.getRotation()

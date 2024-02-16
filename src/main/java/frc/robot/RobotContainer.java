@@ -39,8 +39,8 @@ public class RobotContainer {
   final IntakeSubsystem intake = IntakeSubsystem.getInstance();
 
   // Create a new april-tag camera, this is a subsystem.
-  //final AprilTagOdometry cam1 = new AprilTagOdometry(
-  //  new PhotonCamera("Microsoft_LifeCam_HD-3000-1"), Constants.AprilTagOdometry.cameraPose);
+  final AprilTagOdometry cam1 = new AprilTagOdometry(
+   new PhotonCamera("Microsoft_LifeCam_HD-3000-1"), Constants.AprilTagOdometry.cameraPose);
   final NoteCamera cam2 = new NoteCamera(new PhotonCamera("Microsoft_LifeCam_HD-3000-2"));
   
   final Controls controls = Controls.getInstance();

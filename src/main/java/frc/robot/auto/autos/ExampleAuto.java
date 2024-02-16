@@ -19,8 +19,6 @@ public class ExampleAuto extends SequentialCommandGroup{
              * initially to (0, 0)
              */
             new SetDrivePosition(new Pose2d(1.946,7.054,new Rotation2d(0))), //starts at these points (might need to tweak)
-                //angle to AprilTag and shoot
-                new ExampleCommand(new ExampleSubsystem()), //Shooter.getInstance()
 
             // This command will run until the end of the path is reached.
             new FollowPath(new LeftNearLeft())
