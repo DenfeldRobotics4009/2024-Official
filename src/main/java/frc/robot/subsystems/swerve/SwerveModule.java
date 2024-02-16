@@ -21,7 +21,7 @@ public class SwerveModule {
 
     // Default values are according to the SDS MK4I
     // - Hardware defined variables --
-    public static double driveRampRate = 0.25;
+    public static double driveRampRate = 0.3;
     public static double steerRampRate = 0.25;
     /**
      * Maximum speed the robot can drive, set by user.
