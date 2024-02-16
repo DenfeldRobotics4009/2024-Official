@@ -80,6 +80,7 @@ public final class Constants {
         public static final class Paths {
             public static Translation2d START_LEFT = new Translation2d(0,7.054);
             public static Translation2d START_CENTER = new Translation2d(0,0); //Find Real Value
-            public static Translation2d START_RIGHT = new Translation2d(0,1.622);
+            public static Translation2d START_RIGHT = new Translation2d(0,0);
+            public static Translation2d START_FAR_RIGHT = new Translation2d(0,1.622);
         }
 }
