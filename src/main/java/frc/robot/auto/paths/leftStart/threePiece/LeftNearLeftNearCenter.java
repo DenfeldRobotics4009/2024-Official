@@ -28,24 +28,9 @@ public class LeftNearLeftNearCenter extends Path {
          * into super is the first point along the path.
          */
         super(            
-            new PathPoint(
-                new Translation2d(0,7.054),               // Position (meters)
-                new Rotation2d(Math.toRadians(0)),     // Rotation (rad)
-                1,    // Speed (m/s)
-                new PrintCommand("Shoot")       // Command 
-            ),
-            new PathPoint(
-                new Translation2d(2.757,7.054),               // Position (meters)
-                new Rotation2d(Math.toRadians(0)),     // Rotation (rad)
-                1,    // Speed (m/s)
-                new PrintCommand("Shoot")       // Command 
-            ),
-            new PathPoint(
-                new Translation2d(3.348,5.676),               // Position (meters)
-                new Rotation2d(Math.toRadians(-Math.PI)),     // Rotation (rad)
-                1,    // Speed (m/s)
-                new PrintCommand("Shoot")      // Command 
-            )
+            
+            
+            
         );
     }
 

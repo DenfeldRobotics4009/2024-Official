@@ -30,30 +30,7 @@ public class CenterNearCenterNearRightPath extends Path {
          */
         super(            
             0.5, // End tolerance
-            new PathPoint(
-                Constants.Paths.START_CENTER,               // Position (meters)
-                new Rotation2d(Math.toRadians(180)),     // Rotation (rad)
-                3,    // Speed (m/s)
-                new PrintCommand("Shoot")       // Command 
-            ),
-            new PathPoint(
-                new Translation2d(1.5,0),               // Position (meters)
-                new Rotation2d(Math.toRadians(180)),     // Rotation (rad)
-                2,    // Speed (m/s)
-                new PrintCommand("Intake")       // Command 
-            ),
-            new PathPoint(
-                new Translation2d(0.5,-1),               // Position (meters)
-                new Rotation2d(Math.toRadians(180)),     // Rotation (rad)
-                1,    // Speed (m/s)
-                new PrintCommand("Transfer to next")       // Command 
-            ),
-            new PathPoint(
-                new Translation2d(1.5,-2),               // Position (meters)
-                new Rotation2d(Math.toRadians(180)),     // Rotation (rad)
-                0,    // Speed (m/s)
-                new PrintCommand("Intake")       // Command 
-            )
+            
         );
     }
 

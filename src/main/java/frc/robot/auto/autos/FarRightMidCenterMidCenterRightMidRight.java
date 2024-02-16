@@ -23,7 +23,7 @@ public class FarRightMidCenterMidCenterRightMidRight extends SequentialCommandGr
              */
             new SetDrivePosition(new Pose2d(0, 0,new Rotation2d(Math.toRadians(239)))), //starts at these points (might need to tweak)
 
-            // This command will run until the end of the path is reached.
+            // Goes from start to midcenter
             new FollowPath(
                 new Path(            
                     new PathPoint(
@@ -49,6 +49,7 @@ public class FarRightMidCenterMidCenterRightMidRight extends SequentialCommandGr
 
                 )
             ),
+            // Goes from midcenter to shoot
             new FollowPath(
                 new Path(            
                     new PathPoint(
@@ -63,64 +64,68 @@ public class FarRightMidCenterMidCenterRightMidRight extends SequentialCommandGr
                     )
                 )
             ),
+            // Goes from shoot to midcenterright
             new FollowPath(
                 new Path(            
                     new PathPoint(
-                        new Translation2d(),               // Starting Position (meters)
+                        new Translation2d(5.838, 1.541),               // Starting Position (meters)
                         new Rotation2d(Math.toRadians(Math.PI/2)),     // Start Rotation (rad)
                         1,    // Speed (m/s)
                         new PrintCommand("Started in Starting Position")       // Command 
                     ),
                     new PathPoint(
-                        new Translation2d(0,0),               // Starting Position (meters)
+                        new Translation2d(8.189,2.433),               // Starting Position (meters)
                         new Rotation2d(Math.toRadians(Math.PI/2)),     // Start Rotation (rad)
                         1,    // Speed (m/s)
                         new PrintCommand("Arrived at point 1")       // Command 
                     )
                 )
             ),
+            // Goes from midcenter right to shoot
             new FollowPath(
                 new Path(            
                     new PathPoint(
-                        Constants.Paths.START_FAR_RIGHT,               // Starting Position (meters)
+                        new Translation2d(5.838, 1.541),              // Starting Position (meters)
                         new Rotation2d(Math.toRadians(Math.PI/2)),     // Start Rotation (rad)
                         1,    // Speed (m/s)
                         new PrintCommand("Started in Starting Position")       // Command 
                     ),
                     new PathPoint(
-                        new Translation2d(0,0),               // Starting Position (meters)
+                        new Translation2d(3.649,2.838),               // Starting Position (meters)
                         new Rotation2d(Math.toRadians(Math.PI/2)),     // Start Rotation (rad)
                         1,    // Speed (m/s)
                         new PrintCommand("Arrived at point 1")       // Command 
                     )
                 )
             ),
+            // goes from shoot to midright
             new FollowPath(
                 new Path(            
                     new PathPoint(
-                        Constants.Paths.START_FAR_RIGHT,               // Starting Position (meters)
+                        new Translation2d(5.838, 1.541),               // Starting Position (meters)
                         new Rotation2d(Math.toRadians(Math.PI/2)),     // Start Rotation (rad)
                         1,    // Speed (m/s)
                         new PrintCommand("Started in Starting Position")       // Command 
                     ),
                     new PathPoint(
-                        new Translation2d(0,0),               // Starting Position (meters)
+                        new Translation2d(8.189, 0.73),               // Starting Position (meters)
                         new Rotation2d(Math.toRadians(Math.PI/2)),     // Start Rotation (rad)
                         1,    // Speed (m/s)
                         new PrintCommand("Arrived at point 1")       // Command 
                     )
                 )
             ),
+            // goes from midright to shoot
             new FollowPath(
                 new Path(            
                     new PathPoint(
-                        Constants.Paths.START_FAR_RIGHT,               // Starting Position (meters)
+                        new Translation2d(5.838, 1.541),               // Starting Position (meters)
                         new Rotation2d(Math.toRadians(Math.PI/2)),     // Start Rotation (rad)
                         1,    // Speed (m/s)
                         new PrintCommand("Started in Starting Position")       // Command 
                     ),
                     new PathPoint(
-                        new Translation2d(0,0),               // Starting Position (meters)
+                        new Translation2d(3.649,2.838),               // Starting Position (meters)
                         new Rotation2d(Math.toRadians(Math.PI/2)),     // Start Rotation (rad)
                         1,    // Speed (m/s)
                         new PrintCommand("Arrived at point 1")       // Command 
