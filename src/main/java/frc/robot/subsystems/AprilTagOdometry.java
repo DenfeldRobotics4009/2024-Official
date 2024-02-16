@@ -125,11 +125,6 @@ public class AprilTagOdometry extends SubsystemBase {
         // Ensure the existence of this tag id
         if (tagPose.isEmpty()) {return -1;}
 
-        System.out.println( "X: " +
-         target.getBestCameraToTarget().getZ());
-        System.out.println( "Z: " +
-         target.getBestCameraToTarget().getX());
-
         Transform3d cameraToTarget = target.getBestCameraToTarget();
         return Math.hypot(cameraToTarget.getX(), cameraToTarget.getY());
     }

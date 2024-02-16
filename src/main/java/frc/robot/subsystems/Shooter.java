@@ -108,8 +108,6 @@ public class Shooter extends SubsystemBase {
 
     SmartDashboard.putNumber("Shooter Angle (Radians)", aim.getEncoder().getPosition()*2*Math.PI);
 
-    
-
     // Check the limit switch to reset aim encoder
     if (aimLimitSwitch.get()) {
       if (!limitSwitchToggle) {
@@ -147,7 +145,7 @@ public class Shooter extends SubsystemBase {
     public void feed() {
     feeder.set(-Constants.Shooter.feederSpeed);
   }
-      public void stopFeed() {
+  public void stopFeed() {
     feeder.set(0);
   }
 
