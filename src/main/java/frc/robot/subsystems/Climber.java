@@ -66,30 +66,10 @@ public class Climber extends SubsystemBase {
   }
 
   void setRightClimber(double speed) {
-    // if (rightClimberMotor.getEncoder().getPosition() < -Constants.Climber.up && speed > 0) {
-    //   rightClimberMotor.set(0);
-    //   return;
-    // }
-
-    // if (rightClimberMotor.getEncoder().getPosition() > -Constants.Climber.down && speed < 0) {
-    //   rightClimberMotor.set(0);
-    //   return;
-    // }
-
     rightClimberMotor.set(speed);
   }
 
   void setLeftClimber(double speed) {
-    // if (leftClimberMotor.getEncoder().getPosition() > Constants.Climber.up && speed > 0) {
-    //   leftClimberMotor.set(0);
-    //   return;
-    // }
-
-    // if (leftClimberMotor.getEncoder().getPosition() < Constants.Climber.down && speed < 0) {
-    //   leftClimberMotor.set(0);
-    //   return;
-    // }
-
     leftClimberMotor.set(-speed);
   }
 }
