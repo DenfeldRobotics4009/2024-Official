@@ -38,14 +38,6 @@ public class Shooter extends SubsystemBase {
     }
   }
 
-  public final ShuffleboardTab turretTab = Shuffleboard.getTab("Turret");
-  GenericEntry rpmEntryTop;
-  GenericEntry rpmEntryBottom;
-  GenericEntry pEntry;
-  GenericEntry iEntry;
-  GenericEntry dEntry;
-  GenericEntry encoderPosEntry;
-
   private CANSparkFlex topMotor = new CANSparkFlex(Constants.Shooter.topMotorID, MotorType.kBrushless);
   private CANSparkFlex bottomMotor = new CANSparkFlex(Constants.Shooter.bottomMotorID, MotorType.kBrushless);
   SparkPIDController topFlywheelPidController = topMotor.getPIDController();
@@ -85,14 +77,6 @@ public class Shooter extends SubsystemBase {
     topMotor.setOpenLoopRampRate(0.1);
     bottomMotor.setOpenLoopRampRate(0.1);
 
-    rpmEntryTop = turretTab.add("rpmEntryTop", 5440).withWidget("Number Slider").getEntry();
-    rpmEntryBottom = turretTab.add("rpmEntryBottom", 5440).withWidget("Number Slider").getEntry();
-
-    pEntry = turretTab.add("pEntry", 0.01).getEntry();
-    iEntry = turretTab.add("iEntry", 0).getEntry();
-    dEntry = turretTab.add("dEntry", 0).getEntry();
-    encoderPosEntry = turretTab.add("encoder Pos", 0).getEntry();
-
     // Set PID values for flywheels using spark maxes, we are
     // using these PID controllers as they support feed forward.
     topFlywheelPidController.setP(Constants.Shooter.flyWheelP);
@@ -108,16 +92,10 @@ public class Shooter extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Aim Angle", aim.getEncoder().getPosition()*2*Math.PI);
+
     double speed = aimPIDController.calculate(aim.getEncoder().getPosition()*2*Math.PI);
     MathUtil.clamp(speed, -1, 1);
     aim.set(speed);
-
-    SmartDashboard.putBoolean("Sensor", getBarrelSensor());
-
-    aimPIDController.setPID(pEntry.getDouble(0.01), iEntry.getDouble(0), dEntry.getDouble(0));
-
-    encoderPosEntry.setDouble(aim.getEncoder().getPosition());
 
     // Check the limit switch to reset aim encoder
     if (aimLimitSwitch.get()) {

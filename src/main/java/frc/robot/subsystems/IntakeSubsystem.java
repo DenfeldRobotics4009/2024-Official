@@ -35,19 +35,13 @@ public class IntakeSubsystem extends SubsystemBase {
     }
   }
 
-  public final ShuffleboardTab intakeTab = Shuffleboard.getTab("Intake");
-  GenericEntry pEntry;
-  GenericEntry iEntry;
-  GenericEntry dEntry;
-  GenericEntry encoderPosEntry;
-
   public CANSparkFlex intakeMotor = new CANSparkFlex(Constants.Intake.intakeMotorID, MotorType.kBrushless);
   public CANSparkMax rotateMotor = new CANSparkMax(Constants.Intake.rotateMotorID, MotorType.kBrushless);
 
   static IntakeSubsystem instance;
 
   public double goalIntakePosition = intakePosition.STARTING.get();
-  public PIDController intakePIDController = new PIDController(.025, 0, 0);
+  public PIDController intakePIDController = new PIDController(.05, 0.008, 0);
 
   // When tripped, there is a piece within the intake
   AnalogInput intakeLaserSensor = new AnalogInput(Constants.Intake.intakeLaserSensorID);
@@ -73,22 +67,14 @@ public class IntakeSubsystem extends SubsystemBase {
     /** Creates a new Intake. */
   private IntakeSubsystem() {
 
-    rotateMotor.setOpenLoopRampRate(0.4); // TODO
+    rotateMotor.setOpenLoopRampRate(0.4);
     rotateMotor.getEncoder().setPosition(0);
 
     intakePIDController.setTolerance(Constants.Intake.pidTolerance);
-
-    pEntry = intakeTab.add("pEntry", 0.05).getEntry();
-    iEntry = intakeTab.add("iEntry", 0).getEntry();
-    dEntry = intakeTab.add("dEntry", 0.008).getEntry();
-    encoderPosEntry = intakeTab.add("encoder pos", 0).getEntry();
   }
 
   @Override
   public void periodic() {
-
-    intakePIDController.setPID(pEntry.getDouble(0), iEntry.getDouble(0), dEntry.getDouble(0));
-
     // Catch limits from switches, calibrate encoder from values
     if (intakeInnerLimitSwitch.get()) {
       if (!intakeInnerSwitchToggle) {
@@ -99,28 +85,6 @@ public class IntakeSubsystem extends SubsystemBase {
     } else {
       intakeInnerSwitchToggle = false;
     }
-
-    encoderPosEntry.setDouble(rotateMotor.getEncoder().getPosition());
-
-    // // Catch outer limits
-    // if (intakeOuterLimitSwitch.get()) {
-    //   if (!intakeOuterSwitchToggle) {
-    //     // The arm is fully extended outside the robot
-    //     rotateMotor.getEncoder().setPosition(intakePosition.GROUND.get());
-    //     intakeOuterSwitchToggle = true;
-    //   }
-    // } else {
-    //   intakeOuterSwitchToggle = false;
-    // }
-
-    // currentIntakePosition = rotateMotor.getEncoder().getPosition();
-    SmartDashboard.putNumber("Pos", rotateMotor.getEncoder().getPosition());
-    SmartDashboard.putNumber("Goal", goalIntakePosition);
-
-    // For testing
-    SmartDashboard.putBoolean("AtIntakeAngle", atTargetAngle());
-
-    SmartDashboard.putBoolean("Sensor", getIntakeSensor());
 
     rotateMotor.set(intakePIDController.calculate(rotateMotor.getEncoder().getPosition()));
   }
