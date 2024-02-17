@@ -4,12 +4,14 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.auto.pathing.AutoRotationSource;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.IntakeSubsystem.intakePosition;
 
-public class Intake extends Command {
+public class Intake extends Command implements AutoRotationSource{
   IntakeSubsystem intake;
   /**
    * Runs the intake until the sensor is activated
@@ -42,5 +44,11 @@ public class Intake extends Command {
   @Override
   public boolean isFinished() {
     return intake.getIntakeSensor();
+  }
+
+  @Override
+  public Rotation2d getGoalRotation() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getGoalRotation'");
   }
 }

@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.*;
 /**
  * A command to implement external source rotation
  */
-public interface AutoShoot {
+public interface AutoRotationSource {
     
     /**
      * Gets the goal rotation for the path
