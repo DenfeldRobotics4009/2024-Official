@@ -4,8 +4,9 @@
 
 package frc.robot.auto.pathing;
 
+import java.util.Optional;
+
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj2.command.*;
 
 /**
  * A command to implement external source rotation
@@ -16,5 +17,5 @@ public interface AutoRotationSource {
      * Gets the goal rotation for the path
      * @return Rotation2d of goal angle
      */
-    public Rotation2d getGoalRotation();
+    public Optional<Rotation2d> getGoalRotation();
 }

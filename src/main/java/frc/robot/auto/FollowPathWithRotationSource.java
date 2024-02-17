@@ -4,6 +4,10 @@
 
 package frc.robot.auto;
 
+import java.util.Optional;
+
+import javax.swing.text.html.Option;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -63,7 +67,10 @@ public class FollowPathWithRotationSource extends FollowPath {
 
     Rotation2d goalRotation = state.goalPose.getRotation();
     if (command instanceof AutoRotationSource) {
-      goalRotation = ((AutoRotationSource)command).getGoalRotation();
+      Optional<Rotation2d> optionalGoal = ((AutoRotationSource)command).getGoalRotation();
+      if (optionalGoal.isPresent()) {
+        goalRotation = optionalGoal.get();
+      }
     }
 
     // Construct chassis speeds from state values

@@ -40,7 +40,7 @@ public class RightMidCenterMidCenterRightMidRightPath extends Path {
                 new Rotation2d(Math.toRadians(Math.PI/2)),     // Start Rotation (rad)
                 1,    // Speed (m/s)
                 new PrintCommand("Arrived at point 1")       // Command 
-            ),
+            )
         );
     }
 

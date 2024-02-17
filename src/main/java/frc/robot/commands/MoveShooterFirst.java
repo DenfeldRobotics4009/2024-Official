@@ -28,7 +28,7 @@ public class MoveShooterFirst extends Command {
     double intakePosition,
     double shooterPosition
   ) {
-    addRequirements(intake, shooter);
+    // addRequirements(intake, shooter);
 
     this.intake = intake;
     this.shooter = shooter;

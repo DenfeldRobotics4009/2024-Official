@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import java.util.Optional;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -89,7 +91,7 @@ public class AutoShoot extends Command implements AutoRotationSource {
   }
 
   @Override
-  public Rotation2d getGoalRotation() {
-    return shootAngle;
+  public Optional<Rotation2d> getGoalRotation() {
+    return Optional.of(shootAngle);
   }
 }

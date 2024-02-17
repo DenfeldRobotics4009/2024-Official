@@ -32,7 +32,7 @@ public enum Autos {
        new LeftNearLeftMidLeft()
     ),
     RightMidCenterMidCenterRightMidRight(
-        new FarRightMidCenterMidCenterRightMidRight()
+        new RightMidCenterMidCenterRightMidRight()
     );    
     /* ----------------- */
 

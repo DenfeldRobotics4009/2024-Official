@@ -35,7 +35,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   
-  final Shooter turret = Shooter.getInstance();
+  final Shooter shooter = Shooter.getInstance();
   final IntakeSubsystem intake = IntakeSubsystem.getInstance();
 
   // Create a new april-tag camera, this is a subsystem.
@@ -99,8 +99,8 @@ public class RobotContainer {
      */
     controls.getOperatorButton(1).whileTrue(
       new SequentialCommandGroup(
-        new MoveIntakeFirst(intake, turret, intakePosition.DEPOSIT.get(), shooterPosition.GROUND.get()),
-        new Shoot(turret, controls, driveTrain, cam1)
+        new MoveIntakeFirst(intake, shooter, intakePosition.DEPOSIT.get(), shooterPosition.GROUND.get()),
+        new Shoot(shooter, controls, driveTrain, cam1)
       )
     );
 
@@ -114,12 +114,12 @@ public class RobotContainer {
      */
     controls.getOperatorButton(2).whileTrue(
       new SequentialCommandGroup(
-        new MoveIntakeFirst(intake, turret, intakePosition.GROUND.get(), shooterPosition.DEPOSIT.get()),
-        new Intake(intake), // Continue until a piece is picked up
+        new MoveIntakeFirst(intake, shooter, intakePosition.GROUND.get(), shooterPosition.DEPOSIT.get()),
+        new Intake(intake, cam2), // Continue until a piece is picked up
         // Initiate transfer positions
-        new MoveShooterFirst(intake, turret, intakePosition.DEPOSIT.get(), shooterPosition.DEPOSIT.get()),
-        new Transfer(turret, intake),
-        new MoveShooterFirst(intake, turret, intakePosition.STARTING.get(), shooterPosition.GROUND.get())
+        new MoveShooterFirst(intake, shooter, intakePosition.DEPOSIT.get(), shooterPosition.DEPOSIT.get()),
+        new Transfer(intake, shooter),
+        new MoveShooterFirst(intake, shooter, intakePosition.STARTING.get(), shooterPosition.GROUND.get())
       )
     );
 
@@ -130,7 +130,7 @@ public class RobotContainer {
      * This fully tucks all arms into the robot.
      */
     controls.getOperatorButton(4).onTrue(
-      new MoveShooterFirst(intake, turret, intakePosition.STARTING.get(), shooterPosition.GROUND.get())
+      new MoveShooterFirst(intake, shooter, intakePosition.STARTING.get(), shooterPosition.GROUND.get())
     );
 
     /**
@@ -138,7 +138,7 @@ public class RobotContainer {
      * 
      * Bypasses the automatic intake process and just runs the transfer.
      */
-    controls.getOperatorButton(6).whileTrue(new Transfer(turret, intake));
+    controls.getOperatorButton(6).whileTrue(new Transfer(intake, shooter));
 
     /**
      * OUTTAKE
@@ -154,7 +154,7 @@ public class RobotContainer {
      * Does not move the intake or shooter, only runs the intake while
      * the button is held, or until sensor is tripped.
      */
-    controls.getOperatorButton(3).whileTrue(new Intake(intake));
+    controls.getOperatorButton(3).whileTrue(new Intake(intake, cam2));
   }
 
   /**

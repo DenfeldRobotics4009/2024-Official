@@ -21,7 +21,7 @@ public class Transfer extends Command {
    * @param shooter
    * @param intake
    */
-  public Transfer(Shooter shooter, IntakeSubsystem intake) {
+  public Transfer(IntakeSubsystem intake, Shooter shooter) {
     addRequirements(shooter, intake);
 
     this.shooter = shooter;
