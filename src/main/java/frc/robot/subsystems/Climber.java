@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -25,22 +26,38 @@ public class Climber extends SubsystemBase {
     return instance;
   }
 
-  private Climber() {}
+  private Climber() {
+    leftClimberMotor.getEncoder().setPosition(0);
+    rightClimberMotor.getEncoder().setPosition(0);
+
+    rightClimberMotor.setSoftLimit(SoftLimitDirection.kForward, (float)Constants.Climber.up);
+    rightClimberMotor.setSoftLimit(SoftLimitDirection.kReverse, (float)Constants.Climber.down);
+    rightClimberMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
+    rightClimberMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+
+    leftClimberMotor.setSoftLimit(SoftLimitDirection.kReverse, (float)-Constants.Climber.up);
+    leftClimberMotor.setSoftLimit(SoftLimitDirection.kForward, (float)-Constants.Climber.down);
+    leftClimberMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
+    leftClimberMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+  }
 
   @Override
   public void periodic() {
     SmartDashboard.putNumber("leftClimber", leftClimberMotor.getEncoder().getPosition());
     SmartDashboard.putNumber("rightClimber", rightClimberMotor.getEncoder().getPosition());
+
+    SmartDashboard.putNumber("leftCurrent", leftClimberMotor.getOutputCurrent());
+    SmartDashboard.putNumber("rightCurrent", rightClimberMotor.getOutputCurrent());
   }
 
   public void moveClimbersUp() {
-    setClimber(leftClimberMotor, Constants.Climber.climberMotorPower);
-    setClimber(rightClimberMotor, -Constants.Climber.climberMotorPower);
+    setLeftClimber(Constants.Climber.climberMotorPower);
+    setRightClimber(Constants.Climber.climberMotorPower);
   }
 
   public void moveClimbersDown() {
-    setClimber(leftClimberMotor, -Constants.Climber.climberMotorPower);
-    setClimber(rightClimberMotor, Constants.Climber.climberMotorPower);
+    setLeftClimber(-Constants.Climber.climberMotorPower);
+    setRightClimber(-Constants.Climber.climberMotorPower);
   }
 
   public void stop() {
@@ -48,15 +65,31 @@ public class Climber extends SubsystemBase {
     rightClimberMotor.set(0);
   }
 
-  void setClimber(CANSparkMax climberMotor, double speed) {
-    if (
-      // Check if the climber is going out of bounds
-      speed < 0 && leftClimberMotor.getEncoder().getPosition() > Constants.Climber.down || 
-      speed > 0 && leftClimberMotor.getEncoder().getPosition() < Constants.Climber.up
-    ) {
-      leftClimberMotor.set(speed);
-    }
+  void setRightClimber(double speed) {
+    // if (rightClimberMotor.getEncoder().getPosition() < -Constants.Climber.up && speed > 0) {
+    //   rightClimberMotor.set(0);
+    //   return;
+    // }
 
-    leftClimberMotor.set(0);
+    // if (rightClimberMotor.getEncoder().getPosition() > -Constants.Climber.down && speed < 0) {
+    //   rightClimberMotor.set(0);
+    //   return;
+    // }
+
+    rightClimberMotor.set(speed);
+  }
+
+  void setLeftClimber(double speed) {
+    // if (leftClimberMotor.getEncoder().getPosition() > Constants.Climber.up && speed > 0) {
+    //   leftClimberMotor.set(0);
+    //   return;
+    // }
+
+    // if (leftClimberMotor.getEncoder().getPosition() < Constants.Climber.down && speed < 0) {
+    //   leftClimberMotor.set(0);
+    //   return;
+    // }
+
+    leftClimberMotor.set(-speed);
   }
 }

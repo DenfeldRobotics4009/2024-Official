@@ -28,7 +28,7 @@ public final class Constants {
         public static int leftClimberMotorID = 18;
         public static int rightClimberMotorID = 19;
         public static double down = 0;
-        public static double up = 100;
+        public static double up = 75;
         public static double climberMotorPower = 0.5;  
     }
     public static final class Shooter {
