@@ -46,26 +46,28 @@ public class RightMidCenterMidCenterRightMidRight extends SequentialCommandGroup
                 new Path(
                     new PathPoint(
                         new Translation2d(5.865,4.135),
-                        new Rotation2d(Math.PI),
-                        1
+                        new Rotation2d(0),
+                        1,
+                        closeRobot
                     ),
                     new PathPoint(
                         new Translation2d(4.541,4.784),
-                        new Rotation2d(Math.PI),
-                        1
+                        new Rotation2d(0),
+                        1,
+                        clearIntake
                     )
                 )
             );
-    private static Command smallPath = new FollowPathWithRotationSource(
+    private static Command smallShootPath = new FollowPathWithRotationSource(
                 new Path(
                     new PathPoint(
                         new Translation2d(4.541,4.784),
-                        new Rotation2d(Math.PI),
+                        new Rotation2d(0),
                         1
                     ),
                     new PathPoint(
-                        new Translation2d(4.531,4.794),
-                        new Rotation2d(Math.PI),
+                        new Translation2d(4.531,4.884),
+                        new Rotation2d(0),
                         1
                     )
                 ),
@@ -75,12 +77,13 @@ public class RightMidCenterMidCenterRightMidRight extends SequentialCommandGroup
                 new Path(
                     new PathPoint(
                         new Translation2d(4.541,4.784),
-                        new Rotation2d(Math.PI),
-                        1
+                        new Rotation2d(0),
+                        1,
+                        closeRobot
                     ),
                     new PathPoint(
                         new Translation2d(5.865,4.135),
-                        new Rotation2d(Math.PI),
+                        new Rotation2d(-Math.PI/2),
                         1
                     )
                 )
@@ -100,13 +103,13 @@ public class RightMidCenterMidCenterRightMidRight extends SequentialCommandGroup
                 new Path(            
                     new PathPoint(
                         Constants.Paths.START_RIGHT,               // Starting Position (meters)
-                        new Rotation2d(Math.PI/2),     //TODO: Find the actual angle for the starting position
+                        new Rotation2d(-Math.PI/2),     //TODO: Find the actual angle for the starting position
                         1,   // Speed (m/s)
                         clearIntake
                     ),
                     new PathPoint(
                         new Translation2d(3.649,2.838),               // Starting Position (meters)
-                        new Rotation2d(0),     // Start Rotation (rad)
+                        new Rotation2d(-Math.PI/2),     // Start Rotation (rad)
                         1    // Speed (m/s)
                     )
                 ),
@@ -117,17 +120,18 @@ public class RightMidCenterMidCenterRightMidRight extends SequentialCommandGroup
                 new Path(
                     new PathPoint(
                         new Translation2d(3.649,2.838),               // Starting Position (meters)
-                        new Rotation2d(0),     // Start Rotation (rad)
-                        1    // Speed (m/s)
+                        new Rotation2d(-Math.PI/2),     // Start Rotation (rad)
+                        1,
+                        closeRobot    // Speed (m/s)
                     ),
                     new PathPoint(
                         new Translation2d(4.865,4.135),               // Starting Position (meters)
-                        new Rotation2d(Math.PI/2),     // Start Rotation (rad)
+                        new Rotation2d(-Math.PI/2),     // Start Rotation (rad)
                         1    // Speed (m/s)
                     ),
                     new PathPoint(
                         new Translation2d(5.865,4.135),               // Starting Position (meters)
-                        new Rotation2d(Math.PI/2),     // Start Rotation (rad)
+                        new Rotation2d(-Math.PI/2),     // Start Rotation (rad)
                         1,    // Speed (m/s)
                         robotIntake
                     )
@@ -138,13 +142,13 @@ public class RightMidCenterMidCenterRightMidRight extends SequentialCommandGroup
             new FollowPathWithRotationSource(
                 new Path(
                     new PathPoint(
-                        new Translation2d(8.189,4.635),               // Starting Position (meters)
-                        new Rotation2d(Math.PI/2),     // Start Rotation (rad)
+                        new Translation2d(8.189,5.135),               // Starting Position (meters)
+                        new Rotation2d(-Math.PI/2),     // Start Rotation (rad)
                         1
                     ),
                     new PathPoint(
-                        new Translation2d(8.189,3.635),               // Starting Position (meters)
-                        new Rotation2d(Math.PI/2),     // Start Rotation (rad)
+                        new Translation2d(8.189,4.135),               // Starting Position (meters)
+                        new Rotation2d(-Math.PI/2),     // Start Rotation (rad)
                         1    // Speed (m/s)
                     )
                 ),
@@ -153,82 +157,83 @@ public class RightMidCenterMidCenterRightMidRight extends SequentialCommandGroup
             //Head to shoot
             headToShoot,
             //Robot essentially stops but has really small path so we can run the command
-            smallPath,
+            smallShootPath,
             // Move under stage
             moveUnderStage,
             // Intake MidCenterRight
             new FollowPath(
                 new Path(            
                     new PathPoint(
-                        new Translation2d(5.838, 1.541),               // Starting Position (meters)
-                        new Rotation2d(Math.PI/2),     // Start Rotation (rad)
+                        new Translation2d(8.189, 3.433),               // Starting Position (meters)
+                        new Rotation2d(-Math.PI/2),     // Start Rotation (rad)
                         1,    // Speed (m/s)     
                         robotIntake
                     ),
                     new PathPoint(
                         new Translation2d(8.189,2.433),               // Starting Position (meters)
-                        new Rotation2d(Math.toRadians(Math.PI/2)),     // Start Rotation (rad)
-                        1,    // Speed (m/s)
-                        robotIntake
+                        new Rotation2d(-Math.PI/2),     // Start Rotation (rad)
+                        1
                         )
                     )
                 ),
-                new Intake(IntakeSubsystem.getInstance())
-            )
-            // Goes from midcenter right to shoot
-            new FollowPath(
+                new Intake(IntakeSubsystem.getInstance()),
+            // Head to Shoot
+            headToShoot,
+            //Robot essentially stops but has really small path so we can run the command
+            smallShootPath,
+            //Head to Shoot
+            moveUnderStage,
+            //Intake MidRight
+            new FollowPathWithRotationSource(
                 new Path(
                     new PathPoint(
-                        new Translation2d(5.838, 1.541),              // Starting Position (meters)
-                        new Rotation2d(Math.toRadians(Math.PI/2)),     // Start Rotation (rad)
-                        1,    // Speed (m/s)
-                        clearIntake
+                        new Translation2d(8.189,1.811),               // Starting Position (meters)
+                        new Rotation2d(-Math.PI/2),     // Start Rotation (rad)
+                        1
                     ),
                     new PathPoint(
-                        new Translation2d(3.649,2.838),               // Starting Position (meters)
-                        new Rotation2d(Math.toRadians(Math.PI/2)),     // Start Rotation (rad)
-                        1,    // Speed (m/s)
-                        closeRobot
-                    )
-                ),
-                new AutoShoot(Shooter.getInstance(), RobotContainer.cam1),
-            ),
-
-            // goes from shoot to midright
-            new FollowPathWithRotationSource(
-                new Path(            
-                    new PathPoint(
-                        new Translation2d(5.838, 1.541),               // Starting Position (meters)
-                        new Rotation2d(Math.toRadians(Math.PI/2)),     // Start Rotation (rad)
-                        1,    // Speed (m/s)
-                        new PrintCommand("Started in Starting Position")       // Command 
-                    ),
-                    new PathPoint(
-                        new Translation2d(8.189, 0.73),               // Starting Position (meters)
-                        new Rotation2d(Math.toRadians(Math.PI/2)),     // Start Rotation (rad)
-                        1,    // Speed (m/s)
-                        robotIntake       // Command 
-                    )
-                ),
-                 new Intake(IntakeSubsystem.getInstance())
-            ),
-            // goes from midright to shoot
-            new FollowPathWithRotationSource(
-                new Path(            
-                    new PathPoint(
-                        new Translation2d(5.838, 1.541),               // Starting Position (meters)
-                        new Rotation2d(Math.toRadians(Math.PI/2)),     // Start Rotation (rad)
-                        1,    // Speed (m/s)
-                        closeRobot       // Command 
-                    ),
-                    new PathPoint(
-                        new Translation2d(3.649,2.838),               // Starting Position (meters)
-                        new Rotation2d(Math.toRadians(Math.PI/2)),     // Start Rotation (rad)
+                        new Translation2d(8.189,0.811),               // Starting Position (meters)
+                        new Rotation2d(-Math.PI/2),     // Start Rotation (rad)
                         1    // Speed (m/s)
                     )
                 ),
-                 new AutoShoot(Shooter.getInstance(), RobotContainer.cam1)
+                new Intake(IntakeSubsystem.getInstance())
+            ),
+            //Zoom to Right Shoot
+            new FollowPath(
+                new Path(
+                    new PathPoint(
+                        new Translation2d(8.189,3.635),
+                        new Rotation2d(0),
+                        1,
+                        closeRobot
+                    ),
+                    new PathPoint(
+                        new Translation2d(3.649,2.838),
+                        new Rotation2d(0),
+                        1,
+                        clearIntake
+                    )
+                )
+            ),
+            //Shoot Final Piece
+            new FollowPathWithRotationSource(
+                new Path(            
+                    new PathPoint(
+                        new Translation2d(3.649,2.838),               // Starting Position (meters)
+                        new Rotation2d(Math.PI/2),     //TODO: Find the actual angle for the starting position
+                        1,   // Speed (m/s)
+                        clearIntake
+                    ),
+                    new PathPoint(
+                        Constants.Paths.START_RIGHT,               // Starting Position (meters)    
+                        new Rotation2d(0),     // Start Rotation (rad)
+                        1    // Speed (m/s)
+                    )
+                ),
+                new AutoShoot(Shooter.getInstance(), RobotContainer.cam1)
             )
+
         );
     }
 }
