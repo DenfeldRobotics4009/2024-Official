@@ -42,6 +42,7 @@ public class Shoot extends Command {
     addRequirements(shooter, swerveDrive);
 
     aimingPidController.setSetpoint(0);
+    aimingPidController.enableContinuousInput(0, 360);
   }
 
   // Called when the command is initially scheduled.
@@ -75,13 +76,13 @@ public class Shoot extends Command {
       new ChassisSpeeds(
         controls.getForward() * SwerveModule.maxMetersPerSecond,
         controls.getLateral() * SwerveModule.maxMetersPerSecond,
-        controls.getTurn() * SwerveModule.maxRadPerSecond
+        aimingPidController.calculate(camera.getYawToSpeaker())
       ), 
       SwerveDrive.navxGyro.getRotation2d()
     );
     swerveDrive.drive(speeds);
     //if flywheels up to speed, shooter aimed, drive train aimed, then feed in
-    if (controls.getOperatePOV() == 0) {
+    if (controls.getOperatePOV() == 0 && atShooterSpeed) {
       shooter.feed();
     }
     else {
