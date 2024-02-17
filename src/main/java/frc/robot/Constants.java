@@ -24,22 +24,11 @@ public final class Constants {
 
     public static double inchesInMeter = 39.3700787402;
 
-    public static final class Arm {
-        public static int armIntakeMotorID = 63;
-        public static int armShooterMotorLeftID = 64;
-        public static int armShooterMotorRightID = 65;
-        public static int armMotorID = 80;
-        public static double armIntakeMotorPower = 0.4;
-        public static double source = 1000;
-        public static double ground = 500;
-        public static double deposit = 250;
-        public static double upperLimit = 6.25;
-        public static double lowerLimit = 0;
-    }
     public static final class Climber {
-        public static int climberMotorID = 70;
-        public static double down = 1000;
-        public static double up = 500;
+        public static int leftClimberMotorID = 18;
+        public static int rightClimberMotorID = 19;
+        public static double down = 0;
+        public static double up = 75;
         public static double climberMotorPower = 0.5;  
     }
     public static final class Shooter {
@@ -50,7 +39,7 @@ public final class Constants {
         public static double feederSpeed = 1;
         public static int aimMotorID = 40;
         
-        public static double pidTolerance = 10;
+        public static double pidTolerance = 4;
 
         public static double aimRangeFrom0 = -133;
         public static double transferAngle = -100;
@@ -70,13 +59,16 @@ public final class Constants {
         public static int aimLimitSwitchID = 0;
 
         public static double flyWheelSpeed = 5440; // RPM
+
+        public static double topAmpFlyWheelSpeed = 1371; // RPM
+        public static double bottomAmpFlyWheelSpeed = 378; // RPM
     }
     public static final class Intake {
         public static int intakeMotorID = 12;
         public static int rotateMotorID = 10; 
-        public static double intakeMotorPower = -0.375;
+        public static double intakeMotorPower = -0.5;
 
-        public static double ground = -30;
+        public static double ground = -35;
         public static double deposit = -15;
 
         public static double pidTolerance = 4;

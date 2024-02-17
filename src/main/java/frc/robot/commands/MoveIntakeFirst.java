@@ -40,12 +40,13 @@ public class MoveIntakeFirst extends Command {
   @Override
   public void initialize() {
     intake.setPosition(intakePosition);
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (intake.atTargetAngle() && intake.getTargetAngle() == intakePosition) {
+    if (intake.atTargetAngle()) {
       shooter.setPosition(shooterPosition);
     }
   }

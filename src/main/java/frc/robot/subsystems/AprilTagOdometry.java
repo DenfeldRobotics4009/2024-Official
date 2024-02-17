@@ -90,6 +90,19 @@ public class AprilTagOdometry extends SubsystemBase {
         return getPipelineResult().targets;
     }
 
+    /**
+     * Returns the target of a given id, if that target
+     * is currently visible by this camera.
+     * @param id april tag id
+     * @return
+     */
+    public Optional<PhotonTrackedTarget> getTarget(int id) {
+        for (PhotonTrackedTarget target : getTargets()) {
+            if (target.getFiducialId() == id) return Optional.of(target);
+        }
+        return Optional.empty();
+    }
+
     public Optional<PhotonTrackedTarget> getBestTarget() {
         PhotonPipelineResult result = getPipelineResult();
         if (!result.hasTargets()) return Optional.empty();
@@ -125,11 +138,6 @@ public class AprilTagOdometry extends SubsystemBase {
         // Ensure the existence of this tag id
         if (tagPose.isEmpty()) {return -1;}
 
-        System.out.println( "X: " +
-         target.getBestCameraToTarget().getZ());
-        System.out.println( "Z: " +
-         target.getBestCameraToTarget().getX());
-
         Transform3d cameraToTarget = target.getBestCameraToTarget();
         return Math.hypot(cameraToTarget.getX(), cameraToTarget.getY());
     }
@@ -138,6 +146,11 @@ public class AprilTagOdometry extends SubsystemBase {
      * @return Distance in meters
      */
     public double getDistanceToSpeaker() {
+
+        Optional<PhotonTrackedTarget> target = getTarget(speakerID);
+    
+        if (target.isPresent()) return getDistanceToTarget(target.get());
+
         Translation2d targetPose = AprilTagOdometry.aprilTagFieldLayout.getTagPose(speakerID).get().getTranslation().toTranslation2d();
         
         if (Field.isRedAlliance()) {
@@ -145,6 +158,27 @@ public class AprilTagOdometry extends SubsystemBase {
         }
 
         return SwerveDrive.getInstance().getPosition().getTranslation().getDistance(targetPose);
+    }
+
+    /**
+     * @return Degrees
+     */
+    public double getYawToSpeaker() {
+        Optional<PhotonTrackedTarget> target = getTarget(speakerID);
+        if (target.isPresent()) return target.get().getYaw();
+
+
+        Translation2d targetPose = AprilTagOdometry.aprilTagFieldLayout.getTagPose(speakerID).get().getTranslation().toTranslation2d();
+        
+        if (Field.isRedAlliance()) {
+            targetPose = Field.translateRobotPoseToRed(targetPose);
+        }
+
+        return targetPose.minus(
+                SwerveDrive.getInstance().getPosition().getTranslation()
+            ).getAngle().minus(
+                SwerveDrive.getInstance().getPosition().getRotation()
+            ).getDegrees();
     }
 
     Optional<Pose2d> getPositionFromTargets() {

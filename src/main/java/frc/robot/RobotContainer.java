@@ -7,6 +7,8 @@ package frc.robot;
 import frc.robot.Constants.Swerve;
 import frc.robot.auto.pathing.AutoShuffleboardTab;
 import frc.robot.auto.pathing.PathingConstants;
+import frc.robot.commands.ClimbDown;
+import frc.robot.commands.ClimbUp;
 import frc.robot.commands.Drive;
 import frc.robot.commands.Intake;
 import frc.robot.commands.MoveIntakeFirst;
@@ -22,6 +24,7 @@ import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.AprilTagOdometry;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.NoteCamera;
 import org.photonvision.PhotonCamera;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -37,6 +40,7 @@ public class RobotContainer {
   
   final Shooter shooter = Shooter.getInstance();
   final IntakeSubsystem intake = IntakeSubsystem.getInstance();
+  final Climber climber = Climber.getInstance();
 
   // Create a new april-tag camera, this is a subsystem.
   public static final AprilTagOdometry cam1 = new AprilTagOdometry(
@@ -155,6 +159,24 @@ public class RobotContainer {
      * the button is held, or until sensor is tripped.
      */
     controls.getOperatorButton(3).whileTrue(new Intake(intake, cam2));
+
+    /**
+     * CLIMBER
+     * 
+     * Moves the climber arms upward, each arm will automatically stop
+     * when its upper bound is reached. The command will not end until
+     * the button is released.
+     */
+    controls.getOperatorButton(7).whileTrue(new ClimbUp(climber));
+
+    /**
+     * CLIMBER
+     * 
+     * Moves the climber arms downward, each arm will automatically stop
+     * when its lower bound is reached. The command will not end until
+     * the button is released.
+     */
+    controls.getOperatorButton(9).whileTrue(new ClimbDown(climber));
   }
 
   /**
