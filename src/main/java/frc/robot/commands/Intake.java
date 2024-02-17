@@ -57,11 +57,9 @@ public class Intake extends Command implements AutoRotationSource{
     Optional<Double> yawToNote = camera.getYawToNote();
     if (yawToNote.isPresent()) {
       return Optional.of(
-        new Rotation2d()
-        // // Current yaw to note, plus current drive angle
-        // new Rotation2d(Math.toRadians(yawToNote.get())).plus(
-        //   SwerveDrive.getInstance().getPosition().getRotation()
-        // )
+        new Rotation2d(Math.toRadians(-yawToNote.get())).plus(
+          SwerveDrive.getInstance().getPosition().getRotation()
+        )
       );
     }
 
