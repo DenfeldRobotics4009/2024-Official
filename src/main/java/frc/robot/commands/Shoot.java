@@ -64,6 +64,8 @@ public class Shoot extends Command {
     SmartDashboard.putNumber("Distance", distance);
     SmartDashboard.putNumber("Angle Shot", angle);
 
+    SmartDashboard.putNumber("Offset Degrees", camera.getYawToSpeaker());
+
     //get flywheels are up to speed
     shooter.setPosition(angle);
     boolean atShooterSpeed = shooter.setFlyWheelSpeed(Constants.Shooter.flyWheelSpeed);
