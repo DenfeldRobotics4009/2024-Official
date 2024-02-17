@@ -89,14 +89,14 @@ public class RightMidCenterMidCenterRightMidRight extends SequentialCommandGroup
                 )
             );
     public RightMidCenterMidCenterRightMidRight() {
-        super(
+        // super(
 
-            /**
-             * This command sets the original position of the robot,
-             * as when the robot powers on it will set its position
-             * initially to (0, 0)
-             */
-            new SetDrivePosition(new Pose2d(Constants.Paths.START_RIGHT.getX(),Constants.Paths.START_RIGHT.getY(),new Rotation2d(Math.PI/2))), //starts at these points (might need to tweak)
+        //     /**
+        //      * This command sets the original position of the robot,
+        //      * as when the robot powers on it will set its position
+        //      * initially to (0, 0)
+        //      */
+        //     new SetDrivePosition(new Pose2d(Constants.Paths.START_RIGHT.getX(),Constants.Paths.START_RIGHT.getY(),new Rotation2d(Math.PI/2))), //starts at these points (might need to tweak)
 
             //Shoot Starting Piece while moving back
             new FollowPathWithRotationSource(

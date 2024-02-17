@@ -29,7 +29,7 @@ public class CenterNearCenterNearRightPath extends Path {
          * into super is the first point along the path.
          */
         super(            
-            0.5, // End tolerance
+            0.5 // End tolerance
             
         );
     }
