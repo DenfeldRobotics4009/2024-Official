@@ -41,6 +41,10 @@ public class Shooter extends SubsystemBase {
   public final ShuffleboardTab turretTab = Shuffleboard.getTab("Turret");
   GenericEntry rpmEntryTop;
   GenericEntry rpmEntryBottom;
+  GenericEntry pEntry;
+  GenericEntry iEntry;
+  GenericEntry dEntry;
+  GenericEntry encoderPosEntry;
 
   private CANSparkFlex topMotor = new CANSparkFlex(Constants.Shooter.topMotorID, MotorType.kBrushless);
   private CANSparkFlex bottomMotor = new CANSparkFlex(Constants.Shooter.bottomMotorID, MotorType.kBrushless);
@@ -84,6 +88,11 @@ public class Shooter extends SubsystemBase {
     rpmEntryTop = turretTab.add("rpmEntryTop", 5440).withWidget("Number Slider").getEntry();
     rpmEntryBottom = turretTab.add("rpmEntryBottom", 5440).withWidget("Number Slider").getEntry();
 
+    pEntry = turretTab.add("pEntry", 0.01).getEntry();
+    iEntry = turretTab.add("iEntry", 0).getEntry();
+    dEntry = turretTab.add("dEntry", 0).getEntry();
+    encoderPosEntry = turretTab.add("encoder Pos", 0).getEntry();
+
     // Set PID values for flywheels using spark maxes, we are
     // using these PID controllers as they support feed forward.
     topFlywheelPidController.setP(Constants.Shooter.flyWheelP);
@@ -100,13 +109,15 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Aim Angle", aim.getEncoder().getPosition()*2*Math.PI);
-    double speed = aimPIDController.calculate(aim.getEncoder().getPosition()*2*Math.PI, targetAngle);
+    double speed = aimPIDController.calculate(aim.getEncoder().getPosition()*2*Math.PI);
     MathUtil.clamp(speed, -1, 1);
     aim.set(speed);
 
     SmartDashboard.putBoolean("Sensor", getBarrelSensor());
 
-    SmartDashboard.putNumber("Shooter Angle (Radians)", aim.getEncoder().getPosition()*2*Math.PI);
+    aimPIDController.setPID(pEntry.getDouble(0.01), iEntry.getDouble(0), dEntry.getDouble(0));
+
+    encoderPosEntry.setDouble(aim.getEncoder().getPosition());
 
     // Check the limit switch to reset aim encoder
     if (aimLimitSwitch.get()) {
@@ -132,17 +143,22 @@ public class Shooter extends SubsystemBase {
    * @param percentPower [-1, 1]
    */
   public boolean setFlyWheelSpeed(double rpm) {
+    return setFlyWheelSpeed(rpm);
+  }
+
+  public boolean setFlyWheelSpeed(double topRPM, double bottomRPM) {
     // Set pid values, this automatically drives the motor
-    bottomFlywheelPidController.setReference(-rpmEntryTop.getDouble(5440), ControlType.kVelocity);
-    topFlywheelPidController.setReference(rpmEntryBottom.getDouble(5440), ControlType.kVelocity);
+    bottomFlywheelPidController.setReference(-bottomRPM, ControlType.kVelocity);
+    topFlywheelPidController.setReference(topRPM, ControlType.kVelocity);
 
     // Check tolerance
     return (
-      topMotor.getEncoder().getVelocity() >= (rpm-Constants.Shooter.flyWheelTolerance) && 
-      bottomMotor.getEncoder().getVelocity() <= (Constants.Shooter.flyWheelTolerance-rpm)
+      topMotor.getEncoder().getVelocity() >= (topRPM-Constants.Shooter.flyWheelTolerance) && 
+      bottomMotor.getEncoder().getVelocity() <= (Constants.Shooter.flyWheelTolerance-bottomRPM)
     );
   }
-    public void feed() {
+
+  public void feed() {
     feeder.set(-Constants.Shooter.feederSpeed);
   }
   public void stopFeed() {
@@ -151,10 +167,11 @@ public class Shooter extends SubsystemBase {
 
   public void setPosition(double position) {
     targetAngle = MathUtil.clamp(position, Constants.Shooter.aimRangeFrom0, 0);
+    aimPIDController.setSetpoint(targetAngle);
   }
 
   public void setPosition(shooterPosition position) {
-    targetAngle = position.get();
+    setPosition(position.get());
   }
 
   public void stopShooter() {

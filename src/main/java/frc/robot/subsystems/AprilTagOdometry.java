@@ -148,6 +148,7 @@ public class AprilTagOdometry extends SubsystemBase {
     public double getDistanceToSpeaker() {
 
         Optional<PhotonTrackedTarget> target = getTarget(speakerID);
+    
         if (target.isPresent()) return getDistanceToTarget(target.get());
 
         Translation2d targetPose = AprilTagOdometry.aprilTagFieldLayout.getTagPose(speakerID).get().getTranslation().toTranslation2d();
