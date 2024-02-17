@@ -3,16 +3,43 @@ package frc.robot.auto.autos;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
+import frc.robot.auto.FollowPathWithRotationSource;
 import frc.robot.auto.pathing.FollowPath;
 import frc.robot.auto.pathing.pathObjects.Path;
 import frc.robot.auto.pathing.pathObjects.PathPoint;
-import frc.robot.auto.paths.leftStart.threePiece.LeftNearLeftMidLeftPath;
 import frc.robot.auto.util.SetDrivePosition;
+import frc.robot.commands.AutoShoot;
+import frc.robot.commands.Intake;
+import frc.robot.commands.MoveIntakeFirst;
+import frc.robot.commands.MoveShooterFirst;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.IntakeSubsystem.intakePosition;
+import frc.robot.subsystems.Shooter.shooterPosition;
 
 public class LeftNearLeftMidLeft extends SequentialCommandGroup {
+    private static Command closeRobot = new MoveShooterFirst(
+                            IntakeSubsystem.getInstance(),
+                            Shooter.getInstance(),
+                            intakePosition.STARTING.get(),
+                            shooterPosition.GROUND.get()
+                        );
+
+    private static Command robotIntake = new MoveIntakeFirst(IntakeSubsystem.getInstance(), 
+                            Shooter.getInstance(), 
+                            intakePosition.GROUND.get(), 
+                            shooterPosition.DEPOSIT.get()
+                        );
+    private static Command clearIntake = new MoveIntakeFirst(IntakeSubsystem.getInstance(), 
+                            Shooter.getInstance(), 
+                            intakePosition.DEPOSIT.get(), 
+                            shooterPosition.GROUND.get()
+                        );
     public LeftNearLeftMidLeft(){
         super(
 
@@ -21,16 +48,15 @@ public class LeftNearLeftMidLeft extends SequentialCommandGroup {
              * as when the robot powers on it will set its position
              * initially to (0, 0)
              */
-            new SetDrivePosition(new Pose2d(0, 0,new Rotation2d(Math.toRadians(239)))), //starts at these points (might need to tweak)
+            new SetDrivePosition(new Pose2d(0, 0,Constants.Paths.START_LEFT_ANGLE)), //starts at these points (might need to tweak)
 
             // This command will run until the end of the path is reached.
-            new FollowPath(
+            new FollowPathWithRotationSource(
                 new Path(
                     new PathPoint(
-                        Constants.Paths.START_CENTER,               // Starting Position
-                        new Rotation2d(Math.toRadians(239)),     // Rotation (rad)
-                        4,    // Speed (m/s)
-                        new PrintCommand("Started here")       // Command 
+                        Constants.Paths.START_LEFT,               // Starting Position
+                        Constants.Paths.START_LEFT_ANGLE,
+                        4    // Speed (m/s)
                     ),
                     new PathPoint(
                         new Translation2d(0.5,0),               // Starting Position
@@ -44,7 +70,8 @@ public class LeftNearLeftMidLeft extends SequentialCommandGroup {
                         2,    // Speed (m/s)
                         new PrintCommand("Moving in to grab")       // Command 
                     )
-                )
+                ),
+                new AutoShoot(Shooter.getInstance(), RobotContainer.cam1)
             ),
             new FollowPath(
                 new Path(

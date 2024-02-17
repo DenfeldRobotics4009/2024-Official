@@ -9,8 +9,6 @@ import frc.robot.Constants;
 import frc.robot.auto.pathing.FollowPath;
 import frc.robot.auto.pathing.pathObjects.Path;
 import frc.robot.auto.pathing.pathObjects.PathPoint;
-import frc.robot.auto.paths.centerStart.threePiece.CenterNearCenterNearRightPath;
-import frc.robot.auto.util.SetDrivePosition;
 
 public class CenterNearCenterNearRight extends SequentialCommandGroup {
   public CenterNearCenterNearRight(){

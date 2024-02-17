@@ -4,7 +4,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
@@ -12,7 +11,6 @@ import frc.robot.auto.FollowPathWithRotationSource;
 import frc.robot.auto.pathing.FollowPath;
 import frc.robot.auto.pathing.pathObjects.Path;
 import frc.robot.auto.pathing.pathObjects.PathPoint;
-import frc.robot.auto.paths.rightStart.fourPiece.RightMidCenterMidCenterRightMidRightPath;
 import frc.robot.auto.util.SetDrivePosition;
 import frc.robot.commands.AutoShoot;
 import frc.robot.commands.Intake;
@@ -23,7 +21,7 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.IntakeSubsystem.intakePosition;
 import frc.robot.subsystems.Shooter.shooterPosition;
 
-public class RightMidCenterMidCenterRightMidRight extends SequentialCommandGroup {
+public class FarRightMidCenterMidCenterRightMidRight extends SequentialCommandGroup {
 
     private static Command closeRobot = new MoveShooterFirst(
                             IntakeSubsystem.getInstance(),
@@ -88,7 +86,7 @@ public class RightMidCenterMidCenterRightMidRight extends SequentialCommandGroup
                     )
                 )
             );
-    public RightMidCenterMidCenterRightMidRight() {
+    public FarRightMidCenterMidCenterRightMidRight() {
         super(
 
             /**

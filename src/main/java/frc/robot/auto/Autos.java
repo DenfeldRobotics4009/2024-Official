@@ -8,7 +8,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.auto.pathing.FollowPath;
-import frc.robot.auto.paths.rightStart.fourPiece.RightMidCenterMidCenterRightMidRightPath;
 import frc.robot.auto.util.SetDrivePosition;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -32,7 +31,7 @@ public enum Autos {
        new LeftNearLeftMidLeft()
     ),
     RightMidCenterMidCenterRightMidRight(
-        new RightMidCenterMidCenterRightMidRight()
+        new FarRightMidCenterMidCenterRightMidRight()
     );    
     /* ----------------- */
 
