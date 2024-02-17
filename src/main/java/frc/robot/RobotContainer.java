@@ -43,8 +43,8 @@ public class RobotContainer {
   final Climber climber = Climber.getInstance();
 
   // Create a new april-tag camera, this is a subsystem.
-  // final AprilTagOdometry cam1 = new AprilTagOdometry(
-  //   new PhotonCamera("Microsoft_LifeCam_HD-3000-1"), Constants.AprilTagOdometry.cameraPose);
+  final AprilTagOdometry cam1 = new AprilTagOdometry(
+    new PhotonCamera("Microsoft_LifeCam_HD-3000-1"), Constants.AprilTagOdometry.cameraPose);
   final NoteCamera cam2 = new NoteCamera(new PhotonCamera("Microsoft_LifeCam_HD-3000-2"));
   
   final Controls controls = Controls.getInstance();
@@ -101,12 +101,12 @@ public class RobotContainer {
      * 
      * Feeding is triggered by POV UP
      */
-    // controls.getOperatorButton(1).whileTrue(
-    //   new SequentialCommandGroup(
-    //     new MoveIntakeFirst(intake, turret, intakePosition.DEPOSIT.get(), shooterPosition.GROUND.get()),
-    //     new Shoot(turret, controls, driveTrain, cam1)
-    //   )
-    // );
+    controls.getOperatorButton(1).whileTrue(
+      new SequentialCommandGroup(
+        new MoveIntakeFirst(intake, turret, intakePosition.DEPOSIT.get(), shooterPosition.GROUND.get()),
+        new Shoot(turret, controls, driveTrain, cam1)
+      )
+    );
 
     /**
      * INTAKE
