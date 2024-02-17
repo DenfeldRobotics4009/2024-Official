@@ -39,7 +39,7 @@ public final class Constants {
         public static double feederSpeed = 1;
         public static int aimMotorID = 40;
         
-        public static double pidTolerance = 10;
+        public static double pidTolerance = 4;
 
         public static double aimRangeFrom0 = -133;
         public static double transferAngle = -100;
@@ -59,13 +59,16 @@ public final class Constants {
         public static int aimLimitSwitchID = 0;
 
         public static double flyWheelSpeed = 5440; // RPM
+
+        public static double topAmpFlyWheelSpeed = 1371; // RPM
+        public static double bottomAmpFlyWheelSpeed = 378; // RPM
     }
     public static final class Intake {
         public static int intakeMotorID = 12;
         public static int rotateMotorID = 10; 
-        public static double intakeMotorPower = -0.375;
+        public static double intakeMotorPower = -0.5;
 
-        public static double ground = -30;
+        public static double ground = -35;
         public static double deposit = -15;
 
         public static double pidTolerance = 4;

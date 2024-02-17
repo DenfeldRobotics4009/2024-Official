@@ -18,31 +18,20 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.IntakeSubsystem.intakePosition;
 import frc.robot.subsystems.swerve.SwerveModule;
 
-public class Shoot extends Command {
+public class AmpShoot extends Command {
 
   Shooter shooter;
   Controls controls;
-  SwerveDrive swerveDrive;
-  AprilTagOdometry camera;
-
-  PIDController aimingPidController = new PIDController(0.1, 0, 0);
 
   /** Creates a new Shoot. */
-  public Shoot(
+  public AmpShoot(
     Shooter shooter, 
-    Controls controls, 
-    SwerveDrive swerveDrive,
-    AprilTagOdometry camera
+    Controls controls
   ) {
     this.shooter = shooter;
     this.controls = controls;
-    this.swerveDrive = swerveDrive;
-    this.camera = camera;
     
-    addRequirements(shooter, swerveDrive);
-
-    aimingPidController.setSetpoint(0);
-    aimingPidController.enableContinuousInput(0, 360);
+    addRequirements(shooter);
   }
 
   // Called when the command is initially scheduled.
@@ -54,35 +43,18 @@ public class Shoot extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-    // Calculate distance
-    double distance = camera.getDistanceToSpeaker();
     // Convert joystick value into a shooter angle
-    double angle = -controls.operate.getThrottle() * Constants.Shooter.aimRangeFrom0;
-    if (ShotProfile.getHeightFromDistance(distance).isPresent()) {
-      angle = ShotProfile.getHeightFromDistance(distance).get();
-    }
-
-    System.out.println("Distance " + distance);
-    System.out.println("Shot angle " + angle);
-    System.out.println("Yaw " + camera.getYawToSpeaker());
+    double angle = -0.38 * Constants.Shooter.aimRangeFrom0;
 
     //get flywheels are up to speed
     shooter.setPosition(angle);
-    boolean atShooterSpeed = shooter.setFlyWheelSpeed(Constants.Shooter.flyWheelSpeed);
-
-    //aim drive train
-    ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
-      new ChassisSpeeds(
-        controls.getForward() * SwerveModule.maxMetersPerSecond,
-        controls.getLateral() * SwerveModule.maxMetersPerSecond,
-        aimingPidController.calculate(camera.getYawToSpeaker())
-      ), 
-      SwerveDrive.navxGyro.getRotation2d()
+    shooter.setFlyWheelSpeed(
+      Constants.Shooter.topAmpFlyWheelSpeed, 
+      Constants.Shooter.bottomAmpFlyWheelSpeed
     );
-    swerveDrive.drive(speeds);
+
     //if flywheels up to speed, shooter aimed, drive train aimed, then feed in
-    if (controls.getOperatePOV() == 0 && atShooterSpeed) {
+    if (controls.getOperatePOV() == 0) {
       shooter.feed();
     }
     else {
