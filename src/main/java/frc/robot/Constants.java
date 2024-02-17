@@ -24,22 +24,11 @@ public final class Constants {
 
     public static double inchesInMeter = 39.3700787402;
 
-    public static final class Arm {
-        public static int armIntakeMotorID = 63;
-        public static int armShooterMotorLeftID = 64;
-        public static int armShooterMotorRightID = 65;
-        public static int armMotorID = 80;
-        public static double armIntakeMotorPower = 0.4;
-        public static double source = 1000;
-        public static double ground = 500;
-        public static double deposit = 250;
-        public static double upperLimit = 6.25;
-        public static double lowerLimit = 0;
-    }
     public static final class Climber {
-        public static int climberMotorID = 70;
-        public static double down = 1000;
-        public static double up = 500;
+        public static int leftClimberMotorID = 18;
+        public static int rightClimberMotorID = 19;
+        public static double down = 0;
+        public static double up = 100;
         public static double climberMotorPower = 0.5;  
     }
     public static final class Shooter {
