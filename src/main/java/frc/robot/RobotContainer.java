@@ -13,6 +13,7 @@ import frc.robot.commands.ClimbDown;
 import frc.robot.commands.ClimbUp;
 import frc.robot.commands.Drive;
 import frc.robot.commands.FastIntake;
+import frc.robot.commands.FeedShooter;
 import frc.robot.commands.Intake;
 import frc.robot.commands.MoveIntakeFirst;
 import frc.robot.commands.MoveShooterFirst;
@@ -111,6 +112,10 @@ public class RobotContainer {
       )
     );
 
+    new Trigger(() -> {return controls.operate.getRightTriggerAxis() >= 0.1;}).whileTrue(
+      new FeedShooter(shooter)
+    );
+
     /**
      * AMP SHOOT
      * 
@@ -167,6 +172,13 @@ public class RobotContainer {
      */
     new Trigger(() -> {return controls.operate.getAButton();}).onTrue(
       new MoveShooterFirst(intake, shooter, intakePosition.STARTING.get(), shooterPosition.GROUND.get())
+    );
+
+    new Trigger(() -> {return controls.operate.getXButton();}).whileTrue(
+      new SequentialCommandGroup(
+        new MoveIntakeFirst(intake, shooter, intakePosition.DEPOSIT.get(), -30), // TODO tune angle
+        new FeedShooter(shooter)
+      )
     );
 
     /**

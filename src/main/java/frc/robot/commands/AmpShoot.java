@@ -54,12 +54,12 @@ public class AmpShoot extends Command {
     );
 
     //if flywheels up to speed, shooter aimed, drive train aimed, then feed in
-    if (controls.operate.getRightTriggerAxis() > 0.1) {
-      shooter.feed();
-    }
-    else {
-      shooter.stopFeed();
-    }
+    // if (controls.operate.getRightTriggerAxis() > 0.1) {
+    //   shooter.feed();
+    // }
+    // else {
+    //   shooter.stopFeed();
+    // }
   }
 
   // Called once the command ends or is interrupted.

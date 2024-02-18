@@ -25,6 +25,8 @@ public class Shoot extends Command {
   SwerveDrive swerveDrive;
   AprilTagOdometry camera;
 
+  double angle = 0;
+
   PIDController aimingPidController = new PIDController(0.1, 0, 0);
 
   /** Creates a new Shoot. */
@@ -58,10 +60,12 @@ public class Shoot extends Command {
     // Calculate distance
     double distance = camera.getDistanceToSpeaker();
     // Convert joystick value into a shooter angle
-    double angle = 0; // = -controls.operate.getThrottle() * Constants.Shooter.aimRangeFrom0;
-    if (ShotProfile.getHeightFromDistance(distance).isPresent()) {
-      angle = ShotProfile.getHeightFromDistance(distance).get();
-    }
+    // double angle = 0; // = -controls.operate.getThrottle() * Constants.Shooter.aimRangeFrom0;
+    // if (ShotProfile.getHeightFromDistance(distance).isPresent()) {
+    //   angle = ShotProfile.getHeightFromDistance(distance).get();
+    // }
+
+    angle += 3* controls.operate.getLeftY();
 
     System.out.println("Barrel Sensor " + shooter.getBarrelSensor());
     // System.out.println("Distance " + distance);
@@ -83,12 +87,12 @@ public class Shoot extends Command {
     );
     swerveDrive.drive(speeds);
     //if flywheels up to speed, shooter aimed, drive train aimed, then feed in
-    if (controls.operate.getRightTriggerAxis() >= 0.1 && atShooterSpeed) {
-      shooter.feed();
-    }
-    else {
-      shooter.stopFeed();
-    }
+    // if (controls.operate.getRightTriggerAxis() >= 0.1 && atShooterSpeed) {
+    //   shooter.feed();
+    // }
+    // else {
+    //   shooter.stopFeed();
+    // }
   }
 
   // Called once the command ends or is interrupted.

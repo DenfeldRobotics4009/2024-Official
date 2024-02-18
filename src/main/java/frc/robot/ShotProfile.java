@@ -19,6 +19,7 @@ public final class ShotProfile {
         // x = distance (inches), y = height (joystick value)
         new Translation2d(0, 0),
         new Translation2d(33, 0),
+        new Translation2d(38, 0),
         new Translation2d(76, -0.35),
         new Translation2d(84.5, -0.46),
         new Translation2d(118, -0.54),

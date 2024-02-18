@@ -66,12 +66,12 @@ public final class Constants {
     public static final class Intake {
         public static int intakeMotorID = 12;
         public static int rotateMotorID = 10; 
-        public static double intakeMotorPower = -0.8;
+        public static double intakeMotorPower = -0.6;
 
-        public static double ground = -33.5;
+        public static double ground = -36;
         public static double deposit = -15;
 
-        public static double pidTolerance = 4;
+        public static double pidTolerance = 1;
 
         public static int intakeLaserSensorID = 1;
         public static int intakeInnerLimitSwitchID = 1;
@@ -138,6 +138,7 @@ public final class Constants {
             public static Translation2d START_LEFT = new Translation2d(0,7.054);
             public static Rotation2d START_LEFT_ANGLE = new Rotation2d(Math.toRadians(-121));
             public static Translation2d START_CENTER = new Translation2d(0,0); //Find Real Value
+            public static Rotation2d START_CENTER_ANGLE = new Rotation2d(Math.toRadians(180));
             public static Translation2d START_RIGHT = new Translation2d(.255,5.09);
             public static Rotation2d START_RIGHT_ANGLE = new Rotation2d(Math.toRadians(121));            
             public static Translation2d START_FAR_RIGHT = new Translation2d(0,1.622);

@@ -36,6 +36,10 @@ public class Field {
         );
     }
 
+    public static Translation2d flipPoint(Translation2d point) {
+        return new Translation2d(fieldLengthMeters, fieldWidthMeters - point.getY());
+    }
+
     /**
      * Translates a position relative to the blue 
      * alliance zero to a position relative to a red

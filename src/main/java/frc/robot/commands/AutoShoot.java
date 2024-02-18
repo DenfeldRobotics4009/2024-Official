@@ -65,7 +65,7 @@ public class AutoShoot extends Command implements AutoRotationSource {
 
     //get flywheels are up to speed
     shooter.setPosition(angle);
-    boolean atShooterSpeed = shooter.setFlyWheelSpeed(Constants.Shooter.topAmpFlyWheelSpeed, Constants.Shooter.bottomAmpFlyWheelSpeed);
+    boolean atShooterSpeed = shooter.setFlyWheelSpeed(Constants.Shooter.flyWheelSpeed);
 
     //aim drive train
 
