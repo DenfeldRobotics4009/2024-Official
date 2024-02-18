@@ -68,7 +68,7 @@ public final class Constants {
         public static int rotateMotorID = 10; 
         public static double intakeMotorPower = -0.6;
 
-        public static double ground = -36;
+        public static double ground = -29;
         public static double deposit = -15;
 
         public static double pidTolerance = 1;

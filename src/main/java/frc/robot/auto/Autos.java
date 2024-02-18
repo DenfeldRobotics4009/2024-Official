@@ -102,7 +102,114 @@ public enum Autos {
                 )
             )
         )
+    ),
+    DriveForward(
+        new SequentialCommandGroup(
+            new FollowPath(
+                new Path(
+                    new PathPoint(
+                        new Translation2d(),
+                        new Rotation2d(),
+                        1
+                    ),
+                    new PathPoint(
+                        new Translation2d(1,0),
+                        new Rotation2d(),
+                        0
+                    )
+                )
+            )
+        )
+    ),
+    DriveAndReturn(
+        new SequentialCommandGroup(
+            new FollowPath(
+                new Path(
+                    new PathPoint(
+                        new Translation2d(),
+                        new Rotation2d(),
+                        1
+                    ),
+                    new PathPoint(
+                        new Translation2d(1,0),
+                        new Rotation2d(),
+                        0
+                    )
+                )
+            ),
+            new FollowPath(
+                new Path(
+                    new PathPoint(
+                        new Translation2d(1,0),
+                        new Rotation2d(),
+                        1
+                    ),
+                    new PathPoint(
+                        new Translation2d(0,0),
+                        new Rotation2d(),
+                        0
+                    )
+                )
+            )
+        )
+    ),
+    DriveWithSetPosition(
+        new SequentialCommandGroup(
+            new SetDrivePosition(new Pose2d(new Translation2d(1, 1), new Rotation2d())),
+            new FollowPath(
+                new Path(
+                    new PathPoint(
+                        new Translation2d(1, 1),
+                        new Rotation2d(),
+                        1
+                    ),
+                    new PathPoint(
+                        new Translation2d(2,1),
+                        new Rotation2d(),
+                        0
+                    )
+                )
+            )
+        )
+    ),
+    DriveWithRotation(
+        new SequentialCommandGroup(
+            new FollowPath(
+                new Path(
+                    new PathPoint(
+                        new Translation2d(0, 0),
+                        new Rotation2d(Math.toRadians(0)),
+                        1
+                    ),
+                    new PathPoint(
+                        new Translation2d(0, 0),
+                        new Rotation2d(Math.toRadians(90)),
+                        0
+                    )
+                )
+            )
+        )
+    ),
+    DriveWithSetRotation(
+        new SequentialCommandGroup(
+            new SetDrivePosition(new Pose2d(new Translation2d(), new Rotation2d(Math.toRadians(90)))),
+            new FollowPath(
+                new Path(
+                    new PathPoint(
+                        new Translation2d(0, 0),
+                        new Rotation2d(Math.toRadians(90)),
+                        1
+                    ),
+                    new PathPoint(
+                        new Translation2d(1, 0),
+                        new Rotation2d(Math.toRadians(90)),
+                        0
+                    )
+                )
+            )
+        )
     );
+    
     /* ----------------- */
 
     /**
