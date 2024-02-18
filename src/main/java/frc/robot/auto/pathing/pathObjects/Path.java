@@ -60,6 +60,8 @@ public class Path {
             for (PathPoint pathPoint : Points) {
                 pathPoint.posMeters = Field.translateRobotPoseToRed(pathPoint.posMeters);
             }
+        } else {
+            System.out.println("Assuming blue alliance");
         }
 
         this.lastPointTolerance = lastPointTolerance;

@@ -14,7 +14,7 @@ public class Controls {
     // public final Joystick operate = new Joystick(3);
 
     public final XboxController driveController = new XboxController(2);
-    public final XboxController operate = new XboxController(4);
+    public final XboxController operate = new XboxController(3);
 
     SendableChooser<Integer> driveMode = new SendableChooser<Integer>();
     //SendableChooser<Integer> operateMode = new SendableChooser<Integer>();

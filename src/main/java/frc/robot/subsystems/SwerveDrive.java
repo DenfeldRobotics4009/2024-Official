@@ -117,7 +117,8 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
       SwerveModule.getTrackPositions()
     );
 
-    navxGyro.setAngleAdjustment(-Swerve.forwardAngle.getDegrees());
+    // Start driving backwards from facing direction
+    navxGyro.setAngleAdjustment(-Swerve.forwardAngle.getDegrees() + 180);
 
     /**
      * Define with default values, this may be rebuilt when the auto

@@ -148,7 +148,7 @@ public class RobotContainer {
      * -> move shooter to transfer (will end immediately) -> move intake to transfer
      * -> run transfer process.
      */
-    new Trigger(() -> controls.operate.getLeftTriggerAxis() >= 0.1).whileTrue(
+    new Trigger(() -> {return controls.operate.getLeftTriggerAxis() >= 0.1;}).whileTrue(
       new SequentialCommandGroup(
         new MoveIntakeFirst(intake, shooter, intakePosition.GROUND.get(), shooterPosition.DEPOSIT.get()),
         new Intake(intake, cam2), // Continue until a piece is picked up
@@ -165,7 +165,7 @@ public class RobotContainer {
      * Moves the shooter to 0 position, then moves the intake to the 0 position.
      * This fully tucks all arms into the robot.
      */
-    new Trigger(() -> controls.operate.getAButton()).onTrue(
+    new Trigger(() -> {return controls.operate.getAButton();}).onTrue(
       new MoveShooterFirst(intake, shooter, intakePosition.STARTING.get(), shooterPosition.GROUND.get())
     );
 
@@ -182,7 +182,7 @@ public class RobotContainer {
      * Does not move the intake or shooter, only runs the outtake while
      * the button is held.
      */
-    // controls.getOperatorButton(5).whileTrue(new Outtake(intake));
+    new Trigger(() -> {return controls.operate.getYButton();}).whileTrue(new Outtake(intake));
 
     /**
      * FAST INTAKE
@@ -190,7 +190,7 @@ public class RobotContainer {
      * Does not move the intake or shooter, only runs the intake while
      * the button is held, or until sensor is tripped.
      */
-    new Trigger(() -> controls.operate.getBButton()).whileTrue(new FastIntake(intake));
+    new Trigger(() -> {return controls.operate.getBButton();}).whileTrue(new FastIntake(intake));
 
     /**
      * CLIMBER
@@ -199,7 +199,7 @@ public class RobotContainer {
      * when its upper bound is reached. The command will not end until
      * the button is released.
      */
-    new Trigger(() -> controls.operate.getLeftBumper()).whileTrue(new ClimbUp(climber));
+    new Trigger(() -> {return controls.operate.getLeftBumper();}).whileTrue(new ClimbUp(climber));
 
     /**
      * CLIMBER
@@ -208,7 +208,7 @@ public class RobotContainer {
      * when its lower bound is reached. The command will not end until
      * the button is released.
      */
-    new Trigger(() -> controls.operate.getRightBumper()).whileTrue(new ClimbDown(climber));
+    new Trigger(() -> {return controls.operate.getRightBumper();}).whileTrue(new ClimbDown(climber));
   }
 
   /**

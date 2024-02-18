@@ -121,7 +121,7 @@ public class Shooter extends SubsystemBase {
    * @param percentPower [-1, 1]
    */
   public boolean setFlyWheelSpeed(double rpm) {
-    return setFlyWheelSpeed(rpm);
+    return setFlyWheelSpeed(rpm, rpm);
   }
 
   public boolean setFlyWheelSpeed(double topRPM, double bottomRPM) {
@@ -155,9 +155,11 @@ public class Shooter extends SubsystemBase {
   public void stopShooter() {
     topMotor.set(0);
     bottomMotor.set(0);
+    stopFeed();
   }
 
   public boolean getBarrelSensor() {
+    System.out.println("Barrel sens voltage " + barrelSensor.getVoltage());
     return barrelSensor.getVoltage() < Constants.laserSensorVoltageHigh; 
   }
 }

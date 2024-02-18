@@ -54,7 +54,7 @@ public class AmpShoot extends Command {
     );
 
     //if flywheels up to speed, shooter aimed, drive train aimed, then feed in
-    if (controls.operate.getLeftTriggerAxis() >= 0.1) {
+    if (controls.operate.getRightTriggerAxis() > 0.1) {
       shooter.feed();
     }
     else {

@@ -63,9 +63,10 @@ public class Shoot extends Command {
       angle = ShotProfile.getHeightFromDistance(distance).get();
     }
 
-    System.out.println("Distance " + distance);
-    System.out.println("Shot angle " + angle);
-    System.out.println("Yaw " + camera.getYawToSpeaker());
+    System.out.println("Barrel Sensor " + shooter.getBarrelSensor());
+    // System.out.println("Distance " + distance);
+    // System.out.println("Shot angle " + angle);
+    // System.out.println("Yaw " + camera.getYawToSpeaker());
 
     //get flywheels are up to speed
     shooter.setPosition(angle);
@@ -76,7 +77,7 @@ public class Shoot extends Command {
       new ChassisSpeeds(
         controls.getForward() * SwerveModule.maxMetersPerSecond,
         controls.getLateral() * SwerveModule.maxMetersPerSecond,
-        aimingPidController.calculate(camera.getYawToSpeaker())
+        0//-aimingPidController.calculate(camera.getYawToSpeaker())
       ), 
       SwerveDrive.navxGyro.getRotation2d()
     );

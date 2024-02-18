@@ -26,7 +26,7 @@ public class AutoShoot extends Command implements AutoRotationSource {
 
   Shooter shooter;
   AprilTagOdometry camera;
-  Rotation2d shootAngle;
+  Rotation2d shootAngle = new Rotation2d();
 
   PIDController aimingPidController = new PIDController(0.1, 0, 0);
 
@@ -52,6 +52,7 @@ public class AutoShoot extends Command implements AutoRotationSource {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    System.out.println("Barrel Sensor " + shooter.getBarrelSensor());
     // Calculate distance
     double distance = camera.getDistanceToSpeaker();
     // Convert joystick value into a shooter angle
@@ -59,12 +60,12 @@ public class AutoShoot extends Command implements AutoRotationSource {
     if (ShotProfile.getHeightFromDistance(distance).isPresent()) {
       angle = ShotProfile.getHeightFromDistance(distance).get();
     }
-    SmartDashboard.putNumber("Distance", distance);
-    SmartDashboard.putNumber("Angle Shot", angle);
+    // SmartDashboard.putNumber("Distance", distance);
+    // SmartDashboard.putNumber("Angle Shot", angle);
 
     //get flywheels are up to speed
     shooter.setPosition(angle);
-    boolean atShooterSpeed = shooter.setFlyWheelSpeed(Constants.Shooter.flyWheelSpeed);
+    boolean atShooterSpeed = shooter.setFlyWheelSpeed(Constants.Shooter.topAmpFlyWheelSpeed, Constants.Shooter.bottomAmpFlyWheelSpeed);
 
     //aim drive train
 
@@ -92,6 +93,6 @@ public class AutoShoot extends Command implements AutoRotationSource {
 
   @Override
   public Optional<Rotation2d> getGoalRotation() {
-    return Optional.of(shootAngle);
+    return Optional.ofNullable(null);
   }
 }

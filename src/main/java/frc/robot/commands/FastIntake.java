@@ -47,6 +47,6 @@ public class FastIntake extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return intake.getIntakeSensor() && intake.atTargetAngle();
+    return false;// intake.getIntakeSensor() && intake.atTargetAngle();
   }
 }
