@@ -58,7 +58,7 @@ public class Shoot extends Command {
     // Calculate distance
     double distance = camera.getDistanceToSpeaker();
     // Convert joystick value into a shooter angle
-    double angle = -controls.operate.getThrottle() * Constants.Shooter.aimRangeFrom0;
+    double angle = 0; // = -controls.operate.getThrottle() * Constants.Shooter.aimRangeFrom0;
     if (ShotProfile.getHeightFromDistance(distance).isPresent()) {
       angle = ShotProfile.getHeightFromDistance(distance).get();
     }
@@ -82,7 +82,7 @@ public class Shoot extends Command {
     );
     swerveDrive.drive(speeds);
     //if flywheels up to speed, shooter aimed, drive train aimed, then feed in
-    if (controls.getOperatePOV() == 0 && atShooterSpeed) {
+    if (controls.operate.getRightTriggerAxis() >= 0.1 && atShooterSpeed) {
       shooter.feed();
     }
     else {

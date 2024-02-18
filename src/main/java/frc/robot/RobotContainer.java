@@ -7,9 +7,12 @@ package frc.robot;
 import frc.robot.Constants.Swerve;
 import frc.robot.auto.pathing.AutoShuffleboardTab;
 import frc.robot.auto.pathing.PathingConstants;
+import frc.robot.commands.AmpShoot;
+import frc.robot.commands.BurpShoot;
 import frc.robot.commands.ClimbDown;
 import frc.robot.commands.ClimbUp;
 import frc.robot.commands.Drive;
+import frc.robot.commands.FastIntake;
 import frc.robot.commands.Intake;
 import frc.robot.commands.MoveIntakeFirst;
 import frc.robot.commands.MoveShooterFirst;
@@ -99,12 +102,41 @@ public class RobotContainer {
      * Moves intake to transfer position to avoid collision,
      * then runs the shoot command to auto aim.
      * 
-     * Feeding is triggered by POV UP
+     * Feeding is triggered by the left trigger
      */
-    controls.getOperatorButton(1).whileTrue(
+    controls.getOperatePOVTrigger(90).whileTrue(
       new SequentialCommandGroup(
         new MoveIntakeFirst(intake, shooter, intakePosition.DEPOSIT.get(), shooterPosition.GROUND.get()),
         new Shoot(shooter, controls, driveTrain, cam1)
+      )
+    );
+
+    /**
+     * AMP SHOOT
+     * 
+     * Moves intake to transfer position to avoid collision,
+     * then runs the amp shoot command.
+     * 
+     * Feeding is triggered by the left trigger
+     */
+    controls.getOperatePOVTrigger(270).whileTrue(
+      new SequentialCommandGroup(
+        new MoveIntakeFirst(intake, shooter, intakePosition.DEPOSIT.get(), shooterPosition.GROUND.get()),
+        new AmpShoot(shooter, controls)
+      )
+    );
+
+    /**
+     * BURP SHOOT
+     * 
+     * Spins up the flywheels slowly for a short shot.
+     * This does not move the intake nor shooter arm
+     * 
+     * Feeding is triggered by the left trigger
+     */
+    controls.getOperatePOVTrigger(180).whileTrue(
+      new SequentialCommandGroup(
+        new BurpShoot(shooter, controls)
       )
     );
 
@@ -116,7 +148,7 @@ public class RobotContainer {
      * -> move shooter to transfer (will end immediately) -> move intake to transfer
      * -> run transfer process.
      */
-    controls.getOperatorButton(2).whileTrue(
+    new Trigger(() -> controls.operate.getLeftTriggerAxis() >= 0.1).whileTrue(
       new SequentialCommandGroup(
         new MoveIntakeFirst(intake, shooter, intakePosition.GROUND.get(), shooterPosition.DEPOSIT.get()),
         new Intake(intake, cam2), // Continue until a piece is picked up
@@ -133,7 +165,7 @@ public class RobotContainer {
      * Moves the shooter to 0 position, then moves the intake to the 0 position.
      * This fully tucks all arms into the robot.
      */
-    controls.getOperatorButton(4).onTrue(
+    new Trigger(() -> controls.operate.getAButton()).onTrue(
       new MoveShooterFirst(intake, shooter, intakePosition.STARTING.get(), shooterPosition.GROUND.get())
     );
 
@@ -142,7 +174,7 @@ public class RobotContainer {
      * 
      * Bypasses the automatic intake process and just runs the transfer.
      */
-    controls.getOperatorButton(6).whileTrue(new Transfer(intake, shooter));
+    // controls.getOperatorButton(6).whileTrue(new Transfer(intake, shooter));
 
     /**
      * OUTTAKE
@@ -150,15 +182,15 @@ public class RobotContainer {
      * Does not move the intake or shooter, only runs the outtake while
      * the button is held.
      */
-    controls.getOperatorButton(5).whileTrue(new Outtake(intake));
+    // controls.getOperatorButton(5).whileTrue(new Outtake(intake));
 
     /**
-     * INTAKE
+     * FAST INTAKE
      * 
      * Does not move the intake or shooter, only runs the intake while
      * the button is held, or until sensor is tripped.
      */
-    controls.getOperatorButton(3).whileTrue(new Intake(intake, cam2));
+    new Trigger(() -> controls.operate.getBButton()).whileTrue(new FastIntake(intake));
 
     /**
      * CLIMBER
@@ -167,7 +199,7 @@ public class RobotContainer {
      * when its upper bound is reached. The command will not end until
      * the button is released.
      */
-    controls.getOperatorButton(7).whileTrue(new ClimbUp(climber));
+    new Trigger(() -> controls.operate.getLeftBumper()).whileTrue(new ClimbUp(climber));
 
     /**
      * CLIMBER
@@ -176,7 +208,7 @@ public class RobotContainer {
      * when its lower bound is reached. The command will not end until
      * the button is released.
      */
-    controls.getOperatorButton(9).whileTrue(new ClimbDown(climber));
+    new Trigger(() -> controls.operate.getRightBumper()).whileTrue(new ClimbDown(climber));
   }
 
   /**

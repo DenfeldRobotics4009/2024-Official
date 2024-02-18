@@ -18,13 +18,13 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.IntakeSubsystem.intakePosition;
 import frc.robot.subsystems.swerve.SwerveModule;
 
-public class AmpShoot extends Command {
+public class BurpShoot extends Command {
 
   Shooter shooter;
   Controls controls;
 
   /** Creates a new Shoot. */
-  public AmpShoot(
+  public BurpShoot(
     Shooter shooter, 
     Controls controls
   ) {
@@ -43,11 +43,6 @@ public class AmpShoot extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Convert joystick value into a shooter angle
-    double angle = -0.38 * Constants.Shooter.aimRangeFrom0;
-
-    //get flywheels are up to speed
-    shooter.setPosition(angle);
     shooter.setFlyWheelSpeed(
       Constants.Shooter.topAmpFlyWheelSpeed, 
       Constants.Shooter.bottomAmpFlyWheelSpeed
