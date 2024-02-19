@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -41,7 +42,7 @@ public class IntakeSubsystem extends SubsystemBase {
   static IntakeSubsystem instance;
 
   public double goalIntakePosition = intakePosition.STARTING.get();
-  public PIDController intakePIDController = new PIDController(.05, 0.01, 0);
+  public PIDController intakePIDController = new PIDController(.04, 0.0025, 0);
 
   // When tripped, there is a piece within the intake
   AnalogInput intakeLaserSensor = new AnalogInput(Constants.Intake.intakeLaserSensorID);
@@ -75,6 +76,10 @@ public class IntakeSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+
+    System.out.println("Intake pos " + rotateMotor.getEncoder().getPosition());
+    System.out.println("Intake goal " + goalIntakePosition);
+
     // Catch limits from switches, calibrate encoder from values
     if (intakeInnerLimitSwitch.get()) {
       if (!intakeInnerSwitchToggle) {
@@ -121,6 +126,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void setPosition(double position){
     goalIntakePosition = position;
+    MathUtil.clamp(position, intakePosition.GROUND.get(), intakePosition.STARTING.get());
     intakePIDController.setSetpoint(position);
   }
 }
