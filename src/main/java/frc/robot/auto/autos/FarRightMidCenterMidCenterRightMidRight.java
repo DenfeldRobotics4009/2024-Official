@@ -45,13 +45,13 @@ public class FarRightMidCenterMidCenterRightMidRight extends SequentialCommandGr
                     new PathPoint(
                         new Translation2d(5.865,4.135),
                         new Rotation2d(0),
-                        1,
+                        3,
                         closeRobot
                     ),
                     new PathPoint(
                         new Translation2d(4.541,4.784),
                         new Rotation2d(0),
-                        1,
+                        3,
                         clearIntake
                     )
                 )
@@ -66,7 +66,7 @@ public class FarRightMidCenterMidCenterRightMidRight extends SequentialCommandGr
                     new PathPoint(
                         new Translation2d(4.531,4.884),
                         new Rotation2d(0),
-                        1
+                        3
                     )
                 ),
                 new AutoShoot(Shooter.getInstance(), RobotContainer.cam1)
@@ -76,13 +76,13 @@ public class FarRightMidCenterMidCenterRightMidRight extends SequentialCommandGr
                     new PathPoint(
                         new Translation2d(4.541,4.784),
                         new Rotation2d(0),
-                        1,
+                        3,
                         closeRobot
                     ),
                     new PathPoint(
                         new Translation2d(5.865,4.135),
                         new Rotation2d(-Math.PI/2),
-                        1
+                        3
                     )
                 )
             );
@@ -94,21 +94,21 @@ public class FarRightMidCenterMidCenterRightMidRight extends SequentialCommandGr
              * as when the robot powers on it will set its position
              * initially to (0, 0)
              */
-            new SetDrivePosition(new Pose2d(Constants.Paths.START_RIGHT.getX(),Constants.Paths.START_RIGHT.getY(),new Rotation2d(Math.PI/2))), //starts at these points (might need to tweak)
+            new SetDrivePosition(new Pose2d(Constants.Paths.START_RIGHT.getX(),Constants.Paths.START_RIGHT.getY(),new Rotation2d(0))), //starts at these points (might need to tweak)
 
             //Shoot Starting Piece while moving back
             new FollowPathWithRotationSource(
                 new Path(            
                     new PathPoint(
                         Constants.Paths.START_RIGHT,               // Starting Position (meters)
-                        new Rotation2d(-Math.PI/2),     //TODO: Find the actual angle for the starting position
-                        1,   // Speed (m/s)
+                        new Rotation2d(0),     //Starting Rotation (Rad)
+                        3,   // Speed (m/s)
                         clearIntake
                     ),
                     new PathPoint(
                         new Translation2d(3.649,2.838),               // Starting Position (meters)
                         new Rotation2d(-Math.PI/2),     // Start Rotation (rad)
-                        1    // Speed (m/s)
+                    3    // Speed (m/s)
                     )
                 ),
                 new AutoShoot(Shooter.getInstance(), RobotContainer.cam1)
@@ -117,20 +117,20 @@ public class FarRightMidCenterMidCenterRightMidRight extends SequentialCommandGr
             new FollowPath(
                 new Path(
                     new PathPoint(
-                        new Translation2d(3.649,2.838),               // Starting Position (meters)
-                        new Rotation2d(-Math.PI/2),     // Start Rotation (rad)
-                        1,
+                        new Translation2d(3.649,2.838),               // Position (meters)
+                        new Rotation2d(-Math.PI/2),     // Rotation (rad)
+                        3,
                         closeRobot    // Speed (m/s)
                     ),
                     new PathPoint(
-                        new Translation2d(4.865,4.135),               // Starting Position (meters)
-                        new Rotation2d(-Math.PI/2),     // Start Rotation (rad)
-                        1    // Speed (m/s)
+                        new Translation2d(4.865,4.135),               // Position (meters)
+                        new Rotation2d(-Math.PI/2),     // Rotation (rad)
+                        3    // Speed (m/s)
                     ),
                     new PathPoint(
-                        new Translation2d(5.865,4.135),               // Starting Position (meters)
-                        new Rotation2d(-Math.PI/2),     // Start Rotation (rad)
-                        1,    // Speed (m/s)
+                        new Translation2d(5.865,4.135),               // Position (meters)
+                        new Rotation2d(-Math.PI/2),     // Rotation (rad)
+                        3,    // Speed (m/s)
                         robotIntake
                     )
                 )
@@ -140,14 +140,14 @@ public class FarRightMidCenterMidCenterRightMidRight extends SequentialCommandGr
             new FollowPathWithRotationSource(
                 new Path(
                     new PathPoint(
-                        new Translation2d(8.189,5.135),               // Starting Position (meters)
-                        new Rotation2d(-Math.PI/2),     // Start Rotation (rad)
-                        1
+                        new Translation2d(8.189,5.135),               // Position (meters)
+                        new Rotation2d(-Math.PI/2),     // Rotation (rad)
+                        3
                     ),
                     new PathPoint(
-                        new Translation2d(8.189,4.135),               // Starting Position (meters)
-                        new Rotation2d(-Math.PI/2),     // Start Rotation (rad)
-                        1    // Speed (m/s)
+                        new Translation2d(8.189,4.135),               // Position (meters)
+                        new Rotation2d(-Math.PI/2),     // Rotation (rad)
+                        3    // Speed (m/s)
                     )
                 ),
                 new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2)
@@ -162,15 +162,15 @@ public class FarRightMidCenterMidCenterRightMidRight extends SequentialCommandGr
             new FollowPath(
                 new Path(            
                     new PathPoint(
-                        new Translation2d(8.189, 3.433),               // Starting Position (meters)
-                        new Rotation2d(-Math.PI/2),     // Start Rotation (rad)
-                        1,    // Speed (m/s)     
+                        new Translation2d(8.189, 3.433),               // Position (meters)
+                        new Rotation2d(-Math.PI/2),     // Rotation (rad)
+                        3,    // Speed (m/s)     
                         robotIntake
                     ),
                     new PathPoint(
-                        new Translation2d(8.189,2.433),               // Starting Position (meters)
-                        new Rotation2d(-Math.PI/2),     // Start Rotation (rad)
-                        1
+                        new Translation2d(8.189,2.433),               // Position (meters)
+                        new Rotation2d(-Math.PI/2),     // Rotation (rad)
+                        3
                         )
                     )
                 ),
@@ -185,14 +185,14 @@ public class FarRightMidCenterMidCenterRightMidRight extends SequentialCommandGr
             new FollowPathWithRotationSource(
                 new Path(
                     new PathPoint(
-                        new Translation2d(8.189,1.811),               // Starting Position (meters)
-                        new Rotation2d(-Math.PI/2),     // Start Rotation (rad)
-                        1
+                        new Translation2d(8.189,1.811),               // Position (meters)
+                        new Rotation2d(-Math.PI/2),     // Rotation (rad)
+                        3
                     ),
                     new PathPoint(
-                        new Translation2d(8.189,0.811),               // Starting Position (meters)
-                        new Rotation2d(-Math.PI/2),     // Start Rotation (rad)
-                        1    // Speed (m/s)
+                        new Translation2d(8.189,0.811),               // Position (meters)
+                        new Rotation2d(-Math.PI/2),     // Rotation (rad)
+                        3    // Speed (m/s)
                     )
                 ),
                 new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2)
@@ -201,15 +201,15 @@ public class FarRightMidCenterMidCenterRightMidRight extends SequentialCommandGr
             new FollowPath(
                 new Path(
                     new PathPoint(
-                        new Translation2d(8.189,3.635),
-                        new Rotation2d(0),
-                        1,
+                        new Translation2d(8.189,3.635), //Position (meters)
+                        new Rotation2d(0), //Rotation (rad)
+                        3, //Speed (m/s)
                         closeRobot
                     ),
                     new PathPoint(
-                        new Translation2d(3.649,2.838),
-                        new Rotation2d(0),
-                        1,
+                        new Translation2d(3.649,2.838), //Position (meters)
+                        new Rotation2d(0), //Rotation (rad)
+                        3, //Speed (m/s)
                         clearIntake
                     )
                 )
@@ -218,14 +218,14 @@ public class FarRightMidCenterMidCenterRightMidRight extends SequentialCommandGr
             new FollowPathWithRotationSource(
                 new Path(            
                     new PathPoint(
-                        new Translation2d(3.649,2.838),               // Starting Position (meters)
-                        new Rotation2d(Math.PI/2),     //TODO: Find the actual angle for the starting position
-                        1,   // Speed (m/s)
+                        new Translation2d(3.649,2.838),               // Position (meters)
+                        new Rotation2d(3*Math.PI/4),     //Rotation (Rad)
+                        3,   // Speed (m/s)
                         clearIntake
                     ),
                     new PathPoint(
-                        Constants.Paths.START_RIGHT,               // Starting Position (meters)    
-                        new Rotation2d(0),     // Start Rotation (rad)
+                        Constants.Paths.START_RIGHT,               // Position (meters)    
+                        new Rotation2d(0),     // Rotation (rad)
                         1    // Speed (m/s)
                     )
                 ),
