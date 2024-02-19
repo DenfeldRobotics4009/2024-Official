@@ -96,12 +96,9 @@ public class FollowPath extends Command {
                 axisSpeeds.getX(),
                 axisSpeeds.getY(),
                 // Rotate by the angle between
-                -signedAngleBetween(
-                    // Angle from current to goal
-                    state.goalPose.getRotation(),
-                    // Rotate back by forward constant
+                -state.goalPose.getRotation().minus(
                     robotPose.getRotation()
-                ) * PathingConstants.turningProportion
+                ).getRadians() * PathingConstants.turningProportion
             ), 
             // Rotate from current direction
             robotPose.getRotation()
