@@ -29,7 +29,7 @@ public final class Constants {
         public static int rightClimberMotorID = 19;
         public static double down = 0;
         public static double up = 75;
-        public static double climberMotorPower = 0.5;  
+        public static double climberMotorPower = 1;  
     }
     public static final class Shooter {
         public static int topMotorID = 57;
@@ -66,12 +66,12 @@ public final class Constants {
     public static final class Intake {
         public static int intakeMotorID = 12;
         public static int rotateMotorID = 10; 
-        public static double intakeMotorPower = -0.5;
+        public static double intakeMotorPower = -0.6;
 
-        public static double ground = -35;
+        public static double ground = -29;
         public static double deposit = -15;
 
-        public static double pidTolerance = 4;
+        public static double pidTolerance = 1;
 
         public static int intakeLaserSensorID = 1;
         public static int intakeInnerLimitSwitchID = 1;
@@ -136,10 +136,11 @@ public final class Constants {
     }
         public static final class Paths {
             public static Translation2d START_LEFT = new Translation2d(0,7.054);
-            public static Rotation2d START_LEFT_ANGLE = new Rotation2d(Math.toRadians(239));
+            public static Rotation2d START_LEFT_ANGLE = new Rotation2d(Math.toRadians(-121));
             public static Translation2d START_CENTER = new Translation2d(0,0); //Find Real Value
-            public static Translation2d START_RIGHT = new Translation2d(0,0);
-            public static Rotation2d START_RIGHT_ANGLE = new Rotation2d(Math.toRadians(-239));            
+            public static Rotation2d START_CENTER_ANGLE = new Rotation2d(Math.toRadians(180));
+            public static Translation2d START_RIGHT = new Translation2d(.255,5.09);
+            public static Rotation2d START_RIGHT_ANGLE = new Rotation2d(Math.toRadians(121));            
             public static Translation2d START_FAR_RIGHT = new Translation2d(0,1.622);
         }
 }

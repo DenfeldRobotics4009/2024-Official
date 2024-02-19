@@ -15,17 +15,15 @@ import frc.robot.subsystems.NoteCamera;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.subsystems.IntakeSubsystem.intakePosition;
 
-public class Intake extends Command implements AutoRotationSource{
+public class FastIntake extends Command {
   IntakeSubsystem intake;
-  NoteCamera camera;
   /**
    * Runs the intake until the sensor is activated
    * @param intake
    */
-  public Intake(IntakeSubsystem intake, NoteCamera camera) {
+  public FastIntake(IntakeSubsystem intake) {
     addRequirements(intake);
     this.intake = intake;
-    this.camera = camera;
   }
 
   // Called when the command is initially scheduled.
@@ -37,7 +35,7 @@ public class Intake extends Command implements AutoRotationSource{
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.setIntake();
+    intake.setIntake(-1);
   }
 
   // Called once the command ends or is interrupted.
@@ -49,20 +47,6 @@ public class Intake extends Command implements AutoRotationSource{
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return intake.getIntakeSensor();
-  }
-
-  @Override
-  public Optional<Rotation2d> getGoalRotation() {
-    Optional<Double> yawToNote = camera.getYawToNote();
-    if (yawToNote.isPresent()) {
-      return Optional.of(
-        new Rotation2d(Math.toRadians(-yawToNote.get())).plus(
-          SwerveDrive.getInstance().getPosition().getRotation()
-        )
-      );
-    }
-
-    return Optional.empty();
+    return false;// intake.getIntakeSensor() && intake.atTargetAngle();
   }
 }

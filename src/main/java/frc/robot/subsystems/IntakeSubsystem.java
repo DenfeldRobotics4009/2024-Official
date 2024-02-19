@@ -41,7 +41,7 @@ public class IntakeSubsystem extends SubsystemBase {
   static IntakeSubsystem instance;
 
   public double goalIntakePosition = intakePosition.STARTING.get();
-  public PIDController intakePIDController = new PIDController(.05, 0.008, 0);
+  public PIDController intakePIDController = new PIDController(.05, 0.01, 0);
 
   // When tripped, there is a piece within the intake
   AnalogInput intakeLaserSensor = new AnalogInput(Constants.Intake.intakeLaserSensorID);
@@ -79,7 +79,7 @@ public class IntakeSubsystem extends SubsystemBase {
     if (intakeInnerLimitSwitch.get()) {
       if (!intakeInnerSwitchToggle) {
         // The arm is fully pulled into the robot
-        rotateMotor.getEncoder().setPosition(intakePosition.STARTING.get());
+        rotateMotor.getEncoder().setPosition(intakePosition.STARTING.get() + 2);
         intakeInnerSwitchToggle = true;
       }
     } else {
@@ -111,6 +111,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public boolean getIntakeSensor() {
+    System.out.println("Sens v " + intakeLaserSensor.getVoltage());
     return intakeLaserSensor.getVoltage() < Constants.laserSensorVoltageHigh;
   }
 

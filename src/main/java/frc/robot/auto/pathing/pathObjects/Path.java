@@ -58,8 +58,10 @@ public class Path {
         if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
             System.out.println("Flipping point coordinates to red alliance");
             for (PathPoint pathPoint : Points) {
-                pathPoint.posMeters = Field.translateRobotPoseToRed(pathPoint.posMeters);
+                pathPoint.posMeters = Field.flipPoint(pathPoint.posMeters);
             }
+        } else {
+            System.out.println("Assuming blue alliance");
         }
 
         this.lastPointTolerance = lastPointTolerance;
@@ -93,7 +95,7 @@ public class Path {
         }
 
         // Parse through a copy, as the original is being edited
-        ArrayList<PathPoint> pointsCopy = Points;
+        ArrayList<PathPoint> pointsCopy = new ArrayList<PathPoint>(Points);
         // Parse backward to correct speed of points
         // Parse from back, end at the first
         for (int i = pointsCopy.size()-1; i > 0; i--) {

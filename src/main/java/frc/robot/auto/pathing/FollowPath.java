@@ -63,6 +63,10 @@ public class FollowPath extends Command {
         Pose2d robotPose = PathingConstants.driveSubsystem.getPosition();
         PathState state = getPathState(robotPose);
         // The target relative to the robots current position
+
+        System.out.println("Goal location: " + state.goalPose);
+        System.out.println("Current location: " + robotPose);
+
         Translation2d deltaLocation = state.goalPose.getTranslation().minus(robotPose.getTranslation());
         // Clamp state speed so the end of the path can be consistently reached
         // Clamped between [Const Max, 5 cm/s]
@@ -92,12 +96,9 @@ public class FollowPath extends Command {
                 axisSpeeds.getX(),
                 axisSpeeds.getY(),
                 // Rotate by the angle between
-                -signedAngleBetween(
-                    // Angle from current to goal
-                    state.goalPose.getRotation(),
-                    // Rotate back by forward constant
+                -state.goalPose.getRotation().minus(
                     robotPose.getRotation()
-                ) * PathingConstants.turningProportion
+                ).getRadians() * PathingConstants.turningProportion
             ), 
             // Rotate from current direction
             robotPose.getRotation()

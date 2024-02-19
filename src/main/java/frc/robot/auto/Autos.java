@@ -6,11 +6,18 @@ package frc.robot.auto;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.auto.pathing.FollowPath;
+import frc.robot.auto.pathing.pathObjects.Path;
+import frc.robot.auto.pathing.pathObjects.PathPoint;
 import frc.robot.auto.util.SetDrivePosition;
+import frc.robot.commands.AutoShoot;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Shooter;
+import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.auto.autos.*;
 
 public enum Autos {
@@ -31,8 +38,178 @@ public enum Autos {
        new LeftNearLeftMidLeft()
     ),
     RightMidCenterMidCenterRightMidRight(
-        new FarRightMidCenterMidCenterRightMidRight()
-    );    
+        new RightMidCenterMidCenterRightMidRight()
+    ),
+
+    StartLeft(
+        new SequentialCommandGroup(
+            new SetDrivePosition(new Pose2d(Constants.Paths.START_LEFT, Constants.Paths.START_LEFT_ANGLE)),
+            new AutoShoot(Shooter.getInstance(), RobotContainer.cam1),
+            new FollowPath(
+                new Path(
+                    new PathPoint(
+                        Constants.Paths.START_CENTER,
+                        Constants.Paths.START_CENTER_ANGLE,
+                        1
+                    ),
+                    new PathPoint(
+                        Constants.Paths.START_CENTER.plus(new Translation2d(1, 0)),
+                        Constants.Paths.START_CENTER_ANGLE,
+                        0
+                    )
+                )
+            )
+        )
+    ),
+
+    StartCenter(
+        new SequentialCommandGroup(
+            new SetDrivePosition(new Pose2d(Constants.Paths.START_CENTER, Constants.Paths.START_CENTER_ANGLE)),
+            new AutoShoot(Shooter.getInstance(), RobotContainer.cam1),
+            new FollowPath(
+                new Path(
+                    new PathPoint(
+                        Constants.Paths.START_CENTER,
+                        Constants.Paths.START_CENTER_ANGLE,
+                        1
+                    ),
+                    new PathPoint(
+                        Constants.Paths.START_CENTER.plus(new Translation2d(1, 0)),
+                        Constants.Paths.START_CENTER_ANGLE,
+                        0
+                    )
+                )
+            )
+        )
+    ),
+
+    StartRight(
+        new SequentialCommandGroup(
+            new SetDrivePosition(new Pose2d(Constants.Paths.START_RIGHT, Constants.Paths.START_RIGHT_ANGLE)),
+            new AutoShoot(Shooter.getInstance(), RobotContainer.cam1),
+            new FollowPath(
+                new Path(
+                    new PathPoint(
+                        Constants.Paths.START_CENTER,
+                        Constants.Paths.START_CENTER_ANGLE,
+                        1
+                    ),
+                    new PathPoint(
+                        Constants.Paths.START_CENTER.plus(new Translation2d(1, 0)),
+                        Constants.Paths.START_CENTER_ANGLE,
+                        0
+                    )
+                )
+            )
+        )
+    ),
+    DriveForward(
+        new SequentialCommandGroup(
+            new FollowPath(
+                new Path(
+                    new PathPoint(
+                        new Translation2d(),
+                        new Rotation2d(),
+                        1
+                    ),
+                    new PathPoint(
+                        new Translation2d(1,0),
+                        new Rotation2d(),
+                        0
+                    )
+                )
+            )
+        )
+    ),
+    DriveAndReturn(
+        new SequentialCommandGroup(
+            new FollowPath(
+                new Path(
+                    new PathPoint(
+                        new Translation2d(),
+                        new Rotation2d(),
+                        1
+                    ),
+                    new PathPoint(
+                        new Translation2d(1,0),
+                        new Rotation2d(),
+                        0
+                    )
+                )
+            ),
+            new FollowPath(
+                new Path(
+                    new PathPoint(
+                        new Translation2d(1,0),
+                        new Rotation2d(),
+                        1
+                    ),
+                    new PathPoint(
+                        new Translation2d(0,0),
+                        new Rotation2d(),
+                        0
+                    )
+                )
+            )
+        )
+    ),
+    DriveWithSetPosition(
+        new SequentialCommandGroup(
+            new SetDrivePosition(new Pose2d(new Translation2d(1, 1), new Rotation2d())),
+            new FollowPath(
+                new Path(
+                    new PathPoint(
+                        new Translation2d(1, 1),
+                        new Rotation2d(),
+                        1
+                    ),
+                    new PathPoint(
+                        new Translation2d(2,1),
+                        new Rotation2d(),
+                        0
+                    )
+                )
+            )
+        )
+    ),
+    DriveWithRotation(
+        new SequentialCommandGroup(
+            new FollowPath(
+                new Path(
+                    new PathPoint(
+                        new Translation2d(0, 0),
+                        new Rotation2d(Math.toRadians(0)),
+                        1
+                    ),
+                    new PathPoint(
+                        new Translation2d(0, 0),
+                        new Rotation2d(Math.toRadians(90)),
+                        0
+                    )
+                )
+            )
+        )
+    ),
+    DriveWithSetRotation(
+        new SequentialCommandGroup(
+            new SetDrivePosition(new Pose2d(new Translation2d(), new Rotation2d(Math.toRadians(90)))),
+            new FollowPath(
+                new Path(
+                    new PathPoint(
+                        new Translation2d(0, 0),
+                        new Rotation2d(Math.toRadians(90)),
+                        1
+                    ),
+                    new PathPoint(
+                        new Translation2d(1, 0),
+                        new Rotation2d(Math.toRadians(90)),
+                        0
+                    )
+                )
+            )
+        )
+    );
+    
     /* ----------------- */
 
     /**
