@@ -26,6 +26,7 @@ import frc.robot.subsystems.IntakeSubsystem.intakePosition;
 import frc.robot.subsystems.Shooter.shooterPosition;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.AprilTagOdometry;
 import frc.robot.subsystems.Climber;
@@ -155,8 +156,10 @@ public class RobotContainer {
      */
     new Trigger(() -> {return controls.operate.getLeftTriggerAxis() >= 0.1;}).whileTrue(
       new SequentialCommandGroup(
-        new MoveIntakeFirst(intake, shooter, intakePosition.GROUND.get(), shooterPosition.DEPOSIT.get()),
-        new Intake(intake, cam2), // Continue until a piece is picked up
+        new ParallelCommandGroup(
+          new MoveIntakeFirst(intake, shooter, intakePosition.GROUND.get(), shooterPosition.DEPOSIT.get()),
+          new Intake(intake, cam2) // Continue until a piece is picked up
+        ),
         // Initiate transfer positions
         new MoveShooterFirst(intake, shooter, intakePosition.DEPOSIT.get(), shooterPosition.DEPOSIT.get()),
         new Transfer(intake, shooter),

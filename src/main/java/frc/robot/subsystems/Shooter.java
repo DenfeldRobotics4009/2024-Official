@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.RobotCentric;
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkPIDController;
@@ -20,6 +21,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 
 public class Shooter extends SubsystemBase {
 
@@ -46,7 +48,7 @@ public class Shooter extends SubsystemBase {
   private CANSparkMax feeder = new CANSparkMax(Constants.Shooter.feederMotorID, MotorType.kBrushless);
 
   public CANSparkMax aim = new CANSparkMax(Constants.Shooter.aimMotorID, MotorType.kBrushless);
-  private PIDController aimPIDController = new PIDController(.01, 0, 0);
+  private PIDController aimPIDController = new PIDController(.012, 0, 0.001);
   private double targetAngle = 0;
   static Shooter instance;
 
@@ -76,6 +78,9 @@ public class Shooter extends SubsystemBase {
 
     topMotor.setOpenLoopRampRate(0.1);
     bottomMotor.setOpenLoopRampRate(0.1);
+
+    SmartDashboard.putNumber("Speaker Distance", RobotContainer.cam1.getDistanceToSpeaker());
+    SmartDashboard.putNumber("Shooter Angle", targetAngle);
 
     // Set PID values for flywheels using spark maxes, we are
     // using these PID controllers as they support feed forward.

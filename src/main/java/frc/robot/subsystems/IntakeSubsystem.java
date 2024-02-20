@@ -42,7 +42,7 @@ public class IntakeSubsystem extends SubsystemBase {
   static IntakeSubsystem instance;
 
   public double goalIntakePosition = intakePosition.STARTING.get();
-  public PIDController intakePIDController = new PIDController(.04, 0.0025, 0);
+  public PIDController intakePIDController = new PIDController(.045, 0, 0.0025);
 
   // When tripped, there is a piece within the intake
   AnalogInput intakeLaserSensor = new AnalogInput(Constants.Intake.intakeLaserSensorID);

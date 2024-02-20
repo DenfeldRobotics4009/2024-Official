@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import javax.swing.text.html.Option;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -22,6 +23,8 @@ import frc.robot.auto.pathing.pathObjects.PathState;
 
 public class FollowPathWithRotationSource extends FollowPath {
   final Command command;
+
+  PIDController rotationController = new PIDController(PathingConstants.turningProportion, 0, 0);
 
   /** Creates a new FollowPathWithRotationSource. */
   public FollowPathWithRotationSource(Path path, Command command) {
@@ -75,18 +78,18 @@ public class FollowPathWithRotationSource extends FollowPath {
 
     // Construct chassis speeds from state values
     // Convert field oriented to robot oriented
+    // Construct chassis speeds from state values
+    // Convert field oriented to robot oriented
     ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
         // Field oriented chassisSpeeds
         new ChassisSpeeds(
             axisSpeeds.getX(),
             axisSpeeds.getY(),
-            // Rotate by the angle between
-            signedAngleBetween(
-                // Angle from current to goal
-                goalRotation,
-                // Rotate back by forward constant
-                robotPose.getRotation()
-            ) * PathingConstants.turningProportion
+
+            -rotationController.calculate(
+                robotPose.getRotation().getRadians(), 
+                state.goalPose.getRotation().getRadians()
+            )
         ), 
         // Rotate from current direction
         robotPose.getRotation()

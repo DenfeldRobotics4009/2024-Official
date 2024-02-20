@@ -27,8 +27,8 @@ public final class Constants {
     public static final class Climber {
         public static int leftClimberMotorID = 18;
         public static int rightClimberMotorID = 19;
-        public static double down = 0;
-        public static double up = 75;
+        public static double down = -50;
+        public static double up = 450;
         public static double climberMotorPower = 1;  
     }
     public static final class Shooter {
@@ -39,7 +39,7 @@ public final class Constants {
         public static double feederSpeed = 1;
         public static int aimMotorID = 40;
         
-        public static double pidTolerance = 4;
+        public static double pidTolerance = 8;
 
         public static double aimRangeFrom0 = -133;
         public static double transferAngle = -100;
@@ -68,10 +68,10 @@ public final class Constants {
         public static int rotateMotorID = 10; 
         public static double intakeMotorPower = -0.6;
 
-        public static double ground = -29;
+        public static double ground = -32;
         public static double deposit = -15;
 
-        public static double pidTolerance = 1;
+        public static double pidTolerance = 5;
 
         public static int intakeLaserSensorID = 1;
         public static int intakeInnerLimitSwitchID = 1;
