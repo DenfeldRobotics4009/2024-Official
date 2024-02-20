@@ -6,6 +6,7 @@ package frc.robot.auto.pathing;
 
 import java.util.ArrayList;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -27,6 +28,8 @@ public class FollowPath extends Command {
     // Distance down the path to drive towards
     public double lookAheadMeters = 0.4;// Initial at 10 cm
 
+    PIDController rotationController = new PIDController(PathingConstants.turningProportion, 0, 0);
+
     /**
      * Follows a given path
      * @param Path 
@@ -35,6 +38,7 @@ public class FollowPath extends Command {
         // Assume drive control when path following
         addRequirements(PathingConstants.driveSubsystem);
         path = Path;
+        rotationController.enableContinuousInput(-Math.PI, Math.PI);
     }
 
     // Called when the command is initially scheduled.
@@ -59,6 +63,8 @@ public class FollowPath extends Command {
      * Operates robot functions from given driveTrain
      */
     public void execute() {
+
+        rotationController.setP(PathingConstants.turningProportion);
 
         Pose2d robotPose = PathingConstants.driveSubsystem.getPosition();
         PathState state = getPathState(robotPose);
@@ -95,10 +101,11 @@ public class FollowPath extends Command {
             new ChassisSpeeds(
                 axisSpeeds.getX(),
                 axisSpeeds.getY(),
-                // Rotate by the angle between
-                -state.goalPose.getRotation().minus(
-                    robotPose.getRotation()
-                ).getRadians() * PathingConstants.turningProportion
+
+                -rotationController.calculate(
+                    robotPose.getRotation().getRadians(), 
+                    state.goalPose.getRotation().getRadians()
+                )
             ), 
             // Rotate from current direction
             robotPose.getRotation()

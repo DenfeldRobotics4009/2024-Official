@@ -36,8 +36,11 @@ public class Field {
         );
     }
 
-    public static Translation2d flipPoint(Translation2d point) {
-        return new Translation2d(fieldLengthMeters, fieldWidthMeters - point.getY());
+    public static Pose2d flipPoint(Pose2d point) {
+        return new Pose2d(
+            new Translation2d(point.getX(), fieldWidthMeters - point.getY()),
+            point.getRotation().plus(Rotation2d.fromRadians(Math.PI * 2))
+        );
     }
 
     /**

@@ -6,8 +6,11 @@ package frc.robot.subsystems;
 
 import java.util.ArrayList;
 
+import org.ejml.simple.SimpleMatrix;
+
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -16,6 +19,8 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -212,6 +217,10 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
   }
 
   public void addVisionMeasurement(Pose2d visionPosition, double timestampSeconds) {
-    robotPoseEstimator.addVisionMeasurement(visionPosition, timestampSeconds);
+    // Check if the vision position is within 1 meter of the current drive position,
+    // per the robotPoseEstimator recommendations.
+    //if (visionPosition.getTranslation().getDistance(getPosition().getTranslation()) < 1) {
+      robotPoseEstimator.addVisionMeasurement(visionPosition, timestampSeconds);
+    //}
   }
 }

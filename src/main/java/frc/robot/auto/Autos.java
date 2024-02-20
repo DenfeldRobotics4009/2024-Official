@@ -182,8 +182,22 @@ public enum Autos {
                         1
                     ),
                     new PathPoint(
-                        new Translation2d(0, 0),
+                        new Translation2d(1, 0),
                         new Rotation2d(Math.toRadians(90)),
+                        1
+                    )
+                )
+            ),
+            new FollowPath(
+                new Path(
+                    new PathPoint(
+                        new Translation2d(1, 0),
+                        new Rotation2d(Math.toRadians(90)),
+                        1
+                    ),
+                    new PathPoint(
+                        new Translation2d(0, 0),
+                        new Rotation2d(Math.toRadians(-90)),
                         0
                     )
                 )
@@ -208,7 +222,38 @@ public enum Autos {
                 )
             )
         )
+    ),
+    DriveFromID9(
+        new SequentialCommandGroup(
+            new SetDrivePosition(new Pose2d(new Translation2d(0.817, 0.774), new Rotation2d(Math.toRadians(250)))),
+            new FollowPath(
+                new Path(
+                    0.01,
+                    new PathPoint(
+                        new Translation2d(0.817, 0.774),
+                        new Rotation2d(Math.toRadians(250)),
+                        0.5
+                    ),
+                    new PathPoint(
+                        new Translation2d(1, 1.83682),
+                        new Rotation2d(Math.toRadians(250)),
+                        0.5
+                    ),
+                    new PathPoint(
+                        new Translation2d(0.2, 1.93682),
+                        new Rotation2d(Math.toRadians(250)),
+                        0.5
+                    ),
+                    new PathPoint(
+                        new Translation2d(0.817, 0.774),
+                        new Rotation2d(Math.toRadians(250)),
+                        0
+                    )
+                )
+            )
+        )
     );
+    
     
     /* ----------------- */
 

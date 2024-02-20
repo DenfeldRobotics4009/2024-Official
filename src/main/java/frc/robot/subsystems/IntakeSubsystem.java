@@ -76,15 +76,12 @@ public class IntakeSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-
-    System.out.println("Intake pos " + rotateMotor.getEncoder().getPosition());
-    System.out.println("Intake goal " + goalIntakePosition);
-
+    
     // Catch limits from switches, calibrate encoder from values
     if (intakeInnerLimitSwitch.get()) {
       if (!intakeInnerSwitchToggle) {
         // The arm is fully pulled into the robot
-        rotateMotor.getEncoder().setPosition(intakePosition.STARTING.get() + 2);
+        rotateMotor.getEncoder().setPosition(intakePosition.STARTING.get());
         intakeInnerSwitchToggle = true;
       }
     } else {
