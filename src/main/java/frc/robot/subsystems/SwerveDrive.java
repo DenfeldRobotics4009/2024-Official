@@ -167,7 +167,7 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
 
     fieldWidget.setRobotPose(
       new Pose2d(
-        getPosition().getTranslation().plus(new Translation2d(1.8, 0.4)), new Rotation2d()
+        getPosition().getTranslation(), new Rotation2d()
       )
     );
   }

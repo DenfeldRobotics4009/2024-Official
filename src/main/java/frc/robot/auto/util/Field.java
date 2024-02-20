@@ -39,7 +39,7 @@ public class Field {
     public static Pose2d flipPoint(Pose2d point) {
         return new Pose2d(
             new Translation2d(point.getX(), fieldWidthMeters - point.getY()),
-            point.getRotation().plus(Rotation2d.fromRadians(Math.PI * 2))
+            point.getRotation().plus(Rotation2d.fromRadians(Math.PI))
         );
     }
 
