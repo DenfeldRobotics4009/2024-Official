@@ -8,6 +8,8 @@ import java.util.Optional;
 
 import edu.wpi.first.math.geometry.Translation2d;
 
+private 
+
 /**
  * This class holds a collection of accurate and recorded data points,
  * which detail the distance of our robot to the target, and the height
@@ -17,19 +19,20 @@ public final class ShotProfile {
 
     static Translation2d[] data = {
         // x = distance (inches), y = height (joystick value)
-        new Translation2d(0, 0),
-        new Translation2d(33, 0),
-        new Translation2d(38, 0),
-        new Translation2d(76, -0.35),
-        new Translation2d(84.5, -0.46),
-        new Translation2d(118, -0.54),
-        new Translation2d(126, -0.60),
-        new Translation2d(146, -0.62),
-        new Translation2d(170, -0.64),
-        new Translation2d(175, -0.66),
-        new Translation2d(180, -0.68),
-        new Translation2d(207.5, -0.72),
-        new Translation2d(237, -0.9)
+        // new Translation2d(0, 0),
+        // new Translation2d(33, 0),
+        // new Translation2d(38, 0),
+        // new Translation2d(76, -0.35),
+        // new Translation2d(84.5, -0.46),
+        // new Translation2d(118, -0.54),
+        // new Translation2d(126, -0.60),
+        // new Translation2d(146, -0.62),
+        // new Translation2d(170, -0.64),
+        // new Translation2d(175, -0.66),
+        // new Translation2d(180, -0.68),
+        // new Translation2d(207.5, -0.72),
+        // new Translation2d(237, -0.9)
+        new Point(3.95, )
     };
 
     /**

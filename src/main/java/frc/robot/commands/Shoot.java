@@ -27,7 +27,7 @@ public class Shoot extends Command {
 
   double angle = 0;
 
-  PIDController aimingPidController = new PIDController(0.1, 0, 0);
+  PIDController aimingPidController = new PIDController(6, 0.1, 0);
 
   /** Creates a new Shoot. */
   public Shoot(
@@ -44,7 +44,7 @@ public class Shoot extends Command {
     addRequirements(shooter, swerveDrive);
 
     aimingPidController.setSetpoint(0);
-    aimingPidController.enableContinuousInput(0, 360);
+    aimingPidController.enableContinuousInput(-Math.PI, Math.PI);
   }
 
   // Called when the command is initially scheduled.
@@ -60,12 +60,12 @@ public class Shoot extends Command {
     // Calculate distance
     double distance = camera.getDistanceToSpeaker();
     // Convert joystick value into a shooter angle
-    // double angle = 0; // = -controls.operate.getThrottle() * Constants.Shooter.aimRangeFrom0;
-    // if (ShotProfile.getHeightFromDistance(distance).isPresent()) {
-    //   angle = ShotProfile.getHeightFromDistance(distance).get();
-    // }
+    double angle = 0;
+    if (ShotProfile.getHeightFromDistance(distance).isPresent()) {
+      angle = ShotProfile.getHeightFromDistance(distance).get();
+    }
 
-    angle += 3* controls.operate.getLeftY();
+    // angle += 3* controls.operate.getLeftY();
 
     System.out.println("Barrel Sensor " + shooter.getBarrelSensor());
     // System.out.println("Distance " + distance);
@@ -81,10 +81,11 @@ public class Shoot extends Command {
       new ChassisSpeeds(
         controls.getForward() * SwerveModule.maxMetersPerSecond,
         controls.getLateral() * SwerveModule.maxMetersPerSecond,
-        0//-aimingPidController.calculate(camera.getYawToSpeaker())
+        aimingPidController.calculate(Math.toRadians(camera.getYawToSpeaker()))
       ), 
       SwerveDrive.navxGyro.getRotation2d()
     );
+    System.out.println(speeds.omegaRadiansPerSecond);
     swerveDrive.drive(speeds);
     //if flywheels up to speed, shooter aimed, drive train aimed, then feed in
     // if (controls.operate.getRightTriggerAxis() >= 0.1 && atShooterSpeed) {

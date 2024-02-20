@@ -23,9 +23,11 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.auto.util.Field;
 
 /**
@@ -161,24 +163,22 @@ public class AprilTagOdometry extends SubsystemBase {
     }
 
     /**
-     * @return Degrees
+     * @return Degrees, relative to field
      */
     public double getYawToSpeaker() {
         Optional<PhotonTrackedTarget> target = getTarget(speakerID);
-        if (target.isPresent()) return target.get().getYaw();
+        if (target.isPresent()) return -target.get().getYaw();
 
 
         Translation2d targetPose = AprilTagOdometry.aprilTagFieldLayout.getTagPose(speakerID).get().getTranslation().toTranslation2d();
-        
         if (Field.isRedAlliance()) {
             targetPose = Field.translateRobotPoseToRed(targetPose);
         }
+        System.out.println(targetPose);
 
         return targetPose.minus(
-                SwerveDrive.getInstance().getPosition().getTranslation()
-            ).getAngle().minus(
-                SwerveDrive.getInstance().getPosition().getRotation()
-            ).getDegrees();
+            SwerveDrive.getInstance().getPosition().getTranslation()
+        ).getAngle().minus(SwerveDrive.getInstance().getPosition().getRotation()).getDegrees();
     }
 
     Optional<Pose2d> getPositionFromTargets() {
@@ -210,5 +210,8 @@ public class AprilTagOdometry extends SubsystemBase {
                 positionSample.get(), Timer.getFPGATimestamp()
             );
         }
+
+        SmartDashboard.putNumber("Yaw to speaker", getYawToSpeaker());
+        SmartDashboard.putNumber("Dist to speaker", getDistanceToSpeaker());
     }
 }

@@ -93,6 +93,6 @@ public class AutoShoot extends Command implements AutoRotationSource {
 
   @Override
   public Optional<Rotation2d> getGoalRotation() {
-    return Optional.ofNullable(null);
+    return Optional.of(Rotation2d.fromDegrees(camera.getYawToSpeaker()));
   }
 }
