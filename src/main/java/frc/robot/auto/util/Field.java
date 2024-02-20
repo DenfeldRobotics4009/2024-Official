@@ -60,4 +60,12 @@ public class Field {
     public static boolean isRedAlliance() {
         return DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red;
     }
+
+    public static Pose2d flipPointIfRed(Pose2d point) {
+        if (isRedAlliance()) {
+            return flipPoint(point);
+        }
+        
+        return point;
+    }
 }

@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.auto.pathing.FollowPath;
 import frc.robot.auto.pathing.pathObjects.Path;
 import frc.robot.auto.pathing.pathObjects.PathPoint;
+import frc.robot.auto.util.Field;
 import frc.robot.auto.util.SetDrivePosition;
 import frc.robot.commands.AutoShoot;
 import frc.robot.commands.ExampleCommand;
@@ -225,7 +226,11 @@ public enum Autos {
     ),
     DriveFromID9(
         new SequentialCommandGroup(
-            new SetDrivePosition(new Pose2d(new Translation2d(0.817, 0.774), new Rotation2d(Math.toRadians(250)))),
+            new SetDrivePosition(
+                Field.flipPointIfRed(
+                    new Pose2d(new Translation2d(0.817, 0.774), new Rotation2d(Math.toRadians(250)))
+                )
+            ),
             new FollowPath(
                 new Path(
                     0.01,
