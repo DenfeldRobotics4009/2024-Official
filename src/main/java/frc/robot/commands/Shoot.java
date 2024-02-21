@@ -59,13 +59,14 @@ public class Shoot extends Command {
 
     // Calculate distance
     double distance = camera.getDistanceToSpeaker();
+    System.out.println("Distance: "+distance);
     // Convert joystick value into a shooter angle
-    double angle = 0;
+    double angle = shooter.getTargetAngle();
     if (ShotProfile.getHeightFromDistance(distance).isPresent()) {
       angle = ShotProfile.getHeightFromDistance(distance).get();
     }
 
-    // angle += 3* controls.operate.getLeftY();
+    angle += 3* controls.operate.getLeftY();
 
     System.out.println("Barrel Sensor " + shooter.getBarrelSensor());
     // System.out.println("Distance " + distance);
@@ -81,7 +82,7 @@ public class Shoot extends Command {
       new ChassisSpeeds(
         controls.getForward() * SwerveModule.maxMetersPerSecond,
         controls.getLateral() * SwerveModule.maxMetersPerSecond,
-        aimingPidController.calculate(Math.toRadians(camera.getYawToSpeaker()))
+        aimingPidController.calculate(Math.toRadians(camera.getYawToSpeaker()-5))
       ), 
       SwerveDrive.navxGyro.getRotation2d()
     );

@@ -15,12 +15,12 @@ public class Field {
     /**
      * X distance from blue zero to red zero
      */
-    public static final double fieldLengthMeters = 16.54175;
+    public static final double fieldLengthMeters = 16.4846;
 
     /**
      * Y distance from red zero to blue zero
      */
-    public static final double fieldWidthMeters = 8.22325;
+    public static final double fieldWidthMeters = 8.103;
 
     /**
      * Translates a position relative to the blue 
