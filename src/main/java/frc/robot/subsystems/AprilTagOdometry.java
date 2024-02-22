@@ -19,6 +19,7 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -174,11 +175,8 @@ public class AprilTagOdometry extends SubsystemBase {
         if (Field.isRedAlliance()) {
             targetPose = Field.translateRobotPoseToRed(targetPose);
         }
-        System.out.println(targetPose);
-
-        return targetPose.minus(
-            SwerveDrive.getInstance().getPosition().getTranslation()
-        ).getAngle().minus(SwerveDrive.getInstance().getPosition().getRotation()).getDegrees();
+        Translation2d difference = targetPose.minus(SwerveDrive.getInstance().getPosition().getTranslation());
+        return difference.getAngle().minus(SwerveDrive.getInstance().getPosition().getRotation()).getDegrees();
     }
 
     Optional<Pose2d> getPositionFromTargets() {

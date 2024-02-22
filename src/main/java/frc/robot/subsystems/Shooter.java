@@ -164,7 +164,6 @@ public class Shooter extends SubsystemBase {
   }
 
   public boolean getBarrelSensor() {
-    System.out.println("Barrel sens voltage " + barrelSensor.getVoltage());
     return barrelSensor.getVoltage() < Constants.laserSensorVoltageHigh; 
   }
 }

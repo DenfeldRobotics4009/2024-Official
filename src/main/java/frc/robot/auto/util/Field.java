@@ -43,6 +43,13 @@ public class Field {
         );
     }
 
+    public static Pose2d mirrorPoint(Pose2d point) {
+        return new Pose2d(
+            new Translation2d(point.getX(), fieldWidthMeters - point.getY()),
+            point.getRotation()
+        );
+    }
+
     /**
      * Translates a position relative to the blue 
      * alliance zero to a position relative to a red
@@ -61,9 +68,9 @@ public class Field {
         return DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red;
     }
 
-    public static Pose2d flipPointIfRed(Pose2d point) {
+    public static Pose2d mirrorPointIfRed(Pose2d point) {
         if (isRedAlliance()) {
-            return flipPoint(point);
+            return mirrorPoint(point);
         }
         
         return point;

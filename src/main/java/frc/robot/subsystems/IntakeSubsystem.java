@@ -113,7 +113,6 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public boolean getIntakeSensor() {
-    System.out.println("Sens v " + intakeLaserSensor.getVoltage());
     return intakeLaserSensor.getVoltage() < Constants.laserSensorVoltageHigh;
   }
 

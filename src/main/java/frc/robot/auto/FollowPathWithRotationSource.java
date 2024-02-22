@@ -30,6 +30,7 @@ public class FollowPathWithRotationSource extends FollowPath {
   public FollowPathWithRotationSource(Path path, Command command) {
     super(path);
     this.command = command;
+    rotationController.enableContinuousInput(-Math.PI, Math.PI);
   }
 
   @Override
@@ -68,11 +69,17 @@ public class FollowPathWithRotationSource extends FollowPath {
         1, 0.2
     );
 
-    Rotation2d goalRotation = state.goalPose.getRotation();
+    double omegaRadPerSecond = -rotationController.calculate(
+        robotPose.getRotation().getRadians(), 
+        state.goalPose.getRotation().getRadians()
+    );
     if (command instanceof AutoRotationSource) {
       Optional<Rotation2d> optionalGoal = ((AutoRotationSource)command).getGoalRotation();
       if (optionalGoal.isPresent()) {
-        goalRotation = optionalGoal.get();
+        omegaRadPerSecond = -rotationController.calculate(
+          optionalGoal.get().getRadians(), 
+          0
+        );
       }
     }
 
@@ -85,11 +92,7 @@ public class FollowPathWithRotationSource extends FollowPath {
         new ChassisSpeeds(
             axisSpeeds.getX(),
             axisSpeeds.getY(),
-
-            -rotationController.calculate(
-                robotPose.getRotation().getRadians(), 
-                state.goalPose.getRotation().getRadians()
-            )
+            omegaRadPerSecond
         ), 
         // Rotate from current direction
         robotPose.getRotation()

@@ -58,7 +58,7 @@ public class Path {
         if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
             System.out.println("Flipping point coordinates to red alliance");
             for (PathPoint pathPoint : Points) {
-                Pose2d flippedPoint = Field.flipPoint(new Pose2d(pathPoint.posMeters, pathPoint.orientation));
+                Pose2d flippedPoint = Field.mirrorPoint(new Pose2d(pathPoint.posMeters, pathPoint.orientation));
                 pathPoint.posMeters = flippedPoint.getTranslation();
                 pathPoint.orientation = flippedPoint.getRotation();
             }

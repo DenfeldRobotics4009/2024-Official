@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Controls;
 import frc.robot.ShotProfile;
+import frc.robot.auto.util.Field;
 import frc.robot.subsystems.AprilTagOdometry;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.SwerveDrive;
@@ -25,7 +26,7 @@ public class Shoot extends Command {
   SwerveDrive swerveDrive;
   AprilTagOdometry camera;
 
-  double angle = 0;
+  double offset = 0;
 
   PIDController aimingPidController = new PIDController(6, 0.1, 0);
 
@@ -50,7 +51,7 @@ public class Shoot extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
+    offset = 0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -59,23 +60,26 @@ public class Shoot extends Command {
 
     // Calculate distance
     double distance = camera.getDistanceToSpeaker();
-    System.out.println("Distance: "+distance);
+    SmartDashboard.putNumber("Distance: ", distance);
     // Convert joystick value into a shooter angle
-    double angle = shooter.getTargetAngle();
+    double angle = 0;
     if (ShotProfile.getHeightFromDistance(distance).isPresent()) {
       angle = ShotProfile.getHeightFromDistance(distance).get();
     }
+    angle +=  offset += Controls.modifyAxis(3* controls.operate.getLeftY(), 0.6);
 
-    angle += 3* controls.operate.getLeftY();
-
-    System.out.println("Barrel Sensor " + shooter.getBarrelSensor());
     // System.out.println("Distance " + distance);
     // System.out.println("Shot angle " + angle);
-    // System.out.println("Yaw " + camera.getYawToSpeaker());
+    SmartDashboard.putNumber("Yaw ", camera.getYawToSpeaker());
 
+    System.out.println("Red alliance " + Field.isRedAlliance());
     //get flywheels are up to speed
     shooter.setPosition(angle);
     boolean atShooterSpeed = shooter.setFlyWheelSpeed(Constants.Shooter.flyWheelSpeed);
+
+    SmartDashboard.putNumber("Angle ", angle);
+    SmartDashboard.putNumber("Offset ", offset);
+    SmartDashboard.putNumber("Offset + Angle", angle + offset);
 
     //aim drive train
     ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
@@ -84,7 +88,7 @@ public class Shoot extends Command {
         controls.getLateral() * SwerveModule.maxMetersPerSecond,
         aimingPidController.calculate(Math.toRadians(camera.getYawToSpeaker()-5))
       ), 
-      SwerveDrive.navxGyro.getRotation2d()
+      SwerveDrive.getInstance().getPosition().getRotation()
     );
     System.out.println(speeds.omegaRadiansPerSecond);
     swerveDrive.drive(speeds);
