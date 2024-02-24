@@ -30,6 +30,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Swerve;
 import frc.robot.auto.pathing.DriveSubsystem;
+import frc.robot.auto.util.Field;
 import frc.robot.subsystems.swerve.SwerveModule;
 import frc.robot.subsystems.swerve.SwerveMotors;
 
@@ -163,7 +164,7 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
 
     // Displaying position values
     xPositionEntry.setDouble(robotPoseEstimator.getEstimatedPosition().getX());
-    yPositionEntry.setDouble(robotPoseEstimator.getEstimatedPosition().getY());
+    yPositionEntry.setDouble(Field.flipPoint(robotPoseEstimator.getEstimatedPosition()).getY());
     rotationEntry.setDouble(robotPoseEstimator.getEstimatedPosition().getRotation().getDegrees());
 
     fieldWidget.setRobotPose(

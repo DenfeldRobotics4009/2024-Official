@@ -164,7 +164,7 @@ public class Controls {
         }
     }
 
-    private static double modifyAxis(double value, double deadband) {
+    public static double modifyAxis(double value, double deadband) {
         // Deadband
         value = deadband(value, deadband);
 

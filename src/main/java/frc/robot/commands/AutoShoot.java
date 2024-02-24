@@ -9,6 +9,7 @@ import java.util.Optional;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
@@ -30,6 +31,8 @@ public class AutoShoot extends Command implements AutoRotationSource {
 
   PIDController aimingPidController = new PIDController(0.1, 0, 0);
 
+  // Timer shootingTImer = new Timer();
+
   /** Creates a new Shoot. */
   public AutoShoot(
     Shooter shooter, 
@@ -46,13 +49,13 @@ public class AutoShoot extends Command implements AutoRotationSource {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
+    // shootingTImer.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("Barrel Sensor " + shooter.getBarrelSensor());
+
     // Calculate distance
     double distance = camera.getDistanceToSpeaker();
     // Convert joystick value into a shooter angle
@@ -93,6 +96,6 @@ public class AutoShoot extends Command implements AutoRotationSource {
 
   @Override
   public Optional<Rotation2d> getGoalRotation() {
-    return Optional.of(Rotation2d.fromDegrees(camera.getYawToSpeaker()));
+    return Optional.of(Rotation2d.fromDegrees(-camera.getYawToSpeaker() / 2));
   }
 }

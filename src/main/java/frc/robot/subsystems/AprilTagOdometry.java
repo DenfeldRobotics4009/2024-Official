@@ -19,6 +19,7 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -44,7 +45,7 @@ public class AprilTagOdometry extends SubsystemBase {
     PhotonPoseEstimator photonPoseEstimator;
     public PhotonCamera camera;
 
-    final int speakerID;
+    int speakerID = 0;
 
     /**
      * Creates an april tag odometry source relating to a 
@@ -77,13 +78,6 @@ public class AprilTagOdometry extends SubsystemBase {
                 "April tag data could not be loaded, april tag positioning will not occur.", false);
 
             e.printStackTrace();
-        }
-
-        // Grab speaker id based on alliance position
-        if (Field.isRedAlliance()) {
-            speakerID = 4;
-        } else {
-            speakerID = 7;
         }
 
     }
@@ -149,6 +143,13 @@ public class AprilTagOdometry extends SubsystemBase {
      */
     public double getDistanceToSpeaker() {
 
+        // Grab speaker id based on alliance position
+        if (Field.isRedAlliance()) {
+            speakerID = 4;
+        } else {
+            speakerID = 7;
+        }
+
         Optional<PhotonTrackedTarget> target = getTarget(speakerID);
     
         if (target.isPresent()) return getDistanceToTarget(target.get());
@@ -166,6 +167,14 @@ public class AprilTagOdometry extends SubsystemBase {
      * @return Degrees, relative to field
      */
     public double getYawToSpeaker() {
+
+        // Grab speaker id based on alliance position
+        if (Field.isRedAlliance()) {
+            speakerID = 4;
+        } else {
+            speakerID = 7;
+        }
+
         Optional<PhotonTrackedTarget> target = getTarget(speakerID);
         if (target.isPresent()) return -target.get().getYaw();
 
@@ -174,11 +183,8 @@ public class AprilTagOdometry extends SubsystemBase {
         if (Field.isRedAlliance()) {
             targetPose = Field.translateRobotPoseToRed(targetPose);
         }
-        System.out.println(targetPose);
-
-        return targetPose.minus(
-            SwerveDrive.getInstance().getPosition().getTranslation()
-        ).getAngle().minus(SwerveDrive.getInstance().getPosition().getRotation()).getDegrees();
+        Translation2d difference = targetPose.minus(SwerveDrive.getInstance().getPosition().getTranslation());
+        return difference.getAngle().minus(SwerveDrive.getInstance().getPosition().getRotation()).getDegrees();
     }
 
     Optional<Pose2d> getPositionFromTargets() {

@@ -18,17 +18,29 @@ public final class ShotProfile {
     static Translation2d[] data = {
         // x = distance (inches), y = height (joystick value)
         new Translation2d(0, 0),
-        new Translation2d(33, 0),
-        new Translation2d(76, 0),//-0.35),
-        new Translation2d(84.5,0),// -0.46),
-        new Translation2d(118,0),// -0.54),
-        new Translation2d(126,0),// -0.60),
-        new Translation2d(146,0),// -0.62),
-        new Translation2d(170,0),// -0.64),
-        new Translation2d(175,0),// -0.66),
-        new Translation2d(180,0),// -0.68),
-        new Translation2d(207.5,0),// -0.72),
-        new Translation2d(237,0)// -0.9)
+        new Translation2d(0.95, -19),
+        new Translation2d(1.5, -49),
+        new Translation2d(2.5, -62),
+        new Translation2d(3.7, -76),
+        new Translation2d(4.20, -83),
+        new Translation2d(4.40, -86.8),
+        new Translation2d(4.47, -87),
+        new Translation2d(5.1, -89.2),
+        new Translation2d(5.30, -89.6),
+        new Translation2d(5.44, -90),
+        new Translation2d(5.56, -90.45)
+        // new Translation2d(0, 0),
+        // new Translation2d(33, 0),
+        // new Translation2d(76, 0),//-0.35),
+        // new Translation2d(84.5,0),// -0.46),
+        // new Translation2d(118,0),// -0.54),
+        // new Translation2d(126,0),// -0.60),
+        // new Translation2d(146,0),// -0.62),
+        // new Translation2d(170,0),// -0.64),
+        // new Translation2d(175,0),// -0.66),
+        // new Translation2d(180,0),// -0.68),
+        // new Translation2d(207.5,0),// -0.72),
+        // new Translation2d(237,0)// -0.9)
     };
 
     /**
@@ -37,7 +49,6 @@ public final class ShotProfile {
      * @return height of shooter (Degrees from 0)
      */
     public static Optional<Double> getHeightFromDistance(double distance) {
-        distance = Utils.metersToInches(distance);
         System.out.println("Distance: " + distance);
 
         if (distance < data[0].getX()) return Optional.empty(); // Distance is out of bounds
@@ -45,7 +56,8 @@ public final class ShotProfile {
         for (int i = 0; i < data.length-1; i++) {
             if (distance >= data[i].getX() && distance <= data[i+1].getX()) {
                 return Optional.of(
-                    -data[i].interpolate(data[i+1], distance).getY() * Constants.Shooter.aimRangeFrom0
+                    data[i].interpolate(data[i+1], (distance - data[i].getX()) / (data[i+1].getX() - data[i].getX())).getY()
+                        + 8.5
                 );
             }
         }

@@ -73,7 +73,6 @@ public class Shooter extends SubsystemBase {
   /** Creates a new Turret. */
   private Shooter() {
     aimPIDController.setTolerance(Constants.Shooter.pidTolerance);
-
     aim.getEncoder().setPosition(0);
 
     topMotor.setOpenLoopRampRate(0.1);
@@ -81,7 +80,6 @@ public class Shooter extends SubsystemBase {
 
     SmartDashboard.putNumber("Speaker Distance", RobotContainer.cam1.getDistanceToSpeaker());
     SmartDashboard.putNumber("Shooter Angle", targetAngle);
-
     // Set PID values for flywheels using spark maxes, we are
     // using these PID controllers as they support feed forward.
     topFlywheelPidController.setP(Constants.Shooter.flyWheelP);
@@ -101,6 +99,7 @@ public class Shooter extends SubsystemBase {
     double speed = aimPIDController.calculate(aim.getEncoder().getPosition()*2*Math.PI);
     MathUtil.clamp(speed, -1, 1);
     aim.set(speed);
+    SmartDashboard.putNumber("Current Shooter Angle", aim.getEncoder().getPosition());
 
     // Check the limit switch to reset aim encoder
     if (aimLimitSwitch.get()) {
@@ -164,7 +163,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public boolean getBarrelSensor() {
-    System.out.println("Barrel sens voltage " + barrelSensor.getVoltage());
+    System.out.println("Barrel Sensor - " + barrelSensor.getVoltage());
     return barrelSensor.getVoltage() < Constants.laserSensorVoltageHigh; 
   }
 }

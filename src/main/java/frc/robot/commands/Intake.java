@@ -22,7 +22,8 @@ public class Intake extends Command implements AutoRotationSource{
    * Runs the intake until the sensor is activated
    * @param intake
    */
-  public Intake(IntakeSubsystem intake, NoteCamera camera) {
+  public Intake(
+    IntakeSubsystem intake, NoteCamera camera) {
     addRequirements(intake);
     this.intake = intake;
     this.camera = camera;
@@ -57,9 +58,7 @@ public class Intake extends Command implements AutoRotationSource{
     Optional<Double> yawToNote = camera.getYawToNote();
     if (yawToNote.isPresent()) {
       return Optional.of(
-        new Rotation2d(Math.toRadians(-yawToNote.get())).plus(
-          SwerveDrive.getInstance().getPosition().getRotation()
-        )
+        new Rotation2d(Math.toRadians(yawToNote.get() / 2))
       );
     }
 

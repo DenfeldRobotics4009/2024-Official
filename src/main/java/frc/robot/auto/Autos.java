@@ -7,6 +7,7 @@ package frc.robot.auto;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.auto.pathing.FollowPath;
 import frc.robot.auto.pathing.pathObjects.Path;
@@ -240,92 +241,116 @@ public enum Autos {
             )
         )
     ),
-    DriveWithRotation(
-        new SequentialCommandGroup(
-            new FollowPath(
-                new Path(
-                    new PathPoint(
-                        new Translation2d(0, 0),
-                        new Rotation2d(Math.toRadians(0)),
-                        1
-                    ),
-                    new PathPoint(
-                        new Translation2d(1, 0),
-                        new Rotation2d(Math.toRadians(90)),
-                        1
-                    )
-                )
-            ),
-            new FollowPath(
-                new Path(
-                    new PathPoint(
-                        new Translation2d(1, 0),
-                        new Rotation2d(Math.toRadians(90)),
-                        1
-                    ),
-                    new PathPoint(
-                        new Translation2d(0, 0),
-                        new Rotation2d(Math.toRadians(-90)),
-                        0
-                    )
-                )
-            )
-        )
-    ),
-    DriveWithSetRotation(
-        new SequentialCommandGroup(
-            new SetDrivePosition(new Pose2d(new Translation2d(), new Rotation2d(Math.toRadians(90)))),
-            new FollowPath(
-                new Path(
-                    new PathPoint(
-                        new Translation2d(0, 0),
-                        new Rotation2d(Math.toRadians(90)),
-                        1
-                    ),
-                    new PathPoint(
-                        new Translation2d(1, 0),
-                        new Rotation2d(Math.toRadians(90)),
-                        0
-                    )
-                )
-            )
-        )
-    ),
-    DriveFromID9(
+    ShootTest(
         new SequentialCommandGroup(
             new SetDrivePosition(
-                Field.flipPointIfRed(
-                    new Pose2d(new Translation2d(0.817, 0.774), new Rotation2d(Math.toRadians(250)))
+                Field.mirrorPointIfRed(
+                    new Pose2d(new Translation2d(0.8701, 5.528), new Rotation2d(Math.toRadians(180)))
                 )
             ),
-            new FollowPath(
+            new FollowPathWithRotationSource(
+                new Path(
+                    new PathPoint(
+                        new Translation2d(0.8701, 5.528),
+                        new Rotation2d(Math.toRadians(180)),
+                        1,
+                        new MoveIntakeFirst(
+                            IntakeSubsystem.getInstance(), 
+                            Shooter.getInstance(), 
+                            intakePosition.DEPOSIT.get(), 
+                            shooterPosition.GROUND.get()
+                        )
+                    ),
+                    new PathPoint(
+                        new Translation2d(1, 5.528),
+                        new Rotation2d(Math.toRadians(180)),
+                        0
+                    )
+                ),
+
+                new AutoShoot(Shooter.getInstance(), RobotContainer.cam1)
+            ),
+            new FollowPathWithRotationSource(
                 new Path(
                     0.01,
                     new PathPoint(
-                        new Translation2d(0.817, 0.774),
-                        new Rotation2d(Math.toRadians(250)),
-                        0.5
+                        new Translation2d(1, 5.528),
+                        new Rotation2d(Math.toRadians(180)),
+                        0.5,
+                        new MoveIntakeFirst(
+                            IntakeSubsystem.getInstance(), 
+                            Shooter.getInstance(), 
+                            intakePosition.GROUND.get(), 
+                            shooterPosition.DEPOSIT.get()
+                        )
                     ),
                     new PathPoint(
-                        new Translation2d(1, 1.83682),
-                        new Rotation2d(Math.toRadians(250)),
-                        0.5
+                        new Translation2d(3, 5.528),
+                        new Rotation2d(Math.toRadians(180)),
+                        1
                     ),
                     new PathPoint(
-                        new Translation2d(0.2, 1.93682),
-                        new Rotation2d(Math.toRadians(250)),
-                        0.5
+                        new Translation2d(3, 6),
+                        new Rotation2d(Math.toRadians(180)),
+                        1
                     ),
                     new PathPoint(
-                        new Translation2d(0.817, 0.774),
-                        new Rotation2d(Math.toRadians(250)),
-                        0
+                        new Translation2d(2, 5.0),
+                        new Rotation2d(Math.toRadians(180)),
+                        0.5
+                    )
+                ),
+
+                new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2)
+            ),
+            new FollowPath(
+                new Path(
+                    new PathPoint(
+                        new Translation2d(2, 5.0),
+                        new Rotation2d(Math.toRadians(180)),
+                        1.5,
+                        new SequentialCommandGroup(
+                            new MoveShooterFirst(
+                                IntakeSubsystem.getInstance(), 
+                                Shooter.getInstance(), 
+                                intakePosition.DEPOSIT.get(), 
+                                shooterPosition.DEPOSIT.get()
+                            ),
+                            new Transfer(IntakeSubsystem.getInstance(), Shooter.getInstance()),
+                            new MoveShooterFirst(
+                                IntakeSubsystem.getInstance(), 
+                                Shooter.getInstance(), 
+                                intakePosition.DEPOSIT.get(), 
+                                shooterPosition.GROUND.get()
+                            )
+                        )
+                    ),
+                    new PathPoint(
+                        new Translation2d(4, 5.0),
+                        new Rotation2d(Math.toRadians(180)),
+                        1.5
                     )
                 )
+            ),
+
+            new FollowPathWithRotationSource(
+                new Path(
+                    new PathPoint(
+                        new Translation2d(4, 5),
+                        new Rotation2d(Math.toRadians(180)),
+                        0.1
+                    ),
+                    new PathPoint(
+                        new Translation2d(4.4, 5),
+                        new Rotation2d(Math.toRadians(180)),
+                        0.1
+                    )
+                ),
+
+                new AutoShoot(Shooter.getInstance(), RobotContainer.cam1)
             )
         )
-    );
-    
+    );    
     
     /* ----------------- */
 

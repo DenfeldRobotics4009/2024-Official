@@ -22,6 +22,7 @@ public class FeedShooter extends Command {
   @Override
   public void execute() {
     shooter.feed();
+    
   }
 
   // Called once the command ends or is interrupted.
