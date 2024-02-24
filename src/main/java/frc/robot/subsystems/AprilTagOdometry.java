@@ -45,7 +45,7 @@ public class AprilTagOdometry extends SubsystemBase {
     PhotonPoseEstimator photonPoseEstimator;
     public PhotonCamera camera;
 
-    final int speakerID;
+    int speakerID = 0;
 
     /**
      * Creates an april tag odometry source relating to a 
@@ -78,13 +78,6 @@ public class AprilTagOdometry extends SubsystemBase {
                 "April tag data could not be loaded, april tag positioning will not occur.", false);
 
             e.printStackTrace();
-        }
-
-        // Grab speaker id based on alliance position
-        if (Field.isRedAlliance()) {
-            speakerID = 4;
-        } else {
-            speakerID = 7;
         }
 
     }
@@ -150,6 +143,13 @@ public class AprilTagOdometry extends SubsystemBase {
      */
     public double getDistanceToSpeaker() {
 
+        // Grab speaker id based on alliance position
+        if (Field.isRedAlliance()) {
+            speakerID = 4;
+        } else {
+            speakerID = 7;
+        }
+
         Optional<PhotonTrackedTarget> target = getTarget(speakerID);
     
         if (target.isPresent()) return getDistanceToTarget(target.get());
@@ -167,6 +167,14 @@ public class AprilTagOdometry extends SubsystemBase {
      * @return Degrees, relative to field
      */
     public double getYawToSpeaker() {
+
+        // Grab speaker id based on alliance position
+        if (Field.isRedAlliance()) {
+            speakerID = 4;
+        } else {
+            speakerID = 7;
+        }
+
         Optional<PhotonTrackedTarget> target = getTarget(speakerID);
         if (target.isPresent()) return -target.get().getYaw();
 

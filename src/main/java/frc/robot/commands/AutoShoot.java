@@ -28,11 +28,10 @@ public class AutoShoot extends Command implements AutoRotationSource {
   Shooter shooter;
   AprilTagOdometry camera;
   Rotation2d shootAngle = new Rotation2d();
-  boolean hadPiece = false;;
 
   PIDController aimingPidController = new PIDController(0.1, 0, 0);
 
-  Timer shootingTImer = new Timer();
+  // Timer shootingTImer = new Timer();
 
   /** Creates a new Shoot. */
   public AutoShoot(
@@ -50,13 +49,13 @@ public class AutoShoot extends Command implements AutoRotationSource {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    shootingTImer.start();
+    // shootingTImer.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (shooter.getBarrelSensor()) hadPiece = true;
+
     // Calculate distance
     double distance = camera.getDistanceToSpeaker();
     // Convert joystick value into a shooter angle
@@ -75,7 +74,7 @@ public class AutoShoot extends Command implements AutoRotationSource {
 
     
     //if flywheels up to speed, shooter aimed, drive train aimed, then feed in
-    if (atShooterSpeed && shooter.atTargetAngle() && shootingTImer.get() > 3) { //TODO: How to check if chassis is facing correct angle?
+    if (atShooterSpeed && shooter.atTargetAngle()) { //TODO: How to check if chassis is facing correct angle?
       shooter.feed();
     }
     else {
@@ -92,11 +91,11 @@ public class AutoShoot extends Command implements AutoRotationSource {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !shooter.getBarrelSensor() && hadPiece;
+    return !shooter.getBarrelSensor();
   }
 
   @Override
   public Optional<Rotation2d> getGoalRotation() {
-    return Optional.of(Rotation2d.fromDegrees(-camera.getYawToSpeaker()));
+    return Optional.of(Rotation2d.fromDegrees(-camera.getYawToSpeaker() / 2));
   }
 }

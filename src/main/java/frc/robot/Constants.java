@@ -20,7 +20,7 @@ import edu.wpi.first.math.geometry.Translation3d;
  */
 public final class Constants {
 
-    public static double laserSensorVoltageHigh = 0.6;
+    public static double laserSensorVoltageHigh = 0.58;
 
     public static double inchesInMeter = 39.3700787402;
 
@@ -39,10 +39,10 @@ public final class Constants {
         public static double feederSpeed = 1;
         public static int aimMotorID = 40;
         
-        public static double pidTolerance = 8;
+        public static double pidTolerance = 2;
 
         public static double aimRangeFrom0 = -133;
-        public static double transferAngle = -100;
+        public static double transferAngle = -90;
         
         public static double minimumFlywheelSpeed = 0;
         public static double maxShootSpeed = 1000;
@@ -68,14 +68,16 @@ public final class Constants {
         public static int rotateMotorID = 10; 
         public static double intakeMotorPower = -0.6;
 
-        public static double ground = -32;
-        public static double deposit = -15;
+        public static double ground = -0.3042;
+        public static double deposit = -0.1315;
 
-        public static double pidTolerance = 5;
+        public static double pidTolerance = 0.08;
 
         public static int intakeLaserSensorID = 1;
         public static int intakeInnerLimitSwitchID = 1;
         public static int intakeOuterLimitSwitchID = 2;
+
+        public static double rotateEncoderOffset = 0.5609;
     }
     public static final class AprilTagOdometry {
         public static double maxSpeed = 0.001; // power

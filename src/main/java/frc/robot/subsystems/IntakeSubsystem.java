@@ -1,18 +1,17 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DigitalSource;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -39,10 +38,13 @@ public class IntakeSubsystem extends SubsystemBase {
   public CANSparkFlex intakeMotor = new CANSparkFlex(Constants.Intake.intakeMotorID, MotorType.kBrushless);
   public CANSparkMax rotateMotor = new CANSparkMax(Constants.Intake.rotateMotorID, MotorType.kBrushless);
 
+  DutyCycleEncoder rotateEncoder = new DutyCycleEncoder(3);
+
   static IntakeSubsystem instance;
 
   public double goalIntakePosition = intakePosition.STARTING.get();
-  public PIDController intakePIDController = new PIDController(.045, 0, 0.0025);
+
+  public PIDController intakePIDController = new PIDController(3.75, 0, 0);
 
   // When tripped, there is a piece within the intake
   AnalogInput intakeLaserSensor = new AnalogInput(Constants.Intake.intakeLaserSensorID);
@@ -71,6 +73,9 @@ public class IntakeSubsystem extends SubsystemBase {
     rotateMotor.setOpenLoopRampRate(0.4);
     rotateMotor.getEncoder().setPosition(0);
 
+    rotateEncoder.setPositionOffset(Constants.Intake.rotateEncoderOffset);
+    rotateEncoder.setDistancePerRotation(1);
+
     intakePIDController.setTolerance(Constants.Intake.pidTolerance);
   }
 
@@ -88,7 +93,10 @@ public class IntakeSubsystem extends SubsystemBase {
       intakeInnerSwitchToggle = false;
     }
 
-    rotateMotor.set(intakePIDController.calculate(rotateMotor.getEncoder().getPosition()));
+    SmartDashboard.putNumber("Intake Current", intakeMotor.getOutputCurrent());
+
+    SmartDashboard.putNumber("intake angle", rotateEncoder.getDistance());
+    rotateMotor.set(intakePIDController.calculate(rotateEncoder.getDistance()));
   }
 
   public void setIntake() {
@@ -118,6 +126,14 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void setPosition(intakePosition position){
     setPosition(position.get());
+  }
+
+  public double getPosition() {
+    return rotateEncoder.getDistance();
+  }
+
+  public boolean atAngle(intakePosition position) {
+    return getTargetAngle() == position.get() && atTargetAngle();
   }
 
   public void setPosition(double position){

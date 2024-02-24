@@ -19,6 +19,7 @@ import frc.robot.commands.MoveIntakeFirst;
 import frc.robot.commands.MoveShooterFirst;
 import frc.robot.commands.Outtake;
 import frc.robot.commands.Shoot;
+import frc.robot.commands.TeleopIntake;
 import frc.robot.commands.Transfer;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.SwerveDrive;
@@ -59,18 +60,6 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-
-    driveTrain.setDefaultCommand(
-      new Drive(driveTrain, controls)
-    );
-
-    // Pass drivetrain into pathing algorithm
-    PathingConstants.setForwardAngle(Swerve.forwardAngle);
-    PathingConstants.setDriveSubsystem(driveTrain);
-    // Initialize auto tab
-    AutoShuffleboardTab.getInstance();
-
-    // Configure the button bindings
 
     driveTrain.setDefaultCommand(
       new Drive(driveTrain, controls)
@@ -155,12 +144,21 @@ public class RobotContainer {
      * -> run transfer process.
      */
     new Trigger(() -> {return controls.operate.getLeftTriggerAxis() >= 0.1;}).whileTrue(
+      new ParallelCommandGroup(
+        new MoveIntakeFirst(intake, shooter, intakePosition.GROUND.get(), shooterPosition.DEPOSIT.get()),
+        new TeleopIntake(intake, cam2, driveTrain, controls) // Continue until a piece is picked up
+      )
+    );
+
+    /**
+     * TRANSFER
+     * 
+     * Automatic after the intake sensor is triggered after intaking.
+     */
+    new Trigger(() -> {
+      return controls.operate.getLeftTriggerAxis() >= 0.1 && intake.getIntakeSensor() && intake.atAngle(intakePosition.GROUND);
+    }).onTrue(
       new SequentialCommandGroup(
-        new ParallelCommandGroup(
-          new MoveIntakeFirst(intake, shooter, intakePosition.GROUND.get(), shooterPosition.DEPOSIT.get()),
-          new Intake(intake, cam2) // Continue until a piece is picked up
-        ),
-        // Initiate transfer positions
         new MoveShooterFirst(intake, shooter, intakePosition.DEPOSIT.get(), shooterPosition.DEPOSIT.get()),
         new Transfer(intake, shooter),
         new MoveShooterFirst(intake, shooter, intakePosition.STARTING.get(), shooterPosition.GROUND.get())

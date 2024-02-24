@@ -18,8 +18,8 @@ public final class ShotProfile {
     static Translation2d[] data = {
         // x = distance (inches), y = height (joystick value)
         new Translation2d(0, 0),
-        new Translation2d(0.95, -14.5),
-        new Translation2d(1.5, -46),
+        new Translation2d(0.95, -19),
+        new Translation2d(1.5, -49),
         new Translation2d(2.5, -62),
         new Translation2d(3.7, -76),
         new Translation2d(4.20, -83),
@@ -57,6 +57,7 @@ public final class ShotProfile {
             if (distance >= data[i].getX() && distance <= data[i+1].getX()) {
                 return Optional.of(
                     data[i].interpolate(data[i+1], (distance - data[i].getX()) / (data[i+1].getX() - data[i].getX())).getY()
+                        + 8.5
                 );
             }
         }

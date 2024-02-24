@@ -72,7 +72,6 @@ public class Shoot extends Command {
     // System.out.println("Shot angle " + angle);
     SmartDashboard.putNumber("Yaw ", camera.getYawToSpeaker());
 
-    System.out.println("Red alliance " + Field.isRedAlliance());
     //get flywheels are up to speed
     shooter.setPosition(angle);
     boolean atShooterSpeed = shooter.setFlyWheelSpeed(Constants.Shooter.flyWheelSpeed);
@@ -90,7 +89,6 @@ public class Shoot extends Command {
       ), 
       SwerveDrive.getInstance().getPosition().getRotation()
     );
-    System.out.println(speeds.omegaRadiansPerSecond);
     swerveDrive.drive(speeds);
     //if flywheels up to speed, shooter aimed, drive train aimed, then feed in
     // if (controls.operate.getRightTriggerAxis() >= 0.1 && atShooterSpeed) {

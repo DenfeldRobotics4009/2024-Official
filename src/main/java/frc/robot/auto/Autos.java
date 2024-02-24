@@ -308,7 +308,7 @@ public enum Autos {
                     new PathPoint(
                         new Translation2d(2, 5.0),
                         new Rotation2d(Math.toRadians(180)),
-                        0.5,
+                        1.5,
                         new SequentialCommandGroup(
                             new MoveShooterFirst(
                                 IntakeSubsystem.getInstance(), 
@@ -326,9 +326,9 @@ public enum Autos {
                         )
                     ),
                     new PathPoint(
-                        new Translation2d(2.2, 5.0),
+                        new Translation2d(4, 5.0),
                         new Rotation2d(Math.toRadians(180)),
-                        0.5
+                        1.5
                     )
                 )
             ),
@@ -336,14 +336,14 @@ public enum Autos {
             new FollowPathWithRotationSource(
                 new Path(
                     new PathPoint(
-                        new Translation2d(2.2, 5),
+                        new Translation2d(4, 5),
                         new Rotation2d(Math.toRadians(180)),
-                        0.2
+                        0.1
                     ),
                     new PathPoint(
-                        new Translation2d(3, 5),
+                        new Translation2d(4.4, 5),
                         new Rotation2d(Math.toRadians(180)),
-                        0.2
+                        0.1
                     )
                 ),
 

@@ -110,7 +110,7 @@ public class FollowPathWithRotationSource extends FollowPath {
    * and has passed the second to last point.
    */
   public boolean isFinished() {
-
+    System.out.println("Is finished - " + command.isFinished());
     return command.isFinished();
   }
 }
