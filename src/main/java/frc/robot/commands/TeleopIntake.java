@@ -59,15 +59,19 @@ public class TeleopIntake extends Command {
       omegaRadPerSecond = -aimingPidController.calculate(Math.toRadians(yawToNote.get()));
     }
 
+    double radPSec = controls.getTurn() * SwerveModule.maxRadPerSecond;
+
+    double precisionFactor = 1;
+    if (controls.getPrecisionMode()) {precisionFactor = 0.35;}
+
     ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
       new ChassisSpeeds(
-        controls.getForward() * SwerveModule.maxMetersPerSecond,
-        controls.getLateral() * SwerveModule.maxMetersPerSecond,
-
-        // Allow for minor driver augmentation, add half the speed coming from the controller
-        omegaRadPerSecond + (controls.getTurn() * SwerveModule.maxRadPerSecond) * (1/2)
+        controls.getForward() * SwerveModule.maxMetersPerSecond * precisionFactor,
+        controls.getLateral() * SwerveModule.maxMetersPerSecond * precisionFactor,
+        (radPSec * precisionFactor) 
+          + omegaRadPerSecond
       ), 
-      SwerveDrive.getInstance().getPosition().getRotation()
+      swerveDrive.getPosition().getRotation()
     );
     swerveDrive.drive(speeds);
   }

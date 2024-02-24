@@ -33,6 +33,8 @@ public class RightMidCenterMidCenterRightMidRight extends SequentialCommandGroup
              * This command sets the original position of the robot,
              * as when the robot powers on it will set its position
              * initially to (0, 0)
+             * 
+             * // TODO Correct it
              */
             new SetDrivePosition(new Pose2d(Constants.Paths.START_RIGHT, Constants.Paths.START_RIGHT_ANGLE)), //starts at these points (might need to tweak)
 
@@ -203,7 +205,8 @@ public class RightMidCenterMidCenterRightMidRight extends SequentialCommandGroup
                     new PathPoint(
                         new Translation2d(5.865,4.135),
                         new Rotation2d(Math.PI/2),
-                        1
+                        1,
+                        new robotIntake()
                     )
                 )
             ),
@@ -246,13 +249,13 @@ public class RightMidCenterMidCenterRightMidRight extends SequentialCommandGroup
                     new PathPoint(
                         new Translation2d(3.649,2.838),               // Starting Position (meters)
                         new Rotation2d(Math.PI/2),     //TODO: Find the actual angle for the starting position
-                        1,   // Speed (m/s)
-                        new clearIntake()
+                        1
                     ),
                     new PathPoint(
                         Constants.Paths.START_RIGHT,               // Starting Position (meters)    
                         new Rotation2d(Math.PI),     // Start Rotation (rad)
-                        1    // Speed (m/s)
+                        1,    // Speed (m/s)
+                        new closeRobot()
                     )
                 ),
                 new AutoShoot(Shooter.getInstance(), RobotContainer.cam1)

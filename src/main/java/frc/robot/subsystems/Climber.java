@@ -18,6 +18,10 @@ public class Climber extends SubsystemBase {
 
   static Climber instance;
 
+  public enum climberSide {
+    left, right, both;
+  }
+
   public static Climber getInstance() {
     if (instance == null) {
       return new Climber();
@@ -50,14 +54,18 @@ public class Climber extends SubsystemBase {
     SmartDashboard.putNumber("rightCurrent", rightClimberMotor.getOutputCurrent());
   }
 
-  public void moveClimbersUp() {
-    setLeftClimber(Constants.Climber.climberMotorPower);
-    setRightClimber(Constants.Climber.climberMotorPower);
+  /**
+   * @param speed (-) down, (+) up
+   */
+  public void moveLeftClimber(double speed) {
+    setLeftClimber(speed);
   }
 
-  public void moveClimbersDown() {
-    setLeftClimber(-Constants.Climber.climberMotorPower);
-    setRightClimber(-Constants.Climber.climberMotorPower);
+  /**
+   * @param speed (-) down, (+) up
+   */
+  public void moveRightClimber(double speed) {
+    setRightClimber(speed);
   }
 
   public void stop() {
@@ -71,5 +79,17 @@ public class Climber extends SubsystemBase {
 
   void setLeftClimber(double speed) {
     leftClimberMotor.set(-speed);
+  }
+
+  public void setClimberLimits(boolean enable) {
+    rightClimberMotor.setSoftLimit(SoftLimitDirection.kForward, (float)Constants.Climber.up);
+    rightClimberMotor.setSoftLimit(SoftLimitDirection.kReverse, (float)Constants.Climber.down);
+    rightClimberMotor.enableSoftLimit(SoftLimitDirection.kForward, false);
+    rightClimberMotor.enableSoftLimit(SoftLimitDirection.kReverse, false);
+
+    leftClimberMotor.setSoftLimit(SoftLimitDirection.kReverse, (float)-Constants.Climber.up);
+    leftClimberMotor.setSoftLimit(SoftLimitDirection.kForward, (float)-Constants.Climber.down);
+    leftClimberMotor.enableSoftLimit(SoftLimitDirection.kForward, false);
+    leftClimberMotor.enableSoftLimit(SoftLimitDirection.kReverse, false);
   }
 }

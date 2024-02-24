@@ -9,7 +9,7 @@ import frc.robot.auto.pathing.AutoShuffleboardTab;
 import frc.robot.auto.pathing.PathingConstants;
 import frc.robot.commands.AmpShoot;
 import frc.robot.commands.BurpShoot;
-import frc.robot.commands.ClimbDown;
+import frc.robot.commands.Climb;
 import frc.robot.commands.ClimbUp;
 import frc.robot.commands.Drive;
 import frc.robot.commands.FastIntake;
@@ -18,11 +18,13 @@ import frc.robot.commands.Intake;
 import frc.robot.commands.MoveIntakeFirst;
 import frc.robot.commands.MoveShooterFirst;
 import frc.robot.commands.Outtake;
+import frc.robot.commands.SetClimberLimits;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.TeleopIntake;
 import frc.robot.commands.Transfer;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.SwerveDrive;
+import frc.robot.subsystems.Climber.climberSide;
 import frc.robot.subsystems.IntakeSubsystem.intakePosition;
 import frc.robot.subsystems.Shooter.shooterPosition;
 import frc.robot.subsystems.Shooter;
@@ -197,13 +199,13 @@ public class RobotContainer {
      */
     new Trigger(() -> {return controls.operate.getYButton();}).whileTrue(new Outtake(intake));
 
-    /**
-     * FAST INTAKE
-     * 
-     * Does not move the intake or shooter, only runs the intake while
-     * the button is held, or until sensor is tripped.
-     */
-    new Trigger(() -> {return controls.operate.getBButton();}).whileTrue(new FastIntake(intake));
+    // /**
+    //  * FAST INTAKE
+    //  * 
+    //  * Does not move the intake or shooter, only runs the intake while
+    //  * the button is held, or until sensor is tripped.
+    //  */
+    // new Trigger(() -> {return controls.operate.getBButton();}).whileTrue(new FastIntake(intake));
 
     /**
      * CLIMBER
@@ -212,7 +214,7 @@ public class RobotContainer {
      * when its upper bound is reached. The command will not end until
      * the button is released.
      */
-    new Trigger(() -> {return controls.operate.getLeftBumper();}).whileTrue(new ClimbUp(climber));
+    new Trigger(() -> {return controls.operate.getLeftBumper();}).whileTrue(new Climb(climber, Constants.Climber.climberMotorPower));
 
     /**
      * CLIMBER
@@ -221,7 +223,49 @@ public class RobotContainer {
      * when its lower bound is reached. The command will not end until
      * the button is released.
      */
-    new Trigger(() -> {return controls.operate.getRightBumper();}).whileTrue(new ClimbDown(climber));
+    new Trigger(() -> {return controls.operate.getRightBumper();}).whileTrue(new Climb(climber, Constants.Climber.climberMotorPower));
+
+    /**
+     * CLIMBER LIMIT DISABLE
+     * 
+     * While the B button is held, the climber ignores its limits
+     */
+    new Trigger(() -> {return controls.operate.getBButton();}).onTrue(new SetClimberLimits(climber, false));
+    
+    /**
+     * CLIMBER LIMIT ENABLE
+     * 
+     * While the B button is held, the climber ignores its limits
+     */
+    new Trigger(() -> {return controls.operate.getBButton();}).onFalse(new SetClimberLimits(climber, true));
+    
+    /**
+     * LEFT CLIMBER UP
+     */
+    new Trigger(() -> {
+      return controls.operate.getBButton() && controls.operate.getLeftY() < -0.1;
+    }).whileTrue(new Climb(climber, climberSide.left, Constants.Climber.climberMotorPower));
+    
+    /**
+     * LEFT CLIMBER DOWN
+     */
+    new Trigger(() -> {
+      return controls.operate.getBButton() && controls.operate.getLeftY() > 0.1;
+    }).whileTrue(new Climb(climber, climberSide.left, -Constants.Climber.climberMotorPower));
+    
+    /**
+     * RIGHT CLIMBER UP
+     */
+    new Trigger(() -> {
+      return controls.operate.getBButton() && controls.operate.getRightY() < -0.1;
+    }).whileTrue(new Climb(climber, climberSide.right, Constants.Climber.climberMotorPower));
+    
+    /**
+     * RIGHT CLIMBER DOWN
+     */
+    new Trigger(() -> {
+      return controls.operate.getBButton() && controls.operate.getRightY() > 0.1;
+    }).whileTrue(new Climb(climber, climberSide.right, -Constants.Climber.climberMotorPower));
   }
 
   /**

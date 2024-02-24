@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -80,23 +81,21 @@ public class Shoot extends Command {
     SmartDashboard.putNumber("Offset ", offset);
     SmartDashboard.putNumber("Offset + Angle", angle + offset);
 
-    //aim drive train
+    double radPSec = controls.getTurn() * SwerveModule.maxRadPerSecond;
+
+    double precisionFactor = 1;
+    if (controls.getPrecisionMode()) {precisionFactor = 0.35;}
+
     ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
       new ChassisSpeeds(
-        controls.getForward() * SwerveModule.maxMetersPerSecond,
-        controls.getLateral() * SwerveModule.maxMetersPerSecond,
-        aimingPidController.calculate(Math.toRadians(camera.getYawToSpeaker()-5))
+        controls.getForward() * SwerveModule.maxMetersPerSecond * precisionFactor,
+        controls.getLateral() * SwerveModule.maxMetersPerSecond * precisionFactor,
+        (radPSec * precisionFactor) 
+          + aimingPidController.calculate(Math.toRadians(camera.getYawToSpeaker()-5))
       ), 
-      SwerveDrive.getInstance().getPosition().getRotation()
+      swerveDrive.getPosition().getRotation()
     );
     swerveDrive.drive(speeds);
-    //if flywheels up to speed, shooter aimed, drive train aimed, then feed in
-    // if (controls.operate.getRightTriggerAxis() >= 0.1 && atShooterSpeed) {
-    //   shooter.feed();
-    // }
-    // else {
-    //   shooter.stopFeed();
-    // }
   }
 
   // Called once the command ends or is interrupted.

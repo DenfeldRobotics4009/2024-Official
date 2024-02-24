@@ -7,16 +7,13 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Climber;
 
-public class ClimbDown extends Command {
-  final Climber climber;
-
-  /**
-   * Moves the climbers up
-   */
-  public ClimbDown(Climber climber) {
-    addRequirements(climber);
-
+public class SetClimberLimits extends Command {
+  Climber climber;
+  boolean enable;
+  /** Creates a new DisableClimberLimits. */
+  public SetClimberLimits(Climber climber, boolean enable) {
     this.climber = climber;
+    this.enable = enable;
   }
 
   // Called when the command is initially scheduled.
@@ -26,18 +23,16 @@ public class ClimbDown extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    climber.moveClimbersDown();
+    climber.setClimberLimits(enable);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    climber.stop();
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }
