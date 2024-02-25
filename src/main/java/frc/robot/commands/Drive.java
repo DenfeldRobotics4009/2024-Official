@@ -16,6 +16,8 @@ public class Drive extends Command {
   SwerveDrive drivetrain;
   Controls controls;
 
+  static double externalTurnSpeed = 0;
+
   // Tuner values are in degrees, and are converted after calculation
   PIDController directionTuner = new PIDController(9, 0, 0);
 
@@ -60,11 +62,15 @@ public class Drive extends Command {
       new ChassisSpeeds(
         controls.getForward() * SwerveModule.maxMetersPerSecond * precisionFactor,
         controls.getLateral() * SwerveModule.maxMetersPerSecond * precisionFactor,
-        radPSec * precisionFactor
+        radPSec * precisionFactor + externalTurnSpeed
       ), 
       drivetrain.getPosition().getRotation()
     );
     drivetrain.drive(speeds);
+  }
+
+  public static void applyTurnSpeed(double omegaRadiansPerSecond) {
+    externalTurnSpeed = omegaRadiansPerSecond;
   }
 
   // Called once the command ends or is interrupted.

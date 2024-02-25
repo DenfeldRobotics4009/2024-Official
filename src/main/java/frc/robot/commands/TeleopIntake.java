@@ -22,7 +22,6 @@ public class TeleopIntake extends Command {
   IntakeSubsystem intake;
   NoteCamera camera;
   Controls controls;
-  SwerveDrive swerveDrive;
 
   /**
    * Runs the intake until the sensor is activated
@@ -31,14 +30,12 @@ public class TeleopIntake extends Command {
   public TeleopIntake(
     IntakeSubsystem intake, 
     NoteCamera camera, 
-    SwerveDrive swerveDrive,
     Controls controls
   ) {
-    addRequirements(intake, swerveDrive);
+    addRequirements(intake);
     this.intake = intake;
     this.camera = camera;
     this.controls = controls;
-    this.swerveDrive = swerveDrive;
   }
 
   // Called when the command is initially scheduled.
@@ -59,27 +56,14 @@ public class TeleopIntake extends Command {
       omegaRadPerSecond = -aimingPidController.calculate(Math.toRadians(yawToNote.get()));
     }
 
-    double radPSec = controls.getTurn() * SwerveModule.maxRadPerSecond;
-
-    double precisionFactor = 1;
-    if (controls.getPrecisionMode()) {precisionFactor = 0.35;}
-
-    ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
-      new ChassisSpeeds(
-        controls.getForward() * SwerveModule.maxMetersPerSecond * precisionFactor,
-        controls.getLateral() * SwerveModule.maxMetersPerSecond * precisionFactor,
-        (radPSec * precisionFactor) 
-          + omegaRadPerSecond
-      ), 
-      swerveDrive.getPosition().getRotation()
-    );
-    swerveDrive.drive(speeds);
+    Drive.applyTurnSpeed(omegaRadPerSecond);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     intake.stop();
+    Drive.applyTurnSpeed(0);
   }
 
   // Returns true when the command should end.

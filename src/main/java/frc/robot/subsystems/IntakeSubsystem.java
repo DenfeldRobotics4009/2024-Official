@@ -73,6 +73,8 @@ public class IntakeSubsystem extends SubsystemBase {
     rotateMotor.setOpenLoopRampRate(0.4);
     rotateMotor.getEncoder().setPosition(0);
 
+    intakeMotor.setOpenLoopRampRate(0.5);
+
     rotateEncoder.setPositionOffset(Constants.Intake.rotateEncoderOffset);
     rotateEncoder.setDistancePerRotation(1);
 

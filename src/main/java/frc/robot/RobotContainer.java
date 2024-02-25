@@ -10,11 +10,11 @@ import frc.robot.auto.pathing.PathingConstants;
 import frc.robot.commands.AmpShoot;
 import frc.robot.commands.BurpShoot;
 import frc.robot.commands.Climb;
-import frc.robot.commands.ClimbUp;
 import frc.robot.commands.Drive;
 import frc.robot.commands.FastIntake;
 import frc.robot.commands.FeedShooter;
 import frc.robot.commands.Intake;
+import frc.robot.commands.MoveIntake;
 import frc.robot.commands.MoveIntakeFirst;
 import frc.robot.commands.MoveShooterFirst;
 import frc.robot.commands.Outtake;
@@ -99,8 +99,8 @@ public class RobotContainer {
      */
     controls.getOperatePOVTrigger(90).whileTrue(
       new SequentialCommandGroup(
-        new MoveIntakeFirst(intake, shooter, intakePosition.DEPOSIT.get(), shooterPosition.GROUND.get()),
-        new Shoot(shooter, controls, driveTrain, cam1)
+        new MoveIntake(intake, intakePosition.DEPOSIT.get()),
+        new Shoot(shooter, controls, cam1)
       )
     );
 
@@ -147,8 +147,8 @@ public class RobotContainer {
      */
     new Trigger(() -> {return controls.operate.getLeftTriggerAxis() >= 0.1;}).whileTrue(
       new ParallelCommandGroup(
-        new MoveIntakeFirst(intake, shooter, intakePosition.GROUND.get(), shooterPosition.DEPOSIT.get()),
-        new TeleopIntake(intake, cam2, driveTrain, controls) // Continue until a piece is picked up
+        new TeleopIntake(intake, cam2, controls), // Continue until a piece is picked up
+        new MoveIntakeFirst(intake, shooter, intakePosition.GROUND.get(), shooterPosition.DEPOSIT.get())
       )
     );
 
@@ -162,8 +162,7 @@ public class RobotContainer {
     }).onTrue(
       new SequentialCommandGroup(
         new MoveShooterFirst(intake, shooter, intakePosition.DEPOSIT.get(), shooterPosition.DEPOSIT.get()),
-        new Transfer(intake, shooter),
-        new MoveShooterFirst(intake, shooter, intakePosition.STARTING.get(), shooterPosition.GROUND.get())
+        new Transfer(intake, shooter)
       )
     );
 
@@ -223,7 +222,7 @@ public class RobotContainer {
      * when its lower bound is reached. The command will not end until
      * the button is released.
      */
-    new Trigger(() -> {return controls.operate.getRightBumper();}).whileTrue(new Climb(climber, Constants.Climber.climberMotorPower));
+    new Trigger(() -> {return controls.operate.getRightBumper();}).whileTrue(new Climb(climber, -Constants.Climber.climberMotorPower));
 
     /**
      * CLIMBER LIMIT DISABLE

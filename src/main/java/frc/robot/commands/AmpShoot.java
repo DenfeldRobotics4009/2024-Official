@@ -44,7 +44,7 @@ public class AmpShoot extends Command {
   @Override
   public void execute() {
     // Convert joystick value into a shooter angle
-    double angle = -0.38 * Constants.Shooter.aimRangeFrom0;
+    double angle = -15;
 
     //get flywheels are up to speed
     shooter.setPosition(angle);

@@ -24,7 +24,6 @@ public class Shoot extends Command {
 
   Shooter shooter;
   Controls controls;
-  SwerveDrive swerveDrive;
   AprilTagOdometry camera;
 
   double offset = 0;
@@ -35,15 +34,13 @@ public class Shoot extends Command {
   public Shoot(
     Shooter shooter, 
     Controls controls, 
-    SwerveDrive swerveDrive,
     AprilTagOdometry camera
   ) {
     this.shooter = shooter;
     this.controls = controls;
-    this.swerveDrive = swerveDrive;
     this.camera = camera;
     
-    addRequirements(shooter, swerveDrive);
+    addRequirements(shooter);
 
     aimingPidController.setSetpoint(0);
     aimingPidController.enableContinuousInput(-Math.PI, Math.PI);
@@ -81,27 +78,15 @@ public class Shoot extends Command {
     SmartDashboard.putNumber("Offset ", offset);
     SmartDashboard.putNumber("Offset + Angle", angle + offset);
 
-    double radPSec = controls.getTurn() * SwerveModule.maxRadPerSecond;
-
-    double precisionFactor = 1;
-    if (controls.getPrecisionMode()) {precisionFactor = 0.35;}
-
-    ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
-      new ChassisSpeeds(
-        controls.getForward() * SwerveModule.maxMetersPerSecond * precisionFactor,
-        controls.getLateral() * SwerveModule.maxMetersPerSecond * precisionFactor,
-        (radPSec * precisionFactor) 
-          + aimingPidController.calculate(Math.toRadians(camera.getYawToSpeaker()-5))
-      ), 
-      swerveDrive.getPosition().getRotation()
-    );
-    swerveDrive.drive(speeds);
+    // Contact the driving command and apply an external turning speed towards the target
+    Drive.applyTurnSpeed(aimingPidController.calculate(Math.toRadians(camera.getYawToSpeaker()-5)));
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     shooter.stopShooter();
+    Drive.applyTurnSpeed(0);
   }
 
   // Returns true when the command should end.

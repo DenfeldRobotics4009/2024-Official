@@ -27,7 +27,7 @@ public final class Constants {
     public static final class Climber {
         public static int leftClimberMotorID = 18;
         public static int rightClimberMotorID = 19;
-        public static double down = -50;
+        public static double down = -5;
         public static double up = 450;
         public static double climberMotorPower = 1;  
     }
@@ -60,13 +60,13 @@ public final class Constants {
 
         public static double flyWheelSpeed = 5440; // RPM
 
-        public static double topAmpFlyWheelSpeed = 1371; // RPM
-        public static double bottomAmpFlyWheelSpeed = 378; // RPM
+        public static double topAmpFlyWheelSpeed = 378; // RPM
+        public static double bottomAmpFlyWheelSpeed = 1671; // RPM
     }
     public static final class Intake {
         public static int intakeMotorID = 12;
         public static int rotateMotorID = 10; 
-        public static double intakeMotorPower = -0.6;
+        public static double intakeMotorPower = -0.4;
 
         public static double ground = -0.3042;
         public static double deposit = -0.1315;
