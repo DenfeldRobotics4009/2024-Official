@@ -9,6 +9,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.auto.pathing.FollowPath;
 import frc.robot.auto.pathing.pathObjects.Path;
 import frc.robot.auto.pathing.pathObjects.PathPoint;
@@ -19,6 +20,7 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.Intake;
 import frc.robot.commands.MoveIntakeFirst;
 import frc.robot.commands.MoveShooterFirst;
+import frc.robot.commands.ShootManual;
 import frc.robot.commands.Transfer;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -37,139 +39,33 @@ public enum Autos {
     /**
      * Drives the robot along the ExamplePath
      */
-    LeftNearLeft(
-        new ExampleAuto()
-    ),
-    CenterNearCenterNearRight( // To tune
-       new CenterNearCenterNearRight()
-    ),
-    LeftNearLeftMidLeft( // To tune
-       new LeftNearLeftMidLeft()
-    ),
+    // LeftNearLeft(
+    //     new ExampleAuto()
+    // ),
+    // CenterNearCenterNearRight( // To tune
+    //    new CenterNearCenterNearRight()
+    // ),
+    // LeftNearLeftMidLeft( // To tune
+    //    new LeftNearLeftMidLeft()
+    // ),
     RightMidCenterMidCenterRightMidRight(
         new RightMidCenterMidCenterRightMidRight()
     ),
 
-    StartLeft(
+    Left2Piece(
         new SequentialCommandGroup(
-            new SetDrivePosition(new Pose2d(Constants.Paths.START_LEFT, Constants.Paths.START_LEFT_ANGLE)),
-            new AutoShoot(Shooter.getInstance(), RobotContainer.cam1),
-            new FollowPath(
-                new Path(
-                    new PathPoint(
-                        Constants.Paths.START_CENTER,
-                        Constants.Paths.START_CENTER_ANGLE,
-                        1
-                    ),
-                    new PathPoint(
-                        Constants.Paths.START_CENTER.plus(new Translation2d(1, 0)),
-                        Constants.Paths.START_CENTER_ANGLE,
-                        0
-                    )
-                )
-            )
-        )
-    ),
-
-    StartCenter(
-        new SequentialCommandGroup(
-            new SetDrivePosition(new Pose2d(Constants.Paths.START_CENTER, Constants.Paths.START_CENTER_ANGLE)),
-            new AutoShoot(Shooter.getInstance(), RobotContainer.cam1),
-            new FollowPath(
-                new Path(
-                    new PathPoint(
-                        Constants.Paths.START_CENTER,
-                        Constants.Paths.START_CENTER_ANGLE,
-                        1
-                    ),
-                    new PathPoint(
-                        Constants.Paths.START_CENTER.plus(new Translation2d(1, 0)),
-                        Constants.Paths.START_CENTER_ANGLE,
-                        0
-                    )
-                )
-            )
-        )
-    ),
-
-    StartRight(
-        new SequentialCommandGroup(
-            new SetDrivePosition(new Pose2d(Constants.Paths.START_RIGHT, Constants.Paths.START_RIGHT_ANGLE)),
-            new AutoShoot(Shooter.getInstance(), RobotContainer.cam1),
-            new FollowPath(
-                new Path(
-                    new PathPoint(
-                        Constants.Paths.START_CENTER,
-                        Constants.Paths.START_CENTER_ANGLE,
-                        1
-                    ),
-                    new PathPoint(
-                        Constants.Paths.START_CENTER.plus(new Translation2d(1, 0)),
-                        Constants.Paths.START_CENTER_ANGLE,
-                        0
-                    )
-                )
-            )
-        )
-    ),
-    DriveForward(
-        new SequentialCommandGroup(
-            new FollowPath(
-                new Path(
-                    new PathPoint(
-                        new Translation2d(),
-                        new Rotation2d(),
-                        1
-                    ),
-                    new PathPoint(
-                        new Translation2d(1,0),
-                        new Rotation2d(),
-                        0
-                    )
-                )
-            )
-        )
-    ),
-    DriveAndReturn(
-        new SequentialCommandGroup(
-            new FollowPath(
-                new Path(
-                    new PathPoint(
-                        new Translation2d(),
-                        new Rotation2d(),
-                        1
-                    ),
-                    new PathPoint(
-                        new Translation2d(1,0),
-                        new Rotation2d(),
-                        0
-                    )
+            new SetDrivePosition(
+                Field.mirrorPointIfRed(
+                    new Pose2d(Constants.Paths.START_LEFT, Constants.Paths.START_LEFT_ANGLE)
                 )
             ),
-            new FollowPath(
-                new Path(
-                    new PathPoint(
-                        new Translation2d(1,0),
-                        new Rotation2d(),
-                        1
-                    ),
-                    new PathPoint(
-                        new Translation2d(0,0),
-                        new Rotation2d(),
-                        0
-                    )
-                )
-            )
-        )
-    ),
-    DriveAndReturnWithIntake(
-        new SequentialCommandGroup(
+            new ShootManual(Shooter.getInstance(), -10),
             new FollowPathWithRotationSource(
                 new Path(
                     new PathPoint(
-                        new Translation2d(),
-                        new Rotation2d(),
-                        1,
+                        Constants.Paths.START_LEFT,
+                        new Rotation2d(Math.toRadians(180)),
+                        0.5,
                         new MoveIntakeFirst(
                             IntakeSubsystem.getInstance(), 
                             Shooter.getInstance(), 
@@ -178,14 +74,9 @@ public enum Autos {
                         )
                     ),
                     new PathPoint(
-                        new Translation2d(0.8,0),
+                        Constants.Paths.START_LEFT.plus(new Translation2d(1, 0)),
                         new Rotation2d(Math.toRadians(180)),
-                        1
-                    ),
-                    new PathPoint(
-                        new Translation2d(2,0),
-                        new Rotation2d(Math.toRadians(180)),
-                        0,
+                        0.2,
                         new SequentialCommandGroup(
                             new MoveShooterFirst(
                                 IntakeSubsystem.getInstance(), 
@@ -197,10 +88,9 @@ public enum Autos {
                             new MoveShooterFirst(
                                 IntakeSubsystem.getInstance(), 
                                 Shooter.getInstance(), 
-                                intakePosition.STARTING.get(), 
+                                intakePosition.DEPOSIT.get(), 
                                 shooterPosition.GROUND.get()
                             )
-      
                         )
                     )
                 ),
@@ -209,39 +99,114 @@ public enum Autos {
             new FollowPath(
                 new Path(
                     new PathPoint(
-                        new Translation2d(2,0),
+                        Constants.Paths.START_LEFT.plus(new Translation2d(1, 0)),
                         new Rotation2d(Math.toRadians(180)),
-                        1
+                        0.5
                     ),
                     new PathPoint(
-                        new Translation2d(0,0),
-                        new Rotation2d(),
-                        0
+                        Constants.Paths.START_LEFT.plus(new Translation2d(1, -0.5)),
+                        new Rotation2d(Math.toRadians(180)),
+                        0.5
                     )
                 )
+            ),
+            new FollowPathWithRotationSource(
+                new Path(
+                    new PathPoint(
+                        Constants.Paths.START_LEFT.plus(new Translation2d(1, -0.5)),
+                        new Rotation2d(Math.toRadians(180)),
+                        0.01
+                    ),
+                    new PathPoint(
+                        Constants.Paths.START_LEFT.plus(new Translation2d(0.9, -0.5)),
+                        new Rotation2d(Math.toRadians(180)),
+                        0.01
+                    )
+                ),
+
+                new AutoShoot(Shooter.getInstance(), RobotContainer.cam1)
             )
         )
     ),
-    DriveWithSetPosition(
+    Right2Piece(
         new SequentialCommandGroup(
-            new SetDrivePosition(new Pose2d(new Translation2d(1, 1), new Rotation2d())),
+            new SetDrivePosition(
+                Field.mirrorPointIfRed(
+                    new Pose2d(Constants.Paths.START_RIGHT, Constants.Paths.START_RIGHT_ANGLE)
+                )
+            ),
+            new ShootManual(Shooter.getInstance(), -10),
+            new FollowPathWithRotationSource(
+                new Path(
+                    0.01,
+                    new PathPoint(
+                        new Translation2d(1, 4.2),
+                        new Rotation2d(Math.toRadians(180)),
+                        0.5,
+                        new MoveIntakeFirst(
+                            IntakeSubsystem.getInstance(), 
+                            Shooter.getInstance(), 
+                            intakePosition.GROUND.get(), 
+                            shooterPosition.DEPOSIT.get()
+                        )
+                    ),
+                    new PathPoint(
+                        new Translation2d(2, 4.2),
+                        new Rotation2d(Math.toRadians(180)),
+                        0.2,
+                        new SequentialCommandGroup(
+                            new MoveShooterFirst(
+                                IntakeSubsystem.getInstance(), 
+                                Shooter.getInstance(), 
+                                intakePosition.DEPOSIT.get(), 
+                                shooterPosition.DEPOSIT.get()
+                            ),
+                            new Transfer(IntakeSubsystem.getInstance(), Shooter.getInstance()),
+                            new MoveShooterFirst(
+                                IntakeSubsystem.getInstance(), 
+                                Shooter.getInstance(), 
+                                intakePosition.DEPOSIT.get(), 
+                                shooterPosition.GROUND.get()
+                            )
+                        )
+                    )
+                ),
+
+                new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2)
+            ),
             new FollowPath(
                 new Path(
                     new PathPoint(
-                        new Translation2d(1, 1),
-                        new Rotation2d(),
-                        1
+                        new Translation2d(1.8, 4.5),
+                        new Rotation2d(Math.toRadians(160)),
+                        0.5
                     ),
                     new PathPoint(
-                        new Translation2d(2,1),
-                        new Rotation2d(),
-                        0
+                        new Translation2d(1.6, 4.8),
+                        new Rotation2d(Math.toRadians(160)),
+                        0.5
                     )
                 )
+            ),
+            new FollowPathWithRotationSource(
+                new Path(
+                    new PathPoint(
+                        new Translation2d(2, 4.2),
+                        new Rotation2d(Math.toRadians(160)),
+                        0.01
+                    ),
+                    new PathPoint(
+                        new Translation2d(2, 6),
+                        new Rotation2d(Math.toRadians(160)),
+                        0.01
+                    )
+                ),
+
+                new AutoShoot(Shooter.getInstance(), RobotContainer.cam1)
             )
         )
     ),
-    ShootTest(
+    Center2Peice(
         new SequentialCommandGroup(
             new SetDrivePosition(
                 Field.mirrorPointIfRed(

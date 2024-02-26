@@ -79,7 +79,7 @@ public class FollowPath extends Command {
         double clampedSpeed = Clamp(
             state.speedMetersPerSecond, 
             PathingConstants.maxVelocityMeters, 
-            0.5
+            0.01
         );
 
         AutoShuffleboardTab.distanceFromGoalEntry.setDouble(deltaLocation.getNorm() - lookAheadMeters);

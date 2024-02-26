@@ -86,6 +86,7 @@ public final class Constants {
             new Translation3d(0, 0, 0.694), // TODO convert to meters
             new Rotation3d(0, 0, 0)
         );
+        public static double yawToSpeakerOffset = -5;
     }
 
     public static final class Swerve {
@@ -141,8 +142,8 @@ public final class Constants {
             public static Rotation2d START_LEFT_ANGLE = new Rotation2d(Math.toRadians(-121));
             public static Translation2d START_CENTER = new Translation2d(0,0); //Find Real Value
             public static Rotation2d START_CENTER_ANGLE = new Rotation2d(Math.toRadians(180));
-            public static Translation2d START_RIGHT = new Translation2d(.255,5.09);
-            public static Rotation2d START_RIGHT_ANGLE = new Rotation2d(Math.toRadians(121));            
+            public static Translation2d START_RIGHT = new Translation2d(0.3,4.7);
+            public static Rotation2d START_RIGHT_ANGLE = new Rotation2d(Math.toRadians(118.68));            
             public static Translation2d START_FAR_RIGHT = new Translation2d(0,1.622);
         }
 }

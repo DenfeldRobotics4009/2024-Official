@@ -21,7 +21,7 @@ public final class ShotProfile {
         new Translation2d(0.95, 0),
         new Translation2d(1.5, -40),
         new Translation2d(2.5, -54),
-        new Translation2d(3.7, -79),
+        new Translation2d(3.7, -75),
         new Translation2d(4.20, -85),
         new Translation2d(4.40, -86.8),
         new Translation2d(4.47, -87),

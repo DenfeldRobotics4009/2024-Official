@@ -79,7 +79,7 @@ public class Shoot extends Command {
     SmartDashboard.putNumber("Offset + Angle", angle + offset);
 
     // Contact the driving command and apply an external turning speed towards the target
-    Drive.applyTurnSpeed(aimingPidController.calculate(Math.toRadians(camera.getYawToSpeaker()-5)));
+    Drive.applyTurnSpeed(aimingPidController.calculate(Math.toRadians(camera.getYawToSpeaker())));
   }
 
   // Called once the command ends or is interrupted.

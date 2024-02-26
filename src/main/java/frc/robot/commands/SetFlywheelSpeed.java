@@ -9,28 +9,24 @@ import frc.robot.subsystems.Shooter;
 
 public class SetFlywheelSpeed extends Command {
   Shooter shooter;
-  double topFlyWheelRPM;
-  double bottomFlyWheelRPM;
-
-  public SetFlywheelSpeed(Shooter shooter, double flyWheelRPM) {
-    this(shooter, flyWheelRPM, flyWheelRPM);
-  }
-
-  public SetFlywheelSpeed(Shooter shooter, double topFlyWheelRPM, double bottomFlyWheelRPM) {
-    addRequirements(shooter);
+  double speed;
+  /** Creates a new SetFlywheelSpeed. */
+  public SetFlywheelSpeed(Shooter shooter, double speed) {
+    // Use addRequirements() here to declare subsystem dependencies.
     this.shooter = shooter;
-    this.topFlyWheelRPM = topFlyWheelRPM;
-    this.bottomFlyWheelRPM = bottomFlyWheelRPM;
+    this.speed = speed;
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    shooter.setFlyWheelSpeed(speed);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.setFlyWheelSpeed(topFlyWheelRPM, bottomFlyWheelRPM);
+    
   }
 
   // Called once the command ends or is interrupted.

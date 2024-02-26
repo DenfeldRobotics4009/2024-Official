@@ -72,9 +72,13 @@ public class AutoShoot extends Command implements AutoRotationSource {
 
     //aim drive train
 
-    
+    SmartDashboard.putNumber("Yaw to target", camera.getYawToSpeaker());
+
     //if flywheels up to speed, shooter aimed, drive train aimed, then feed in
-    if (atShooterSpeed && shooter.atTargetAngle()) { //TODO: How to check if chassis is facing correct angle?
+    if (
+      atShooterSpeed && shooter.atTargetAngle() //&& 
+      //Math.abs(camera.getYawToSpeaker()) < turningTolerance 
+    ) { //TODO: How to check if chassis is facing correct angle?
       shooter.feed();
     }
     else {

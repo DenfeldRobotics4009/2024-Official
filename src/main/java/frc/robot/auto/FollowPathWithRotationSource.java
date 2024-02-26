@@ -24,7 +24,7 @@ import frc.robot.auto.pathing.pathObjects.PathState;
 public class FollowPathWithRotationSource extends FollowPath {
   final Command command;
 
-  PIDController rotationController = new PIDController(PathingConstants.turningProportion, 0, 0);
+  PIDController rotationController = new PIDController(6, 0.1, 0.01);
 
   /** Creates a new FollowPathWithRotationSource. */
   public FollowPathWithRotationSource(Path path, Command command) {
@@ -53,7 +53,7 @@ public class FollowPathWithRotationSource extends FollowPath {
     double clampedSpeed = Clamp(
         state.speedMetersPerSecond, 
         PathingConstants.maxVelocityMeters, 
-        0.5
+        0.01
     );
 
     AutoShuffleboardTab.distanceFromGoalEntry.setDouble(deltaLocation.getNorm() - lookAheadMeters);

@@ -176,7 +176,7 @@ public class AprilTagOdometry extends SubsystemBase {
         }
 
         Optional<PhotonTrackedTarget> target = getTarget(speakerID);
-        if (target.isPresent()) return -target.get().getYaw();
+        if (target.isPresent()) return -target.get().getYaw() + Constants.AprilTagOdometry.yawToSpeakerOffset;
 
 
         Translation2d targetPose = AprilTagOdometry.aprilTagFieldLayout.getTagPose(speakerID).get().getTranslation().toTranslation2d();
@@ -184,7 +184,8 @@ public class AprilTagOdometry extends SubsystemBase {
             targetPose = Field.translateRobotPoseToRed(targetPose);
         }
         Translation2d difference = targetPose.minus(SwerveDrive.getInstance().getPosition().getTranslation());
-        return difference.getAngle().minus(SwerveDrive.getInstance().getPosition().getRotation()).getDegrees();
+        return difference.getAngle().minus(SwerveDrive.getInstance().getPosition().getRotation()).getDegrees() 
+            + Constants.AprilTagOdometry.yawToSpeakerOffset;
     }
 
     Optional<Pose2d> getPositionFromTargets() {
