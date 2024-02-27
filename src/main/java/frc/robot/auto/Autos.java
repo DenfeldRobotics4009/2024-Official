@@ -51,6 +51,172 @@ public enum Autos {
     RightMidCenterMidCenterRightMidRight(
         new RightMidCenterMidCenterRightMidRight()
     ),
+    Center3PieceRight(
+        new SequentialCommandGroup( 
+            new SetDrivePosition(
+                Field.mirrorPointIfRed(
+                    new Pose2d(Constants.Paths.START_CENTER, Constants.Paths.START_CENTER_ANGLE)
+                )
+            ),
+            new ShootManual(Shooter.getInstance(), -10),
+            new FollowPathWithRotationSource(
+                new Path(
+                    0.01,
+                    new PathPoint(
+                        new Translation2d(1, 5.528),
+                        new Rotation2d(Math.toRadians(180)),
+                        0.5,
+                        new MoveIntakeFirst(
+                            IntakeSubsystem.getInstance(), 
+                            Shooter.getInstance(), 
+                            intakePosition.GROUND.get(), 
+                            shooterPosition.DEPOSIT.get()
+                        )
+                    ),
+                    new PathPoint(
+                        new Translation2d(3, 5.528),
+                        new Rotation2d(Math.toRadians(180)),
+                        1
+                    ),
+                    new PathPoint(
+                        new Translation2d(3, 6),
+                        new Rotation2d(Math.toRadians(180)),
+                        1
+                    ),
+                    new PathPoint(
+                        new Translation2d(2, 5.0),
+                        new Rotation2d(Math.toRadians(180)),
+                        0.5
+                    )
+                ),
+
+                new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2)
+            ),
+            new FollowPath(
+                new Path(
+                    new PathPoint(
+                        new Translation2d(2, 5.0),
+                        new Rotation2d(Math.toRadians(180)),
+                        0.5,
+                        new SequentialCommandGroup(
+                            new MoveShooterFirst(
+                                IntakeSubsystem.getInstance(), 
+                                Shooter.getInstance(), 
+                                intakePosition.DEPOSIT.get(), 
+                                shooterPosition.DEPOSIT.get()
+                            ),
+                            new Transfer(IntakeSubsystem.getInstance(), Shooter.getInstance()),
+                            new MoveShooterFirst(
+                                IntakeSubsystem.getInstance(), 
+                                Shooter.getInstance(), 
+                                intakePosition.DEPOSIT.get(), 
+                                shooterPosition.GROUND.get()
+                            )
+                        )
+                    ),
+                    new PathPoint(
+                        new Translation2d(3, 6),
+                        new Rotation2d(Math.toRadians(180)),
+                        1
+                    ),
+                    new PathPoint(
+                        new Translation2d(3, 5.528),
+                        new Rotation2d(Math.toRadians(180)),
+                        1
+                    ),
+                    new PathPoint(
+                        new Translation2d(0.8701, 5.528),
+                        new Rotation2d(Math.toRadians(180)),
+                        0.5
+                    )
+                )
+            ),
+            new ShootManual(Shooter.getInstance(), -10),
+            new FollowPathWithRotationSource(
+                new Path(
+                    0.01,
+                    new PathPoint(
+                        new Translation2d(0.8701, 5.528),
+                        new Rotation2d(Math.toRadians(180)),
+                        0.5,
+                        new MoveIntakeFirst(
+                            IntakeSubsystem.getInstance(), 
+                            Shooter.getInstance(), 
+                            intakePosition.GROUND.get(), 
+                            shooterPosition.DEPOSIT.get()
+                        )
+                    ),
+                    new PathPoint(
+                        new Translation2d(1,5),
+                        new Rotation2d(Math.toRadians(180)),
+                        0.5
+                    ),
+                    new PathPoint(
+                        new Translation2d(2, 4.2),
+                        new Rotation2d(Math.toRadians(180)),
+                        0.2,
+                        new SequentialCommandGroup(
+                            new MoveShooterFirst(
+                                IntakeSubsystem.getInstance(), 
+                                Shooter.getInstance(), 
+                                intakePosition.DEPOSIT.get(), 
+                                shooterPosition.DEPOSIT.get()
+                            ),
+                            new Transfer(IntakeSubsystem.getInstance(), Shooter.getInstance()),
+                            new MoveShooterFirst(
+                                IntakeSubsystem.getInstance(), 
+                                Shooter.getInstance(), 
+                                intakePosition.DEPOSIT.get(), 
+                                shooterPosition.GROUND.get()
+                            )
+                        )
+                    )
+                ),
+
+                new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2)
+            ),
+            new FollowPath(
+                new Path(
+                    new PathPoint(
+                        new Translation2d(2, 5.0),
+                        new Rotation2d(Math.toRadians(180)),
+                        0.5,
+                        new SequentialCommandGroup(
+                            new MoveShooterFirst(
+                                IntakeSubsystem.getInstance(), 
+                                Shooter.getInstance(), 
+                                intakePosition.DEPOSIT.get(), 
+                                shooterPosition.DEPOSIT.get()
+                            ),
+                            new Transfer(IntakeSubsystem.getInstance(), Shooter.getInstance()),
+                            new MoveShooterFirst(
+                                IntakeSubsystem.getInstance(), 
+                                Shooter.getInstance(), 
+                                intakePosition.DEPOSIT.get(), 
+                                shooterPosition.GROUND.get()
+                            )
+                        )
+                    ),
+                    new PathPoint(
+                        new Translation2d(3, 6),
+                        new Rotation2d(Math.toRadians(180)),
+                        1
+                    ),
+                    new PathPoint(
+                        new Translation2d(3, 5.528),
+                        new Rotation2d(Math.toRadians(180)),
+                        1
+                    ),
+                    new PathPoint(
+                        new Translation2d(1, 5.528),
+                        new Rotation2d(Math.toRadians(180)),
+                        0.5
+                    )
+                )
+            ),
+            new ShootManual(Shooter.getInstance(), -10)
+        )
+    ),
 
     Left2Piece(
         new SequentialCommandGroup(

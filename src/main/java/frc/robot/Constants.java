@@ -140,7 +140,7 @@ public final class Constants {
         public static final class Paths {
             public static Translation2d START_LEFT = new Translation2d(0,7.054);
             public static Rotation2d START_LEFT_ANGLE = new Rotation2d(Math.toRadians(-121));
-            public static Translation2d START_CENTER = new Translation2d(0,0); //Find Real Value
+            public static Translation2d START_CENTER = new Translation2d(0.8701, 5.528);
             public static Rotation2d START_CENTER_ANGLE = new Rotation2d(Math.toRadians(180));
             public static Translation2d START_RIGHT = new Translation2d(0.3,4.7);
             public static Rotation2d START_RIGHT_ANGLE = new Rotation2d(Math.toRadians(118.68));            
