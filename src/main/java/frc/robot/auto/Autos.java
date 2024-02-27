@@ -48,6 +48,9 @@ public enum Autos {
     // LeftNearLeftMidLeft( // To tune
     //    new LeftNearLeftMidLeft()
     // ),
+    RightNearRightMidCenter(
+        new RightNearRightMidCenter()
+    ),
     RightMidCenterMidCenterRightMidRight(
         new RightMidCenterMidCenterRightMidRight()
     ),
