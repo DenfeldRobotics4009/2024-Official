@@ -138,8 +138,8 @@ public final class Constants {
         public static Rotation2d forwardAngle = new Rotation2d(Math.toRadians(0));
     }
         public static final class Paths {
-            public static Translation2d START_LEFT = new Translation2d(0,7.054);
-            public static Rotation2d START_LEFT_ANGLE = new Rotation2d(Math.toRadians(-121));
+            public static Translation2d START_LEFT = new Translation2d(0.24,6.51);
+            public static Rotation2d START_LEFT_ANGLE = new Rotation2d(Math.toRadians(238));
             public static Translation2d START_CENTER = new Translation2d(0.8701, 5.528);
             public static Rotation2d START_CENTER_ANGLE = new Rotation2d(Math.toRadians(180));
             public static Translation2d START_RIGHT = new Translation2d(0.3,4.7);

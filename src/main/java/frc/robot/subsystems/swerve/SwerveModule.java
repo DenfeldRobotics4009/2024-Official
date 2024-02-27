@@ -77,7 +77,7 @@ public class SwerveModule {
         if ( !abs(robotTrackPosition).times(2).equals(robotTrack) && (robotTrack.getX() != -1 || robotTrack.getY() != -1) ) {
             DriverStation.reportWarning(
                 "Swerve modules constructed with a non-rectangular position," + 
-                " disregard this warning if this geometry intentional", false);
+                " disregard this warning if this geometry is intentional", false);
         }
 
         // Set robot track size to largest recorded X and Y components

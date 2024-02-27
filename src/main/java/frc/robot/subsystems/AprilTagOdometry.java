@@ -200,6 +200,7 @@ public class AprilTagOdometry extends SubsystemBase {
             return Optional.empty();
         }
 
+        System.out.println("Estimating vision pose");
         Pose2d estimatedPose2d = estimatedPose.get().estimatedPose.toPose2d();
         // Rotate if were on the red team
         if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {

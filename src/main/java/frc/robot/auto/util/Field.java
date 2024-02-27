@@ -46,7 +46,7 @@ public class Field {
     public static Pose2d mirrorPoint(Pose2d point) {
         return new Pose2d(
             new Translation2d(point.getX(), fieldWidthMeters - point.getY()),
-            point.getRotation()
+            new Rotation2d().minus(point.getRotation())
         );
     }
 

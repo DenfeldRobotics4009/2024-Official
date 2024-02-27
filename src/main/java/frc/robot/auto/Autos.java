@@ -233,7 +233,7 @@ public enum Autos {
                 new Path(
                     new PathPoint(
                         Constants.Paths.START_LEFT,
-                        new Rotation2d(Math.toRadians(180)),
+                        Constants.Paths.START_LEFT_ANGLE,
                         0.5,
                         new MoveIntakeFirst(
                             IntakeSubsystem.getInstance(), 
@@ -243,7 +243,18 @@ public enum Autos {
                         )
                     ),
                     new PathPoint(
-                        Constants.Paths.START_LEFT.plus(new Translation2d(1, 0)),
+                        new Translation2d(1, 6.95),
+                        Constants.Paths.START_LEFT_ANGLE,
+                        0.5,
+                        new MoveIntakeFirst(
+                            IntakeSubsystem.getInstance(), 
+                            Shooter.getInstance(), 
+                            intakePosition.GROUND.get(), 
+                            shooterPosition.DEPOSIT.get()
+                        )
+                    ),
+                    new PathPoint(
+                        new Translation2d(2.26, 6.95),
                         new Rotation2d(Math.toRadians(180)),
                         0.2,
                         new SequentialCommandGroup(

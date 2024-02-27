@@ -98,6 +98,7 @@ public class IntakeSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Intake Current", intakeMotor.getOutputCurrent());
 
     SmartDashboard.putNumber("intake angle", rotateEncoder.getDistance());
+    SmartDashboard.putNumber("Intake rotation speed", intakePIDController.calculate(rotateEncoder.getDistance()));
     rotateMotor.set(intakePIDController.calculate(rotateEncoder.getDistance()));
   }
 

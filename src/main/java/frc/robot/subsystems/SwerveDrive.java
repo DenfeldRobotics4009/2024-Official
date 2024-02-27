@@ -164,8 +164,8 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
 
     // Displaying position values
     xPositionEntry.setDouble(robotPoseEstimator.getEstimatedPosition().getX());
-    yPositionEntry.setDouble(robotPoseEstimator.getEstimatedPosition().getY());
-    rotationEntry.setDouble(robotPoseEstimator.getEstimatedPosition().getRotation().getDegrees());
+    yPositionEntry.setDouble(Field.mirrorPoint(robotPoseEstimator.getEstimatedPosition()).getY());
+    rotationEntry.setDouble(Field.mirrorPoint(robotPoseEstimator.getEstimatedPosition()).getRotation().getDegrees());
 
     fieldWidget.setRobotPose(
       new Pose2d(
@@ -221,8 +221,8 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
   public void addVisionMeasurement(Pose2d visionPosition, double timestampSeconds) {
     // Check if the vision position is within 1 meter of the current drive position,
     // per the robotPoseEstimator recommendations.
-    if (visionPosition.getTranslation().getDistance(getPosition().getTranslation()) < 1) {
+    //if (visionPosition.getTranslation().getDistance(getPosition().getTranslation()) < 1) {
       robotPoseEstimator.addVisionMeasurement(visionPosition, timestampSeconds);
-    }
+    //}
   }
 }
