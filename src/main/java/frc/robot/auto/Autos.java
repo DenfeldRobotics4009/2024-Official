@@ -280,12 +280,12 @@ public enum Autos {
                 new Path(
                     new PathPoint(
                         Constants.Paths.START_LEFT.plus(new Translation2d(1, 0)),
-                        new Rotation2d(Math.toRadians(180)),
+                        new Rotation2d(Math.toRadians(210)),
                         0.5
                     ),
                     new PathPoint(
                         Constants.Paths.START_LEFT.plus(new Translation2d(1, -0.5)),
-                        new Rotation2d(Math.toRadians(180)),
+                        new Rotation2d(Math.toRadians(210)),
                         0.5
                     )
                 )
@@ -294,12 +294,12 @@ public enum Autos {
                 new Path(
                     new PathPoint(
                         Constants.Paths.START_LEFT.plus(new Translation2d(1, -0.5)),
-                        new Rotation2d(Math.toRadians(180)),
+                        new Rotation2d(Math.toRadians(210)),
                         0.01
                     ),
                     new PathPoint(
                         Constants.Paths.START_LEFT.plus(new Translation2d(0.9, -0.5)),
-                        new Rotation2d(Math.toRadians(180)),
+                        new Rotation2d(Math.toRadians(210)),
                         0.01
                     )
                 ),
