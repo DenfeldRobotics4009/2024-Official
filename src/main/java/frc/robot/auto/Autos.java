@@ -481,7 +481,122 @@ public enum Autos {
                 new AutoShoot(Shooter.getInstance(), RobotContainer.cam1)
             )
         )
-    );    
+    ),
+    Center3PieceLeft(
+        new SequentialCommandGroup(
+            new SetDrivePosition(
+                Field.mirrorPointIfRed(
+                    new Pose2d(Constants.Paths.START_CENTER,new Rotation2d(0))
+                )
+            ),
+            new ShootManual(Shooter.getInstance(), -10),
+            new FollowPathWithRotationSource(
+                new Path(
+                    0.01,
+                    new PathPoint(
+                        new Translation2d(1, 4.2),
+                        new Rotation2d(Math.toRadians(180)),
+                        0.5,
+                        new MoveIntakeFirst(
+                            IntakeSubsystem.getInstance(), 
+                            Shooter.getInstance(), 
+                            intakePosition.GROUND.get(), 
+                            shooterPosition.DEPOSIT.get()
+                        )
+                    ),
+                    new PathPoint(
+                        new Translation2d(2, 4.2),
+                        new Rotation2d(Math.toRadians(180)),
+                        0.2,
+                        new SequentialCommandGroup(
+                            new MoveShooterFirst(
+                                IntakeSubsystem.getInstance(), 
+                                Shooter.getInstance(), 
+                                intakePosition.DEPOSIT.get(), 
+                                shooterPosition.DEPOSIT.get()
+                            ),
+                            new Transfer(IntakeSubsystem.getInstance(), Shooter.getInstance()),
+                            new MoveShooterFirst(
+                                IntakeSubsystem.getInstance(), 
+                                Shooter.getInstance(), 
+                                intakePosition.DEPOSIT.get(), 
+                                shooterPosition.GROUND.get()
+                            )
+                        )
+                    )
+                ),
+
+                new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2)
+            ),
+            new FollowPath(
+                new Path(
+                    new PathPoint(
+                        new Translation2d(1.8, 4.5),
+                        new Rotation2d(Math.toRadians(160)),
+                        0.5
+                    ),
+                    new PathPoint(
+                        new Translation2d(1.6, 4.8),
+                        new Rotation2d(Math.toRadians(160)),
+                        0.5
+                    )
+                )
+            ),
+            new FollowPathWithRotationSource(
+                new Path(
+                    new PathPoint(
+                        new Translation2d(2, 4.2),
+                        new Rotation2d(Math.toRadians(160)),
+                        0.01
+                    ),
+                    new PathPoint(
+                        new Translation2d(2, 6),
+                        new Rotation2d(Math.toRadians(160)),
+                        0.01
+                    )
+                ),
+                new AutoShoot(Shooter.getInstance(), RobotContainer.cam1)
+            ),
+
+            new FollowPathWithRotationSource(
+                new Path(
+                    new PathPoint(
+                        new Translation2d(2, 6),
+                        new Rotation2d(Math.toRadians(160)),
+                        0.01
+                    ),
+                    new PathPoint(
+                        new Translation2d(2, 7),
+                        new Rotation2d(Math.toRadians(160)),
+                        0.01
+                    )
+                ),
+                new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2)
+            ),
+
+
+            new FollowPathWithRotationSource(
+                new Path(
+                    new PathPoint(
+                        new Translation2d(2, 7),
+                        new Rotation2d(Math.toRadians(160)),
+                        0.01
+                    ),
+                    new PathPoint(
+                        new Translation2d(4, 5),
+                        new Rotation2d(Math.toRadians(180)),
+                        0.1
+                    ),
+                    new PathPoint(
+                        new Translation2d(4.4, 5),
+                        new Rotation2d(Math.toRadians(180)),
+                        0.1
+                    )
+                ),
+                new AutoShoot(Shooter.getInstance(), RobotContainer.cam1)
+            )
+        )
+    );
     
     /* ----------------- */
 
