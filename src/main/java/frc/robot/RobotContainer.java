@@ -20,6 +20,7 @@ import frc.robot.commands.MoveShooterFirst;
 import frc.robot.commands.Outtake;
 import frc.robot.commands.SetClimberLimits;
 import frc.robot.commands.Shoot;
+import frc.robot.commands.ShootManual;
 import frc.robot.commands.TeleopIntake;
 import frc.robot.commands.Transfer;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -152,6 +153,7 @@ public class RobotContainer {
       )
     );
 
+
     /**
      * TRANSFER
      * 
@@ -176,11 +178,11 @@ public class RobotContainer {
       new MoveShooterFirst(intake, shooter, intakePosition.STARTING.get(), shooterPosition.GROUND.get())
     );
 
+    /**
+     * MANUAL SHOOT
+     */
     new Trigger(() -> {return controls.operate.getXButton();}).whileTrue(
-      new SequentialCommandGroup(
-        new MoveIntakeFirst(intake, shooter, intakePosition.DEPOSIT.get(), -30), // TODO tune angle
-        new FeedShooter(shooter)
-      )
+      new ShootManual(shooter, -5)
     );
 
     /**
