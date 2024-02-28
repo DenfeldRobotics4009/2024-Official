@@ -68,7 +68,7 @@ public final class Constants {
         public static int rotateMotorID = 10; 
         public static double intakeMotorPower = -0.4;
 
-        public static double ground = -0.3042;
+        public static double ground = -0.3242;
         public static double deposit = -0.1315;
 
         public static double pidTolerance = 0.08;
@@ -77,7 +77,7 @@ public final class Constants {
         public static int intakeInnerLimitSwitchID = 1;
         public static int intakeOuterLimitSwitchID = 2;
 
-        public static double rotateEncoderOffset = 0.9709;
+        public static double rotateEncoderOffset = -0.032;// 0.9709;
     }
     public static final class AprilTagOdometry {
         public static double maxSpeed = 0.001; // power

@@ -74,6 +74,7 @@ public class IntakeSubsystem extends SubsystemBase {
     rotateMotor.getEncoder().setPosition(0);
 
     intakeMotor.setOpenLoopRampRate(0.5);
+    // rotateEncoder.reset();
 
     rotateEncoder.setPositionOffset(Constants.Intake.rotateEncoderOffset);
     rotateEncoder.setDistancePerRotation(1);
@@ -88,11 +89,19 @@ public class IntakeSubsystem extends SubsystemBase {
     if (intakeInnerLimitSwitch.get()) {
       if (!intakeInnerSwitchToggle) {
         // The arm is fully pulled into the robot
-        rotateMotor.getEncoder().setPosition(intakePosition.STARTING.get());
+        rotateEncoder.reset();
         intakeInnerSwitchToggle = true;
       }
     } else {
       intakeInnerSwitchToggle = false;
+    }
+
+    if (rotateEncoder.getDistance() >= 0) {
+      rotateEncoder.setPositionOffset(rotateEncoder.getPositionOffset() + 1);
+    }
+
+    if (rotateEncoder.getDistance() <= -1) {
+      rotateEncoder.setPositionOffset(rotateEncoder.getPositionOffset() - 1);
     }
 
     SmartDashboard.putNumber("Intake Current", intakeMotor.getOutputCurrent());
