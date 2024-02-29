@@ -48,13 +48,13 @@ public enum Autos {
     // LeftNearLeftMidLeft( // To tune
     //    new LeftNearLeftMidLeft()
     // ),
-    RightNearRightMidCenter(
-        new RightNearRightMidCenter()
-    ),
-    RightMidCenterMidCenterRightMidRight(
-        new RightMidCenterMidCenterRightMidRight()
-    ),
-    Center3PieceRight(
+    // RightNearRightMidCenter(
+    //     new RightNearRightMidCenter()
+    // ),
+    // RightMidCenterMidCenterRightMidRight(
+    //     new RightMidCenterMidCenterRightMidRight()
+    // ),
+    Center3PieceSource(
         new SequentialCommandGroup( 
             new SetDrivePosition(
                 Field.mirrorPointIfRed(
@@ -211,7 +211,7 @@ public enum Autos {
         )
     ),
 
-    Left2Piece(
+    Amp2Piece(
         new SequentialCommandGroup(
             new SetDrivePosition(
                 Field.mirrorPointIfRed(
@@ -283,7 +283,7 @@ public enum Autos {
             new ShootManual(Shooter.getInstance(), -10)
         )
     ),
-    Right2Piece(
+    Source2Piece(
         new SequentialCommandGroup(
             new SetDrivePosition(
                 Field.mirrorPointIfRed(
@@ -471,7 +471,7 @@ public enum Autos {
             )
         )
     ),
-    Center3PieceLeft(
+    Center3PieceAmp(
         new SequentialCommandGroup(
             new SetDrivePosition(
                 Field.mirrorPointIfRed(
