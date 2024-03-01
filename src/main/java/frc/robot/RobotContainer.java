@@ -160,7 +160,7 @@ public class RobotContainer {
      * Automatic after the intake sensor is triggered after intaking.
      */
     new Trigger(() -> {
-      return controls.operate.getLeftTriggerAxis() >= 0.1 && intake.getIntakeSensor() && intake.atAngle(intakePosition.GROUND);
+      return intake.getIntakeSensor() && intake.atAngle(intakePosition.GROUND);
     }).onTrue(
       new SequentialCommandGroup(
         new MoveShooterFirst(intake, shooter, intakePosition.DEPOSIT.get(), shooterPosition.DEPOSIT.get()),

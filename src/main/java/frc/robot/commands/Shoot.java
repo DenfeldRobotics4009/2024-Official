@@ -28,7 +28,7 @@ public class Shoot extends Command {
 
   double offset = 0;
 
-  PIDController aimingPidController = new PIDController(6, 0.1, 0);
+  PIDController aimingPidController = new PIDController(4, 0.1, 0);
 
   /** Creates a new Shoot. */
   public Shoot(

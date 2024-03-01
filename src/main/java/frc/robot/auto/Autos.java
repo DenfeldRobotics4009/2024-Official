@@ -20,6 +20,7 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.Intake;
 import frc.robot.commands.MoveIntakeFirst;
 import frc.robot.commands.MoveShooterFirst;
+import frc.robot.commands.Shoot;
 import frc.robot.commands.ShootManual;
 import frc.robot.commands.Transfer;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -337,28 +338,13 @@ public enum Autos {
                         0.5
                     ),
                     new PathPoint(
-                        new Translation2d(1.6, 4.8),
-                        new Rotation2d(Math.toRadians(160)),
+                        Constants.Paths.START_RIGHT,
+                        Constants.Paths.START_RIGHT_ANGLE,
                         0.5
                     )
                 )
             ),
-            new FollowPathWithRotationSource(
-                new Path(
-                    new PathPoint(
-                        new Translation2d(2, 4.2),
-                        new Rotation2d(Math.toRadians(160)),
-                        0.01
-                    ),
-                    new PathPoint(
-                        new Translation2d(2, 6),
-                        new Rotation2d(Math.toRadians(160)),
-                        0.01
-                    )
-                ),
-
-                new AutoShoot(Shooter.getInstance(), RobotContainer.cam1)
-            )
+            new ShootManual(Shooter.getInstance(), -10)
         )
     ),
     Center2Peice(
@@ -446,29 +432,13 @@ public enum Autos {
                         )
                     ),
                     new PathPoint(
-                        new Translation2d(4, 5.0),
+                        new Translation2d(0.8701, 5.528),
                         new Rotation2d(Math.toRadians(180)),
                         1.5
                     )
                 )
             ),
-
-            new FollowPathWithRotationSource(
-                new Path(
-                    new PathPoint(
-                        new Translation2d(4, 5),
-                        new Rotation2d(Math.toRadians(180)),
-                        0.1
-                    ),
-                    new PathPoint(
-                        new Translation2d(4.4, 5),
-                        new Rotation2d(Math.toRadians(180)),
-                        0.1
-                    )
-                ),
-
-                new AutoShoot(Shooter.getInstance(), RobotContainer.cam1)
-            )
+            new ShootManual(Shooter.getInstance(), -10)
         )
     ),
     Center3PieceAmp(
@@ -614,6 +584,7 @@ public enum Autos {
             new ShootManual(Shooter.getInstance(), -10)
         )
     ),
+
     Center4Piece(
         new SequentialCommandGroup(
             new SetDrivePosition(
@@ -708,7 +679,7 @@ public enum Autos {
                         1.5
                     ),
                     new PathPoint(
-                        new Translation2d(2, 6.95),
+                        new Translation2d(3, 6.95),
                         new Rotation2d(Math.toRadians(180)),
                         0.2
                     )

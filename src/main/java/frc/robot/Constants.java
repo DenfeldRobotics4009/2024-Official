@@ -71,7 +71,7 @@ public final class Constants {
         public static double ground = -0.3242;
         public static double deposit = -0.1315;
 
-        public static double pidTolerance = 0.08;
+        public static double pidTolerance = 0.12;
 
         public static int intakeLaserSensorID = 1;
         public static int intakeInnerLimitSwitchID = 1;

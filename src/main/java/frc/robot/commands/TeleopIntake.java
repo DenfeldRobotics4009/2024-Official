@@ -17,7 +17,7 @@ import frc.robot.subsystems.swerve.SwerveModule;
 
 public class TeleopIntake extends Command {
 
-  PIDController aimingPidController = new PIDController(3, 0.1, 0);
+  PIDController aimingPidController = new PIDController(2, 0.1, 0);
 
   IntakeSubsystem intake;
   NoteCamera camera;
@@ -52,7 +52,8 @@ public class TeleopIntake extends Command {
     //aim drive train
     double omegaRadPerSecond = 0; // From controller
     Optional<Double> yawToNote = camera.getYawToNote();
-    if (yawToNote.isPresent()) {
+    // If ther is a note, and A button is pressed
+    if (yawToNote.isPresent() && controls.operate.getAButton()) {
       omegaRadPerSecond = -aimingPidController.calculate(Math.toRadians(yawToNote.get()));
     }
 
