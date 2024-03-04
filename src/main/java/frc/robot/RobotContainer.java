@@ -32,6 +32,7 @@ import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.AprilTagOdometry;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.NoteCamera;
@@ -101,6 +102,7 @@ public class RobotContainer {
     controls.getOperatePOVTrigger(90).whileTrue(
       new SequentialCommandGroup(
         new MoveIntake(intake, intakePosition.DEPOSIT.get()),
+        new WaitCommand(0.2),
         new Shoot(shooter, controls, cam1)
       )
     );

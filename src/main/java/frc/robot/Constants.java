@@ -60,7 +60,7 @@ public final class Constants {
 
         public static double flyWheelSpeed = 5440; // RPM
 
-        public static double topAmpFlyWheelSpeed = 378; // RPM
+        public static double topAmpFlyWheelSpeed = 1000; // RPM
         public static double bottomAmpFlyWheelSpeed = 1671; // RPM
     }
     public static final class Intake {

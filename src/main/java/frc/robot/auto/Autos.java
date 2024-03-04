@@ -675,12 +675,12 @@ public enum Autos {
                     ),
                     new PathPoint(
                         new Translation2d(1, 6.95),
-                        new Rotation2d(Math.toRadians(180)),
+                        new Rotation2d(Math.toRadians(190)),
                         1.5
                     ),
                     new PathPoint(
                         new Translation2d(3, 6.95),
-                        new Rotation2d(Math.toRadians(180)),
+                        new Rotation2d(Math.toRadians(190)),
                         0.2
                     )
                 ),
@@ -692,7 +692,7 @@ public enum Autos {
                 new Path(
                     new PathPoint(
                         new Translation2d(2.26, 6.95),
-                        new Rotation2d(Math.toRadians(180)),
+                        new Rotation2d(Math.toRadians(190)),
                         2.5,
                         new SequentialCommandGroup(
                             new MoveShooterFirst(
@@ -795,6 +795,12 @@ public enum Autos {
                     )
                 )
             ),
+            new ShootManual(Shooter.getInstance(), -10)
+        )
+    ),
+    
+    NoDrive(
+        new SequentialCommandGroup(
             new ShootManual(Shooter.getInstance(), -10)
         )
     );
