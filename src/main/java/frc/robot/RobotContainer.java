@@ -23,6 +23,7 @@ import frc.robot.commands.Shoot;
 import frc.robot.commands.ShootManual;
 import frc.robot.commands.TeleopIntake;
 import frc.robot.commands.Transfer;
+import frc.robot.commands.amptest;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.subsystems.Climber.climberSide;
@@ -89,6 +90,10 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    new Trigger(() -> {return controls.drive.getRawButton(9);}).whileTrue(
+      new amptest(shooter)
+    );
+    
     // TODO FIGURE OUT BUTTON BINDINGS
 
     /**
@@ -107,7 +112,7 @@ public class RobotContainer {
       )
     );
 
-    new Trigger(() -> {return controls.operate.getRightTriggerAxis() >= 0.1;}).whileTrue(
+    new Trigger(() -> {return controls.operate.getRightTriggerAxis() >= 0.1 || controls.drive.getRawButton(10);}).whileTrue(
       new FeedShooter(shooter)
     );
 
@@ -122,6 +127,12 @@ public class RobotContainer {
     controls.getOperatePOVTrigger(270).whileTrue(
       new SequentialCommandGroup(
         new MoveIntakeFirst(intake, shooter, intakePosition.DEPOSIT.get(), shooterPosition.GROUND.get()),
+        new AmpShoot(shooter, controls)
+      )
+    );
+
+    new Trigger(() -> {return controls.drive.getRawButton(12);}).whileTrue(
+      new SequentialCommandGroup(
         new AmpShoot(shooter, controls)
       )
     );
@@ -200,7 +211,7 @@ public class RobotContainer {
      * Does not move the intake or shooter, only runs the outtake while
      * the button is held.
      */
-    new Trigger(() -> {return controls.operate.getYButton();}).whileTrue(new Outtake(intake));
+    new Trigger(() -> {return controls.operate.getYButton() || controls.drive.getRawButton(11);}).whileTrue(new Outtake(intake));
 
     // /**
     //  * FAST INTAKE

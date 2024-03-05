@@ -93,6 +93,10 @@ public class Shooter extends SubsystemBase {
     bottomFlywheelPidController.setFF(Constants.Shooter.flyWheelF);
   }
 
+  public void ampTest(){
+    setFlyWheelSpeed(-3000, 0);
+    feeder.set(-1);
+  }
   @Override
   public void periodic() {
 
