@@ -9,7 +9,6 @@ import java.util.Optional;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.auto.pathing.AutoRotationSource;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.NoteCamera;
 import frc.robot.subsystems.SwerveDrive;

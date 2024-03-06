@@ -130,8 +130,7 @@ public class Path {
                     "Inserted new point at index " + i + " at " + percentFromLastPoint*100 + "%");
                 // Interpolate between, and set speed to last speed
                 PathPoint insertedPoint = previousPoint.interpolate(
-                    point, percentFromLastPoint, 
-                    new PrintCommand("Passed interpolated speed point at index " + i)
+                    point, percentFromLastPoint
                 );
                 insertedPoint.speedMetersPerSecond = previousPoint.speedMetersPerSecond;
                 points.add(i, insertedPoint);

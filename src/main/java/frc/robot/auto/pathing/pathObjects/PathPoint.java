@@ -19,9 +19,6 @@ public class PathPoint {
     public Rotation2d orientation; // Implemented by path constructor
 
     public double speedMetersPerSecond; // Corrected by path constructor
-    //double accelerationDistance; // For deceleration
-
-    public final Command triggeredCommand;
 
     /**
      * Constructs a new PathPoint with the given statistics. The
@@ -30,33 +27,19 @@ public class PathPoint {
      * @param PosMeters Position of point on the field in meters
      * @param Orientation The goal orientation of the robot when it reaches this point
      * @param SpeedMetersPerSecond The speed the robot should travel THROUGH this point
-     * @param TriggeredCommand A command that should be triggered as the robot passes this point
      */
-    public PathPoint(
-        Translation2d PosMeters,
-        Rotation2d Orientation,
-        double SpeedMetersPerSecond,
-        Command TriggeredCommand
-    ) {
-        posMeters = PosMeters;
-        triggeredCommand = TriggeredCommand;
-
-        // May be overridden
-        speedMetersPerSecond = SpeedMetersPerSecond;
-        orientation = Orientation;
-    }
     public PathPoint(
         Translation2d PosMeters,
         Rotation2d Orientation,
         double SpeedMetersPerSecond
     ) {
         posMeters = PosMeters;
-        // Default command
-        triggeredCommand = new PrintCommand("Passed PathPoint at pos " + PosMeters);
+
         // May be overridden
         speedMetersPerSecond = SpeedMetersPerSecond;
         orientation = Orientation;
     }
+
     /**
      * 
      * @param Initial Initial Value
@@ -162,10 +145,9 @@ public class PathPoint {
      * finalPoint.
      * @param finalPoint Ending point
      * @param t normalized distance from initial point
-     * @param insertedCommand Command to run when point is passed.
      * @return new PathPoint
      */
-    public PathPoint interpolate(PathPoint finalPoint, double t, Command insertedCommand) {
+    public PathPoint interpolate(PathPoint finalPoint, double t) {
         return new PathPoint(
             // Position
             posMeters.interpolate(finalPoint.posMeters, t), 
@@ -173,9 +155,7 @@ public class PathPoint {
             orientation.interpolate(finalPoint.orientation, t),
             // Speed (Unadjusted)
             getAtLinearInterpolation(
-                speedMetersPerSecond, finalPoint.speedMetersPerSecond, t),
-
-            insertedCommand
+                speedMetersPerSecond, finalPoint.speedMetersPerSecond, t)
         );
     }
 
