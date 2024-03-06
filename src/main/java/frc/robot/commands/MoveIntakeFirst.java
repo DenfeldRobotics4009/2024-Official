@@ -28,7 +28,7 @@ public class MoveIntakeFirst extends Command {
     double intakePosition,
     double shooterPosition
   ) {
-    addRequirements(intake, shooter);
+    // addRequirements(intake, shooter);
 
     this.intake = intake;
     this.shooter = shooter;
@@ -61,6 +61,6 @@ public class MoveIntakeFirst extends Command {
    * End when the intake has reached position
    */
   public boolean isFinished() {
-    return shooter.atTargetAngle() && shooter.getTargetAngle() == shooterPosition;
+    return shooter.atTargetAngle() && shooter.getTargetAngle() == shooterPosition && intake.atTargetAngle();
   }
 }

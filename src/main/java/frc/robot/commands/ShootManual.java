@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -11,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Controls;
 import frc.robot.ShotProfile;
+import frc.robot.auto.util.Field;
 import frc.robot.subsystems.AprilTagOdometry;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.SwerveDrive;
@@ -18,19 +20,18 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.IntakeSubsystem.intakePosition;
 import frc.robot.subsystems.swerve.SwerveModule;
 
-public class AmpShoot extends Command {
+public class ShootManual extends Command {
 
   Shooter shooter;
-  Controls controls;
+  double angle;
 
   /** Creates a new Shoot. */
-  public AmpShoot(
-    Shooter shooter, 
-    Controls controls
+  public ShootManual(
+    Shooter shooter,
+    double angle
   ) {
     this.shooter = shooter;
-    this.controls = controls;
-    
+    this.angle = angle;
     addRequirements(shooter);
   }
 
@@ -43,23 +44,14 @@ public class AmpShoot extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Convert joystick value into a shooter angle
-    double angle = -15;
 
     //get flywheels are up to speed
     shooter.setPosition(angle);
-    shooter.setFlyWheelSpeed(
-      Constants.Shooter.topAmpFlyWheelSpeed, 
-      Constants.Shooter.bottomAmpFlyWheelSpeed
-    );
+    boolean upToSpeed = shooter.setFlyWheelSpeed(Constants.Shooter.flyWheelSpeed);
+    if (upToSpeed && shooter.atTargetAngle()) {
+      shooter.feed();
+    }
 
-    //if flywheels up to speed, shooter aimed, drive train aimed, then feed in
-    // if (controls.operate.getRightTriggerAxis() > 0.1) {
-    //   shooter.feed();
-    // }
-    // else {
-    //   shooter.stopFeed();
-    // }
   }
 
   // Called once the command ends or is interrupted.
@@ -71,6 +63,6 @@ public class AmpShoot extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return !shooter.getBarrelSensor();
   }
 }

@@ -6,8 +6,12 @@ package frc.robot.subsystems;
 
 import java.util.ArrayList;
 
+import org.ejml.simple.SimpleMatrix;
+
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -16,6 +20,8 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -24,6 +30,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Swerve;
 import frc.robot.auto.pathing.DriveSubsystem;
+import frc.robot.auto.util.Field;
 import frc.robot.subsystems.swerve.SwerveModule;
 import frc.robot.subsystems.swerve.SwerveMotors;
 
@@ -117,7 +124,8 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
       SwerveModule.getTrackPositions()
     );
 
-    navxGyro.setAngleAdjustment(-Swerve.forwardAngle.getDegrees());
+    // Start driving backwards from facing direction
+    navxGyro.setAngleAdjustment(-Swerve.forwardAngle.getDegrees() + 180);
 
     /**
      * Define with default values, this may be rebuilt when the auto
@@ -125,7 +133,7 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
      */
     setPosition(new Pose2d());
 
-    robotPoseEstimator.resetPosition(navxGyro.getRotation2d(), getModulePositions(), new Pose2d());
+    robotPoseEstimator = new SwerveDrivePoseEstimator(kinematics, navxGyro.getRotation2d(), getModulePositions(), new Pose2d());
 
     // Construct field widget
     swerveTab.add("Robot Position", fieldWidget
@@ -156,12 +164,12 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
 
     // Displaying position values
     xPositionEntry.setDouble(robotPoseEstimator.getEstimatedPosition().getX());
-    yPositionEntry.setDouble(robotPoseEstimator.getEstimatedPosition().getY());
-    rotationEntry.setDouble(robotPoseEstimator.getEstimatedPosition().getRotation().getDegrees());
+    yPositionEntry.setDouble(Field.mirrorPoint(robotPoseEstimator.getEstimatedPosition()).getY());
+    rotationEntry.setDouble(Field.mirrorPoint(robotPoseEstimator.getEstimatedPosition()).getRotation().getDegrees());
 
     fieldWidget.setRobotPose(
       new Pose2d(
-        getPosition().getTranslation().plus(new Translation2d(1.8, 0.4)), new Rotation2d()
+        getPosition().getTranslation(), getPosition().getRotation()
       )
     );
   }
@@ -203,15 +211,15 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
 
   public void setPosition(Pose2d position) {
     // Rebuild pose estimator with more relevant values
-    robotPoseEstimator = new SwerveDrivePoseEstimator(
-      kinematics, 
-      navxGyro.getRotation2d(), 
-      getModulePositions(),
-      position
-    );
+    navxGyro.setAngleAdjustment(position.getRotation().times(-1).getDegrees());
+    robotPoseEstimator.resetPosition(navxGyro.getRotation2d(), getModulePositions(), position);
   }
 
   public void addVisionMeasurement(Pose2d visionPosition, double timestampSeconds) {
-    robotPoseEstimator.addVisionMeasurement(visionPosition, timestampSeconds);
+    // Check if the vision position is within 1 meter of the current drive position,
+    // per the robotPoseEstimator recommendations.
+    if (visionPosition.getTranslation().getDistance(getPosition().getTranslation()) < 1) {
+      robotPoseEstimator.addVisionMeasurement(visionPosition, timestampSeconds);
+    }
   }
 }

@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import frc.robot.auto.pathing.PathingConstants;
 import frc.robot.auto.util.Field;
-import frc.robot.commands.Drive;
 
 public class Path {
 
@@ -59,8 +58,12 @@ public class Path {
         if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
             System.out.println("Flipping point coordinates to red alliance");
             for (PathPoint pathPoint : Points) {
-                pathPoint.posMeters = Field.translateRobotPoseToRed(pathPoint.posMeters);
+                Pose2d flippedPoint = Field.mirrorPoint(new Pose2d(pathPoint.posMeters, pathPoint.orientation));
+                pathPoint.posMeters = flippedPoint.getTranslation();
+                pathPoint.orientation = flippedPoint.getRotation();
             }
+        } else {
+            System.out.println("Assuming blue alliance");
         }
 
         this.lastPointTolerance = lastPointTolerance;
@@ -94,7 +97,7 @@ public class Path {
         }
 
         // Parse through a copy, as the original is being edited
-        ArrayList<PathPoint> pointsCopy = Points;
+        ArrayList<PathPoint> pointsCopy = new ArrayList<PathPoint>(Points);
         // Parse backward to correct speed of points
         // Parse from back, end at the first
         for (int i = pointsCopy.size()-1; i > 0; i--) {

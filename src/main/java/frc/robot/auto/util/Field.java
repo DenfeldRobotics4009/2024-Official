@@ -15,12 +15,12 @@ public class Field {
     /**
      * X distance from blue zero to red zero
      */
-    public static final double fieldLengthMeters = 16.54175;
+    public static final double fieldLengthMeters = 16.4846;
 
     /**
      * Y distance from red zero to blue zero
      */
-    public static final double fieldWidthMeters = 8.22325;
+    public static final double fieldWidthMeters = 8.103;
 
     /**
      * Translates a position relative to the blue 
@@ -33,6 +33,20 @@ public class Field {
         return new Pose2d(
             new Translation2d(fieldLengthMeters - bluePosition.getX(), fieldWidthMeters - bluePosition.getY()),
             bluePosition.getRotation().plus(new Rotation2d(Math.PI))
+        );
+    }
+
+    public static Pose2d flipPoint(Pose2d point) {
+        return new Pose2d(
+            new Translation2d(point.getX(), fieldWidthMeters - point.getY()),
+            point.getRotation().plus(Rotation2d.fromRadians(Math.PI))
+        );
+    }
+
+    public static Pose2d mirrorPoint(Pose2d point) {
+        return new Pose2d(
+            new Translation2d(point.getX(), fieldWidthMeters - point.getY()),
+            new Rotation2d().minus(point.getRotation())
         );
     }
 
@@ -52,5 +66,13 @@ public class Field {
      */
     public static boolean isRedAlliance() {
         return DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red;
+    }
+
+    public static Pose2d mirrorPointIfRed(Pose2d point) {
+        if (isRedAlliance()) {
+            return mirrorPoint(point);
+        }
+        
+        return point;
     }
 }

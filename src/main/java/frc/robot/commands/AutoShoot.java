@@ -4,15 +4,18 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.math.MathUtil;
+import java.util.Optional;
+
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Controls;
 import frc.robot.ShotProfile;
-import frc.robot.auto.util.Field;
+import frc.robot.auto.pathing.AutoRotationSource;
 import frc.robot.subsystems.AprilTagOdometry;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.SwerveDrive;
@@ -20,36 +23,33 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.IntakeSubsystem.intakePosition;
 import frc.robot.subsystems.swerve.SwerveModule;
 
-public class Shoot extends Command {
+public class AutoShoot extends Command implements AutoRotationSource {
 
   Shooter shooter;
-  Controls controls;
   AprilTagOdometry camera;
+  Rotation2d shootAngle = new Rotation2d();
 
-  double offset = 0;
+  PIDController aimingPidController = new PIDController(0.1, 0, 0);
 
-  PIDController aimingPidController = new PIDController(6, 0.1, 0);
+  // Timer shootingTImer = new Timer();
 
   /** Creates a new Shoot. */
-  public Shoot(
+  public AutoShoot(
     Shooter shooter, 
-    Controls controls, 
     AprilTagOdometry camera
   ) {
     this.shooter = shooter;
-    this.controls = controls;
     this.camera = camera;
     
     addRequirements(shooter);
 
     aimingPidController.setSetpoint(0);
-    aimingPidController.enableContinuousInput(-Math.PI, Math.PI);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    offset = 0;
+    // shootingTImer.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -58,40 +58,48 @@ public class Shoot extends Command {
 
     // Calculate distance
     double distance = camera.getDistanceToSpeaker();
-    SmartDashboard.putNumber("Distance: ", distance);
     // Convert joystick value into a shooter angle
-    double angle = 0;
+    double angle = 0; //TODO: set default
     if (ShotProfile.getHeightFromDistance(distance).isPresent()) {
       angle = ShotProfile.getHeightFromDistance(distance).get();
     }
-    angle +=  offset += Controls.modifyAxis(3* controls.operate.getLeftY(), 0.6);
-
-    // System.out.println("Distance " + distance);
-    // System.out.println("Shot angle " + angle);
-    SmartDashboard.putNumber("Yaw ", camera.getYawToSpeaker());
+    // SmartDashboard.putNumber("Distance", distance);
+    // SmartDashboard.putNumber("Angle Shot", angle);
 
     //get flywheels are up to speed
     shooter.setPosition(angle);
     boolean atShooterSpeed = shooter.setFlyWheelSpeed(Constants.Shooter.flyWheelSpeed);
 
-    SmartDashboard.putNumber("Angle ", angle);
-    SmartDashboard.putNumber("Offset ", offset);
-    SmartDashboard.putNumber("Offset + Angle", angle + offset);
+    //aim drive train
 
-    // Contact the driving command and apply an external turning speed towards the target
-    Drive.applyTurnSpeed(aimingPidController.calculate(Math.toRadians(camera.getYawToSpeaker())));
+    SmartDashboard.putNumber("Yaw to target", camera.getYawToSpeaker());
+
+    //if flywheels up to speed, shooter aimed, drive train aimed, then feed in
+    if (
+      atShooterSpeed && shooter.atTargetAngle() //&& 
+      //Math.abs(camera.getYawToSpeaker()) < turningTolerance 
+    ) { //TODO: How to check if chassis is facing correct angle?
+      shooter.feed();
+    }
+    else {
+      shooter.stopFeed();
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooter.stopShooter();
-    Drive.applyTurnSpeed(0);
+    shooter.stopShooter(); //TODO: Should we stop Shooter here? piece might not be fully out of barrel.
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return !shooter.getBarrelSensor();
+  }
+
+  @Override
+  public Optional<Rotation2d> getGoalRotation() {
+    return Optional.of(Rotation2d.fromDegrees(-camera.getYawToSpeaker() / 2));
   }
 }

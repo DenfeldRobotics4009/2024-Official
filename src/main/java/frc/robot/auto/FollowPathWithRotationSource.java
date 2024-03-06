@@ -4,12 +4,17 @@
 
 package frc.robot.auto;
 
+import java.util.Optional;
+
+import javax.swing.text.html.Option;
+
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.auto.pathing.AutoShoot;
+import frc.robot.auto.pathing.AutoRotationSource;
 import frc.robot.auto.pathing.AutoShuffleboardTab;
 import frc.robot.auto.pathing.FollowPath;
 import frc.robot.auto.pathing.PathingConstants;
@@ -19,10 +24,13 @@ import frc.robot.auto.pathing.pathObjects.PathState;
 public class FollowPathWithRotationSource extends FollowPath {
   final Command command;
 
+  PIDController rotationController = new PIDController(6, 0.1, 0.01);
+
   /** Creates a new FollowPathWithRotationSource. */
   public FollowPathWithRotationSource(Path path, Command command) {
     super(path);
     this.command = command;
+    rotationController.enableContinuousInput(-Math.PI, Math.PI);
   }
 
   @Override
@@ -45,7 +53,7 @@ public class FollowPathWithRotationSource extends FollowPath {
     double clampedSpeed = Clamp(
         state.speedMetersPerSecond, 
         PathingConstants.maxVelocityMeters, 
-        0.5
+        0.01
     );
 
     AutoShuffleboardTab.distanceFromGoalEntry.setDouble(deltaLocation.getNorm() - lookAheadMeters);
@@ -61,11 +69,22 @@ public class FollowPathWithRotationSource extends FollowPath {
         1, 0.2
     );
 
-    Rotation2d goalRotation = state.goalPose.getRotation();
-    if (command instanceof AutoShoot) {
-      goalRotation = ((AutoShoot)command).getGoalRotation();
+    double omegaRadPerSecond = -rotationController.calculate(
+        robotPose.getRotation().getRadians(), 
+        state.goalPose.getRotation().getRadians()
+    );
+    if (command instanceof AutoRotationSource) {
+      Optional<Rotation2d> optionalGoal = ((AutoRotationSource)command).getGoalRotation();
+      if (optionalGoal.isPresent()) {
+        omegaRadPerSecond = -rotationController.calculate(
+          optionalGoal.get().getRadians(), 
+          0
+        );
+      }
     }
 
+    // Construct chassis speeds from state values
+    // Convert field oriented to robot oriented
     // Construct chassis speeds from state values
     // Convert field oriented to robot oriented
     ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
@@ -73,13 +92,7 @@ public class FollowPathWithRotationSource extends FollowPath {
         new ChassisSpeeds(
             axisSpeeds.getX(),
             axisSpeeds.getY(),
-            // Rotate by the angle between
-            signedAngleBetween(
-                // Angle from current to goal
-                goalRotation,
-                // Rotate back by forward constant
-                robotPose.getRotation()
-            ).getRadians() * PathingConstants.turningProportion
+            omegaRadPerSecond
         ), 
         // Rotate from current direction
         robotPose.getRotation()
@@ -97,7 +110,7 @@ public class FollowPathWithRotationSource extends FollowPath {
    * and has passed the second to last point.
    */
   public boolean isFinished() {
-
+    System.out.println("Is finished - " + command.isFinished());
     return command.isFinished();
   }
 }

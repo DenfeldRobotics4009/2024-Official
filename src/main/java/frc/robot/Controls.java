@@ -4,16 +4,17 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.SwerveDrive;
 
 public class Controls {
 
     public final Joystick drive = new Joystick(0);
     public final Joystick steer = new Joystick(1);
-    public final Joystick operate = new Joystick(3);
+    // public final Joystick operate = new Joystick(3);
 
     public final XboxController driveController = new XboxController(2);
-    //public final XboxController operateController = new XboxController(4);
+    public final XboxController operate = new XboxController(3);
 
     SendableChooser<Integer> driveMode = new SendableChooser<Integer>();
     //SendableChooser<Integer> operateMode = new SendableChooser<Integer>();
@@ -33,11 +34,13 @@ public class Controls {
      */
     private Controls() {
 
-        driveMode.setDefaultOption("Joystick Driver", 0);
-        driveMode.addOption("XBox Driver", 1);
+        driveMode.addOption("Joystick Driver", 0);
+        driveMode.setDefaultOption("XBox Driver", 1);
 
         // operateMode.setDefaultOption("Joystick Operator", 0);
         // operateMode.addOption("XBox Operator", 1);
+
+        
 
         SwerveDrive.getInstance().swerveTab.add(driveMode);
         //SwerveDrive.getInstance().swerveTab.add(operateMode);
@@ -121,6 +124,10 @@ public class Controls {
         return operate.getPOV();        
     }
 
+    public Trigger getOperatePOVTrigger(int direction) {
+        return new Trigger(() -> {return operate.getPOV() == direction;});
+    }
+
     /**
      * @param id button id
      * @return JoystickButton on drive joystick
@@ -157,7 +164,7 @@ public class Controls {
         }
     }
 
-    private static double modifyAxis(double value, double deadband) {
+    public static double modifyAxis(double value, double deadband) {
         // Deadband
         value = deadband(value, deadband);
 

@@ -2,6 +2,7 @@ package frc.robot.subsystems.swerve;
 
 import java.util.ArrayList;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -15,13 +16,15 @@ public class SwerveModule {
     public final Translation2d robotTrackPosition;
     public final String name;
 
+    PIDController rotationController = new PIDController(steerProportion, 0, 0);
+
     // The size of a rectangle representing the robot collected from the 
     // modules furthest from a track position of (0,0)
     private static Translation2d robotTrack = new Translation2d(-1, -1); // Provided at init
 
     // Default values are according to the SDS MK4I
     // - Hardware defined variables --
-    public static double driveRampRate = 0.3;
+    public static double driveRampRate = 0.5;
     public static double steerRampRate = 0.25;
     /**
      * Maximum speed the robot can drive, set by user.
@@ -32,7 +35,7 @@ public class SwerveModule {
      * constructed swerve module positions.
      */
     public static double maxRadPerSecond = 1;
-    public static double steerProportion = 0.3;
+    public static double steerProportion = 0.5;
     public static double wheelDiameterMeters = 0.10308;
     public static double driveGearRatio = 6.2; // Rotations of motor per 1 rotation of the wheel
     public static double rotationsToMeters = (Math.PI * wheelDiameterMeters / driveGearRatio); 
@@ -63,6 +66,8 @@ public class SwerveModule {
         this.swerveMotors = swerveMotors;
         this.robotTrackPosition = robotTrackPosition;
 
+        rotationController.enableContinuousInput(-Math.PI, Math.PI);
+
         // Set motor ramp rates
         swerveMotors.DriveMotor.setOpenLoopRampRate(driveRampRate);
         swerveMotors.SteerMotor.setOpenLoopRampRate(steerRampRate);
@@ -72,7 +77,7 @@ public class SwerveModule {
         if ( !abs(robotTrackPosition).times(2).equals(robotTrack) && (robotTrack.getX() != -1 || robotTrack.getY() != -1) ) {
             DriverStation.reportWarning(
                 "Swerve modules constructed with a non-rectangular position," + 
-                " disregard this warning if this geometry intentional", false);
+                " disregard this warning if this geometry is intentional", false);
         }
 
         // Set robot track size to largest recorded X and Y components
@@ -119,7 +124,7 @@ public class SwerveModule {
     }
 
     /**
-     * Configues the number of rotations of the motor for every rotation
+     * Configures the number of rotations of the motor for every rotation
      * of the drive wheel. The default value is for a Swerve Drive Specialties
      * MK4I module.
      * 
@@ -226,6 +231,7 @@ public class SwerveModule {
 
         SwerveModuleState OptimizedState = optimizeState(State, swerveMotors.getRotation2d());
 
+        rotationController.setP(steerProportion);
         // Set drive motor
         swerveMotors.DriveMotor.set(
             OptimizedState.speedMetersPerSecond / maxMetersPerSecond
@@ -233,9 +239,7 @@ public class SwerveModule {
 
         // Set turn motor
         swerveMotors.SteerMotor.set(
-            SwerveMotors.signedAngleBetween(
-                OptimizedState.angle, swerveMotors.getRotation2d()
-            ).getRadians() * steerProportion
+            -rotationController.calculate(swerveMotors.getRotation2d().getRadians(), OptimizedState.angle.getRadians())
         );
     }
 

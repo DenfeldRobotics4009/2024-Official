@@ -7,6 +7,8 @@ package frc.robot.auto.pathing.pathObjects;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 
 /**
  * A point along a Path
@@ -43,7 +45,18 @@ public class PathPoint {
         speedMetersPerSecond = SpeedMetersPerSecond;
         orientation = Orientation;
     }
-
+    public PathPoint(
+        Translation2d PosMeters,
+        Rotation2d Orientation,
+        double SpeedMetersPerSecond
+    ) {
+        posMeters = PosMeters;
+        // Default command
+        triggeredCommand = new PrintCommand("Passed PathPoint at pos " + PosMeters);
+        // May be overridden
+        speedMetersPerSecond = SpeedMetersPerSecond;
+        orientation = Orientation;
+    }
     /**
      * 
      * @param Initial Initial Value

@@ -4,20 +4,29 @@
 
 package frc.robot.commands;
 
+import java.util.Optional;
+
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.auto.pathing.AutoRotationSource;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.NoteCamera;
+import frc.robot.subsystems.SwerveDrive;
 import frc.robot.subsystems.IntakeSubsystem.intakePosition;
 
-public class Intake extends Command {
+public class Intake extends Command implements AutoRotationSource{
   IntakeSubsystem intake;
+  NoteCamera camera;
   /**
    * Runs the intake until the sensor is activated
    * @param intake
    */
-  public Intake(IntakeSubsystem intake) {
+  public Intake(
+    IntakeSubsystem intake, NoteCamera camera) {
     addRequirements(intake);
     this.intake = intake;
+    this.camera = camera;
   }
 
   // Called when the command is initially scheduled.
@@ -42,5 +51,17 @@ public class Intake extends Command {
   @Override
   public boolean isFinished() {
     return intake.getIntakeSensor() && intake.atTargetAngle();
+  }
+
+  @Override
+  public Optional<Rotation2d> getGoalRotation() {
+    Optional<Double> yawToNote = camera.getYawToNote();
+    if (yawToNote.isPresent()) {
+      return Optional.of(
+        new Rotation2d(Math.toRadians(yawToNote.get() / 2))
+      );
+    }
+
+    return Optional.empty();
   }
 }

@@ -4,73 +4,71 @@
 
 package frc.robot.commands;
 
+import java.util.Optional;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
 import frc.robot.Controls;
-import frc.robot.ShotProfile;
-import frc.robot.subsystems.AprilTagOdometry;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.NoteCamera;
 import frc.robot.subsystems.SwerveDrive;
-import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.IntakeSubsystem.intakePosition;
 import frc.robot.subsystems.swerve.SwerveModule;
 
-public class AmpShoot extends Command {
+public class TeleopIntake extends Command {
 
-  Shooter shooter;
+  PIDController aimingPidController = new PIDController(3, 0.1, 0);
+
+  IntakeSubsystem intake;
+  NoteCamera camera;
   Controls controls;
 
-  /** Creates a new Shoot. */
-  public AmpShoot(
-    Shooter shooter, 
+  /**
+   * Runs the intake until the sensor is activated
+   * @param intake
+   */
+  public TeleopIntake(
+    IntakeSubsystem intake, 
+    NoteCamera camera, 
     Controls controls
   ) {
-    this.shooter = shooter;
+    addRequirements(intake);
+    this.intake = intake;
+    this.camera = camera;
     this.controls = controls;
-    
-    addRequirements(shooter);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
+    aimingPidController.setSetpoint(0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Convert joystick value into a shooter angle
-    double angle = -15;
+    intake.setIntake();
 
-    //get flywheels are up to speed
-    shooter.setPosition(angle);
-    shooter.setFlyWheelSpeed(
-      Constants.Shooter.topAmpFlyWheelSpeed, 
-      Constants.Shooter.bottomAmpFlyWheelSpeed
-    );
+    //aim drive train
+    double omegaRadPerSecond = 0; // From controller
+    Optional<Double> yawToNote = camera.getYawToNote();
+    if (yawToNote.isPresent()) {
+      omegaRadPerSecond = -aimingPidController.calculate(Math.toRadians(yawToNote.get()));
+    }
 
-    //if flywheels up to speed, shooter aimed, drive train aimed, then feed in
-    // if (controls.operate.getRightTriggerAxis() > 0.1) {
-    //   shooter.feed();
-    // }
-    // else {
-    //   shooter.stopFeed();
-    // }
+    Drive.applyTurnSpeed(omegaRadPerSecond);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooter.stopShooter();
+    intake.stop();
+    Drive.applyTurnSpeed(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return intake.getIntakeSensor();
   }
 }

@@ -20,18 +20,21 @@ import edu.wpi.first.math.geometry.Translation3d;
  */
 public final class Constants {
 
-    public static double laserSensorVoltageHigh = 0.6;
+    public static double laserSensorVoltageHigh = 0.58;
 
     public static double inchesInMeter = 39.3700787402;
 
     public static final class Climber {
         public static int leftClimberMotorID = 18;
         public static int rightClimberMotorID = 19;
-        public static double down = 0;
-        public static double up = 75;
-        public static double climberMotorPower = 0.5;  
+        public static double down = -5;
+        public static double up = 450;
+        public static double climberMotorPower = 1;  
     }
     public static final class Shooter {
+
+        public static double shotProfileOffset = 3.5;
+
         public static int topMotorID = 57;
         public static int bottomMotorID = 58; 
         public static double spin = 0.9;
@@ -39,13 +42,12 @@ public final class Constants {
         public static double feederSpeed = 1;
         public static int aimMotorID = 40;
         
-        public static double pidTolerance = 4;
+        public static double pidTolerance = 2;
 
         public static double aimRangeFrom0 = -133;
-        public static double transferAngle = -100;
+        public static double transferAngle = -90;
         
         public static double minimumFlywheelSpeed = 0;
-        public static double maxShootSpeed = 1000;
 
         public static double flyWheelP = 0.00045;
         public static double flyWheelI = 0;
@@ -60,22 +62,26 @@ public final class Constants {
 
         public static double flyWheelSpeed = 5440; // RPM
 
-        public static double topAmpFlyWheelSpeed = 1371; // RPM
-        public static double bottomAmpFlyWheelSpeed = 378; // RPM
+        public static double topAmpFlyWheelSpeed = 378; // RPM
+        public static double bottomAmpFlyWheelSpeed = 1671; // RPM
     }
     public static final class Intake {
         public static int intakeMotorID = 12;
         public static int rotateMotorID = 10; 
-        public static double intakeMotorPower = -0.5;
+        public static double intakeMotorPower = -0.4;
 
-        public static double ground = -35;
-        public static double deposit = -15;
+        public static double ground = -0.3242;
+        public static double deposit = -0.1315;
 
-        public static double pidTolerance = 4;
+        public static double pidTolerance = 0.08;
 
         public static int intakeLaserSensorID = 1;
         public static int intakeInnerLimitSwitchID = 1;
         public static int intakeOuterLimitSwitchID = 2;
+
+        public static double rotateEncoderOffset = -0.032;// 0.9709;
+
+        public static int rotateEncoderID = 3;
     }
     public static final class AprilTagOdometry {
         public static double maxSpeed = 0.001; // power
@@ -84,6 +90,7 @@ public final class Constants {
             new Translation3d(0, 0, 0.694), // TODO convert to meters
             new Rotation3d(0, 0, 0)
         );
+        public static double yawToSpeakerOffset = -5;
     }
 
     public static final class Swerve {
@@ -134,4 +141,13 @@ public final class Constants {
 
         public static Rotation2d forwardAngle = new Rotation2d(Math.toRadians(0));
     }
+        public static final class Paths {
+            public static Translation2d START_LEFT = new Translation2d(0.24,6.51);
+            public static Rotation2d START_LEFT_ANGLE = new Rotation2d(Math.toRadians(238));
+            public static Translation2d START_CENTER = new Translation2d(0.8701, 5.528);
+            public static Rotation2d START_CENTER_ANGLE = new Rotation2d(Math.toRadians(180));
+            public static Translation2d START_RIGHT = new Translation2d(0.3,4.7);
+            public static Rotation2d START_RIGHT_ANGLE = new Rotation2d(Math.toRadians(118.68));            
+            public static Translation2d START_FAR_RIGHT = new Translation2d(0,1.622);
+        }
 }

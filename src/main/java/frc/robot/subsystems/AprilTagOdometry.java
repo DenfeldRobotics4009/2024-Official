@@ -19,13 +19,16 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.auto.util.Field;
 
 /**
@@ -42,7 +45,7 @@ public class AprilTagOdometry extends SubsystemBase {
     PhotonPoseEstimator photonPoseEstimator;
     public PhotonCamera camera;
 
-    final int speakerID;
+    int speakerID = 0;
 
     /**
      * Creates an april tag odometry source relating to a 
@@ -75,13 +78,6 @@ public class AprilTagOdometry extends SubsystemBase {
                 "April tag data could not be loaded, april tag positioning will not occur.", false);
 
             e.printStackTrace();
-        }
-
-        // Grab speaker id based on alliance position
-        if (Field.isRedAlliance()) {
-            speakerID = 4;
-        } else {
-            speakerID = 7;
         }
 
     }
@@ -147,6 +143,13 @@ public class AprilTagOdometry extends SubsystemBase {
      */
     public double getDistanceToSpeaker() {
 
+        // Grab speaker id based on alliance position
+        if (Field.isRedAlliance()) {
+            speakerID = 4;
+        } else {
+            speakerID = 7;
+        }
+
         Optional<PhotonTrackedTarget> target = getTarget(speakerID);
     
         if (target.isPresent()) return getDistanceToTarget(target.get());
@@ -161,24 +164,28 @@ public class AprilTagOdometry extends SubsystemBase {
     }
 
     /**
-     * @return Degrees
+     * @return Degrees, relative to field
      */
     public double getYawToSpeaker() {
+
+        // Grab speaker id based on alliance position
+        if (Field.isRedAlliance()) {
+            speakerID = 4;
+        } else {
+            speakerID = 7;
+        }
+
         Optional<PhotonTrackedTarget> target = getTarget(speakerID);
-        if (target.isPresent()) return target.get().getYaw();
+        if (target.isPresent()) return -target.get().getYaw() + Constants.AprilTagOdometry.yawToSpeakerOffset;
 
 
         Translation2d targetPose = AprilTagOdometry.aprilTagFieldLayout.getTagPose(speakerID).get().getTranslation().toTranslation2d();
-        
         if (Field.isRedAlliance()) {
             targetPose = Field.translateRobotPoseToRed(targetPose);
         }
-
-        return targetPose.minus(
-                SwerveDrive.getInstance().getPosition().getTranslation()
-            ).getAngle().minus(
-                SwerveDrive.getInstance().getPosition().getRotation()
-            ).getDegrees();
+        Translation2d difference = targetPose.minus(SwerveDrive.getInstance().getPosition().getTranslation());
+        return difference.getAngle().minus(SwerveDrive.getInstance().getPosition().getRotation()).getDegrees() 
+            + Constants.AprilTagOdometry.yawToSpeakerOffset;
     }
 
     Optional<Pose2d> getPositionFromTargets() {
@@ -193,6 +200,7 @@ public class AprilTagOdometry extends SubsystemBase {
             return Optional.empty();
         }
 
+        System.out.println("Estimating vision pose");
         Pose2d estimatedPose2d = estimatedPose.get().estimatedPose.toPose2d();
         // Rotate if were on the red team
         if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
@@ -210,5 +218,8 @@ public class AprilTagOdometry extends SubsystemBase {
                 positionSample.get(), Timer.getFPGATimestamp()
             );
         }
+
+        SmartDashboard.putNumber("Yaw to speaker", getYawToSpeaker());
+        SmartDashboard.putNumber("Dist to speaker", getDistanceToSpeaker());
     }
 }

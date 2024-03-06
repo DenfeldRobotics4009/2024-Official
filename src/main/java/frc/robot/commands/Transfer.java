@@ -21,8 +21,8 @@ public class Transfer extends Command {
    * @param shooter
    * @param intake
    */
-  public Transfer(Shooter shooter, IntakeSubsystem intake) {
-    addRequirements(shooter, intake);
+  public Transfer(IntakeSubsystem intake, Shooter shooter) {
+    //addRequirements(shooter, intake);
 
     this.shooter = shooter;
     this.intake = intake;
@@ -37,7 +37,7 @@ public class Transfer extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.setIntake();
+    intake.setIntake(-1);
     shooter.feed();
   
   }

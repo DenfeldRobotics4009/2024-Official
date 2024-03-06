@@ -6,6 +6,7 @@ package frc.robot.auto.pathing;
 
 import java.util.ArrayList;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -27,6 +28,8 @@ public class FollowPath extends Command {
     // Distance down the path to drive towards
     public double lookAheadMeters = 0.4;// Initial at 10 cm
 
+    PIDController rotationController = new PIDController(PathingConstants.turningProportion, 0, 0);
+
     /**
      * Follows a given path
      * @param Path 
@@ -35,6 +38,7 @@ public class FollowPath extends Command {
         // Assume drive control when path following
         addRequirements(PathingConstants.driveSubsystem);
         path = Path;
+        rotationController.enableContinuousInput(-Math.PI, Math.PI);
     }
 
     // Called when the command is initially scheduled.
@@ -60,21 +64,22 @@ public class FollowPath extends Command {
      */
     public void execute() {
 
+        rotationController.setP(PathingConstants.turningProportion);
+
         Pose2d robotPose = PathingConstants.driveSubsystem.getPosition();
         PathState state = getPathState(robotPose);
         // The target relative to the robots current position
+
+        System.out.println("Goal location: " + state.goalPose);
+        System.out.println("Current location: " + robotPose);
+
         Translation2d deltaLocation = state.goalPose.getTranslation().minus(robotPose.getTranslation());
-
-        // System.out.println(" ");
-        // System.out.println("Goal pose: " + state.goalPose);
-        // System.out.println("Current pose: " + robotPose);
-
         // Clamp state speed so the end of the path can be consistently reached
         // Clamped between [Const Max, 5 cm/s]
         double clampedSpeed = Clamp(
             state.speedMetersPerSecond, 
             PathingConstants.maxVelocityMeters, 
-            0.5
+            0.01
         );
 
         AutoShuffleboardTab.distanceFromGoalEntry.setDouble(deltaLocation.getNorm() - lookAheadMeters);
@@ -89,7 +94,6 @@ public class FollowPath extends Command {
             PathingConstants.lookAheadScalar * clampedSpeed,
             1, 0.2
         );
-
         // Construct chassis speeds from state values
         // Convert field oriented to robot oriented
         ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
@@ -97,13 +101,11 @@ public class FollowPath extends Command {
             new ChassisSpeeds(
                 axisSpeeds.getX(),
                 axisSpeeds.getY(),
-                // Rotate by the angle between
-                signedAngleBetween(
-                    // Angle from current to goal
-                    state.goalPose.getRotation(),
-                    // Rotate back by forward constant
-                    robotPose.getRotation()
-                ).getRadians() * PathingConstants.turningProportion
+
+                -rotationController.calculate(
+                    robotPose.getRotation().getRadians(), 
+                    state.goalPose.getRotation().getRadians()
+                )
             ), 
             // Rotate from current direction
             robotPose.getRotation()
@@ -343,18 +345,5 @@ public class FollowPath extends Command {
         if (input > max) {return max;}
         else if (input < min) {return min;}
         else {return input;}
-    }
-
-    /**
-     * 
-     * @param A Rotation2d A
-     * @param B Rotation2d B
-     * @return the angle from A to B
-     * on the interval [pi, -pi), in radians
-     */
-    public static Rotation2d signedAngleBetween(Rotation2d A, Rotation2d B) {
-        return new Rotation2d(
-            (B.getRadians() - A.getRadians() + Math.PI) % (Math.PI * 2) - Math.PI
-        );
     }
 }

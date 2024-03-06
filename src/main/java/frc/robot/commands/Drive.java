@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Controls;
@@ -15,6 +16,8 @@ import frc.robot.subsystems.swerve.SwerveModule;
 public class Drive extends Command {
   SwerveDrive drivetrain;
   Controls controls;
+
+  static double externalTurnSpeed = 0;
 
   // Tuner values are in degrees, and are converted after calculation
   PIDController directionTuner = new PIDController(9, 0, 0);
@@ -56,15 +59,26 @@ public class Drive extends Command {
       radPSec = controls.getTurn() * SwerveModule.maxRadPerSecond;
     }
 
-    ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
-      new ChassisSpeeds(
-        controls.getForward() * SwerveModule.maxMetersPerSecond * precisionFactor,
-        controls.getLateral() * SwerveModule.maxMetersPerSecond * precisionFactor,
-        radPSec * precisionFactor
-      ), 
-      SwerveDrive.navxGyro.getRotation2d()
+    // Construct with robot oriented controls
+    ChassisSpeeds speeds = new ChassisSpeeds(
+      controls.getForward() * SwerveModule.maxMetersPerSecond * precisionFactor,
+      controls.getLateral() * SwerveModule.maxMetersPerSecond * precisionFactor,
+      radPSec * precisionFactor + externalTurnSpeed
     );
+
+    // If the left bumper isnt held, rotate to field oriented
+    if (!controls.driveController.getLeftBumper()) {
+      speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, drivetrain.getPosition().getRotation());
+    } else {
+      // If it is held, flip the inputs to make the intake the front
+      speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, Rotation2d.fromDegrees(180));
+    }
+
     drivetrain.drive(speeds);
+  }
+
+  public static void applyTurnSpeed(double omegaRadiansPerSecond) {
+    externalTurnSpeed = omegaRadiansPerSecond;
   }
 
   // Called once the command ends or is interrupted.
