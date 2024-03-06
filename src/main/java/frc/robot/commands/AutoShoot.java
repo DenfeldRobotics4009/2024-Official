@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Controls;
 import frc.robot.ShotProfile;
-import frc.robot.auto.pathing.AutoRotationSource;
+import frc.robot.auto.pathing.controllers.RotationController;
 import frc.robot.subsystems.AprilTagOdometry;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.SwerveDrive;
@@ -23,33 +23,25 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.IntakeSubsystem.intakePosition;
 import frc.robot.subsystems.swerve.SwerveModule;
 
-public class AutoShoot extends Command implements AutoRotationSource {
+public class AutoShoot extends Command implements RotationController {
 
   Shooter shooter;
   AprilTagOdometry camera;
-  Rotation2d shootAngle = new Rotation2d();
 
-  PIDController aimingPidController = new PIDController(0.1, 0, 0);
+  PIDController orientationController = new PIDController(0.5, 0, 0);
 
-  // Timer shootingTImer = new Timer();
-
-  /** Creates a new Shoot. */
-  public AutoShoot(
-    Shooter shooter, 
-    AprilTagOdometry camera
-  ) {
+  public AutoShoot(Shooter shooter, AprilTagOdometry camera) {
     this.shooter = shooter;
     this.camera = camera;
     
     addRequirements(shooter);
-
-    aimingPidController.setSetpoint(0);
   }
+
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // shootingTImer.start();
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -89,7 +81,7 @@ public class AutoShoot extends Command implements AutoRotationSource {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooter.stopShooter(); //TODO: Should we stop Shooter here? piece might not be fully out of barrel.
+    shooter.stopShooter();
   }
 
   // Returns true when the command should end.
@@ -99,7 +91,12 @@ public class AutoShoot extends Command implements AutoRotationSource {
   }
 
   @Override
-  public Optional<Rotation2d> getGoalRotation() {
-    return Optional.of(Rotation2d.fromDegrees(-camera.getYawToSpeaker() / 2));
+  public Rotation2d getRotationSpeeds() {
+
+    Rotation2d yawToSpeaker = Rotation2d.fromDegrees(-camera.getYawToSpeaker());
+
+    return Rotation2d.fromRadians(
+      orientationController.calculate(yawToSpeaker.getRadians(), 0)
+    );
   }
 }
