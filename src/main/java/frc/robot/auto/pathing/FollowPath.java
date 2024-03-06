@@ -346,17 +346,4 @@ public class FollowPath extends Command {
         else if (input < min) {return min;}
         else {return input;}
     }
-
-    /**
-     * 
-     * @param A Rotation2d A
-     * @param B Rotation2d B
-     * @return the angle from A to B
-     * on the interval [pi, -pi), in radians
-     */
-    public static double signedAngleBetween(Rotation2d A, Rotation2d B) {
-        return (
-            A.minus(B).getRadians()
-        );
-    }
 }

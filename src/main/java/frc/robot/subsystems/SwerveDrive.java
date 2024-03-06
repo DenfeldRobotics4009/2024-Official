@@ -211,9 +211,6 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
 
   public void setPosition(Pose2d position) {
     // Rebuild pose estimator with more relevant values
-    if (robotPoseEstimator == null) {
-      robotPoseEstimator = new SwerveDrivePoseEstimator(kinematics, navxGyro.getRotation2d(), getModulePositions(), new Pose2d());
-    }
     navxGyro.setAngleAdjustment(position.getRotation().times(-1).getDegrees());
     robotPoseEstimator.resetPosition(navxGyro.getRotation2d(), getModulePositions(), position);
   }

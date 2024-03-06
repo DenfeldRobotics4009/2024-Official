@@ -11,7 +11,6 @@ import frc.robot.commands.AmpShoot;
 import frc.robot.commands.BurpShoot;
 import frc.robot.commands.Climb;
 import frc.robot.commands.Drive;
-import frc.robot.commands.FastIntake;
 import frc.robot.commands.FeedShooter;
 import frc.robot.commands.Intake;
 import frc.robot.commands.MoveIntake;

@@ -80,6 +80,8 @@ public final class Constants {
         public static int intakeOuterLimitSwitchID = 2;
 
         public static double rotateEncoderOffset = -0.032;// 0.9709;
+
+        public static int rotateEncoderID = 3;
     }
     public static final class AprilTagOdometry {
         public static double maxSpeed = 0.001; // power

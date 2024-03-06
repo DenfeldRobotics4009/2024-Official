@@ -38,7 +38,7 @@ public class IntakeSubsystem extends SubsystemBase {
   public CANSparkFlex intakeMotor = new CANSparkFlex(Constants.Intake.intakeMotorID, MotorType.kBrushless);
   public CANSparkMax rotateMotor = new CANSparkMax(Constants.Intake.rotateMotorID, MotorType.kBrushless);
 
-  DutyCycleEncoder rotateEncoder = new DutyCycleEncoder(3);
+  DutyCycleEncoder rotateEncoder = new DutyCycleEncoder(Constants.Intake.rotateEncoderID);
 
   static IntakeSubsystem instance;
 
