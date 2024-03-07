@@ -57,7 +57,7 @@ public final class ShotProfile {
             if (distance >= data[i].getX() && distance <= data[i+1].getX()) {
                 return Optional.of(
                     data[i].interpolate(data[i+1], (distance - data[i].getX()) / (data[i+1].getX() - data[i].getX())).getY()
-                        + 3.5 // Tuned for red ARC
+                        + Constants.Shooter.shotProfileOffset
                 );
             }
         }

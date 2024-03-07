@@ -339,19 +339,6 @@ public class FollowPath extends Command implements PoseController, TranslationCo
         else {return input;}
     }
 
-    /**
-     * 
-     * @param A Rotation2d A
-     * @param B Rotation2d B
-     * @return the angle from A to B
-     * on the interval [pi, -pi), in radians
-     */
-    public static double signedAngleBetween(Rotation2d A, Rotation2d B) {
-        return (
-            A.minus(B).getRadians()
-        );
-    }
-
     @Override
     public Translation2d getTranslationSpeeds() {
         return new Translation2d(lastSpeeds.vxMetersPerSecond, lastSpeeds.vyMetersPerSecond);

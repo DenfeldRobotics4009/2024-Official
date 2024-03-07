@@ -32,6 +32,9 @@ public final class Constants {
         public static double climberMotorPower = 1;  
     }
     public static final class Shooter {
+
+        public static double shotProfileOffset = 3.5;
+
         public static int topMotorID = 57;
         public static int bottomMotorID = 58; 
         public static double spin = 0.9;
@@ -45,7 +48,6 @@ public final class Constants {
         public static double transferAngle = -90;
         
         public static double minimumFlywheelSpeed = 0;
-        public static double maxShootSpeed = 1000;
 
         public static double flyWheelP = 0.00045;
         public static double flyWheelI = 0;
@@ -78,6 +80,8 @@ public final class Constants {
         public static int intakeOuterLimitSwitchID = 2;
 
         public static double rotateEncoderOffset = -0.032;// 0.9709;
+
+        public static int rotateEncoderID = 3;
     }
     public static final class AprilTagOdometry {
         public static double maxSpeed = 0.001; // power

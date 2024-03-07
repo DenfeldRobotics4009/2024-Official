@@ -39,7 +39,18 @@ public class PathPoint {
         speedMetersPerSecond = SpeedMetersPerSecond;
         orientation = Orientation;
     }
-
+    public PathPoint(
+        Translation2d PosMeters,
+        Rotation2d Orientation,
+        double SpeedMetersPerSecond
+    ) {
+        posMeters = PosMeters;
+        // Default command
+        triggeredCommand = new PrintCommand("Passed PathPoint at pos " + PosMeters);
+        // May be overridden
+        speedMetersPerSecond = SpeedMetersPerSecond;
+        orientation = Orientation;
+    }
     /**
      * 
      * @param Initial Initial Value

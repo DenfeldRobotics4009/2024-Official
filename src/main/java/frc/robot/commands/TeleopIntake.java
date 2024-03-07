@@ -50,7 +50,7 @@ public class TeleopIntake extends Command {
     intake.setIntake();
 
     //aim drive train
-    double omegaRadPerSecond = 0;
+    double omegaRadPerSecond = 0; // From controller
     Optional<Double> yawToNote = camera.getYawToNote();
     if (yawToNote.isPresent()) {
       omegaRadPerSecond = -aimingPidController.calculate(Math.toRadians(yawToNote.get()));
