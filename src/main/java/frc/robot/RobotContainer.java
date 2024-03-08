@@ -187,7 +187,7 @@ public class RobotContainer {
      * Moves the shooter to 0 position, then moves the intake to the 0 position.
      * This fully tucks all arms into the robot.
      */
-    new Trigger(() -> {return controls.operate.getAButton();}).onTrue(
+    new Trigger(() -> {return controls.operate.getAButton() || controls.drive.getRawButton(11);}).onTrue(
       new MoveShooterFirst(intake, shooter, intakePosition.STARTING.get(), shooterPosition.GROUND.get())
     );
 
