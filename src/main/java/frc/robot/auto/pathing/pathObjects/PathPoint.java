@@ -39,7 +39,6 @@ public class PathPoint {
         speedMetersPerSecond = SpeedMetersPerSecond;
         orientation = Orientation;
     }
-
     /**
      * 
      * @param Initial Initial Value
