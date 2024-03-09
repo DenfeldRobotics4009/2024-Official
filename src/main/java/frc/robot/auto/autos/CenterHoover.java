@@ -25,12 +25,12 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.SwerveDrive;
 //TODO: angles and points guessed
-public class AmpHoover extends SequentialCommandGroup {
-    public AmpHoover() {
+public class CenterHoover extends SequentialCommandGroup {
+    public CenterHoover() {
         super(
             new SetDrivePosition(
                 Field.mirrorPointIfRed(
-                    new Pose2d(Constants.Paths.START_LEFT, Constants.Paths.START_LEFT_ANGLE)
+                    new Pose2d(Constants.Paths.START_CENTER, Constants.Paths.START_CENTER_ANGLE)
                 )
             ),
             
@@ -44,84 +44,37 @@ public class AmpHoover extends SequentialCommandGroup {
                     new FollowPath(
                         new Path(
                             new PathPoint(
-                                Constants.Paths.START_LEFT,
+                                Constants.Paths.START_CENTER,
+                                Constants.Paths.START_CENTER_ANGLE,
+                                0.5
+                            ),
+                            new PathPoint(
+                                new Translation2d(4, 1),
                                 Constants.Paths.START_LEFT_ANGLE,
                                 0.5
                             ),
                             new PathPoint(
-                                new Translation2d(4.054, 6.243),
-                                Constants.Paths.START_LEFT_ANGLE,
-                                0.2
-                            ),
-                            new PathPoint(
-                                new Translation2d(4.054, 6.243),
-                                Constants.Paths.START_RIGHT_ANGLE,
-                                0.2
-                            )
-                        )
-                    ),
-
-                    new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2, Rotation2d.fromDegrees(180)),
-
-                    true, // Race
-
-                    SwerveDrive.getInstance()
-                )
-            ),
-
-            new ParallelCommandGroup(
-
-                new TransferSequence(),
-
-                new DriveWithSource(
-                    new FollowPath(
-                        new Path(
-                            new PathPoint(
-                                new Translation2d(2.26, 6.95),
+                                new Translation2d(8.25, 0.77),
                                 new Rotation2d(Math.toRadians(180)),
-                                2
-                            ),
-                            new PathPoint(
-                                Constants.Paths.START_LEFT,
-                                Constants.Paths.START_LEFT_ANGLE,
-                                0.1
-                            )
-                        )
-                    ),
-
-                    SwerveDrive.getInstance()
-                )
-            ),
-
-            new ShootManual(Shooter.getInstance(), -10),
-
-            new ParallelCommandGroup(
-                new DriveWithSource(
-                    new FollowPath(
-                        new Path(
-                            new PathPoint(
-                                new Translation2d(8.25, 7),
-                                new Rotation2d(180),
-                                1
-                            ),
-                            new PathPoint(
-                                new Translation2d(8.5, 7),
-                                new Rotation2d(180),
                                 0.5
+                            ),
+                            new PathPoint(
+                                new Translation2d(8.75, 0.77),
+                                new Rotation2d(Math.toRadians(180)),
+                                0.2
                             )
                         )
                     ),
 
                     new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2, Rotation2d.fromDegrees(180)),
 
-                    true,
+                    false, // Race
 
                     SwerveDrive.getInstance()
-
-                    )
-                ),
-
-                new ParallelCommandGroup(
+                )
+            ),
+            
+            new ParallelCommandGroup(
 
                 new TransferSequence(),
 
@@ -129,7 +82,7 @@ public class AmpHoover extends SequentialCommandGroup {
                         new FollowPath(
                             new Path(
                                 new PathPoint(
-                                    new Translation2d(8.55, 7), 
+                                    new Translation2d(8.75, 0.77), 
                                     Constants.Paths.START_LEFT_ANGLE,
                                     2
                                 )
@@ -147,12 +100,12 @@ public class AmpHoover extends SequentialCommandGroup {
                     new FollowPath(
                         new Path(
                             new PathPoint(
-                                new Translation2d(8.25, 6.25),
+                                new Translation2d(8.25, 2.514),
                                 new Rotation2d(90), //TODO: change angle
                                 1
                             ),
                             new PathPoint(
-                                new Translation2d(8.5, 6),
+                                new Translation2d(8.25, 2.75),
                                 new Rotation2d(90), //TODO: change angle
                                 0.5
                             )
@@ -176,7 +129,54 @@ public class AmpHoover extends SequentialCommandGroup {
                         new FollowPath(
                             new Path(
                                 new PathPoint(
-                                    new Translation2d(8.5, 6),
+                                    new Translation2d(8.25, 2.75), 
+                                    Constants.Paths.START_LEFT_ANGLE,
+                                    2
+                                )
+                            )
+                        ),
+
+                        SwerveDrive.getInstance()
+                    )
+                ),
+
+            new ShootManual(Shooter.getInstance(), -10),
+
+            new ParallelCommandGroup(
+                new DriveWithSource(
+                    new FollowPath(
+                        new Path(
+                            new PathPoint(
+                                new Translation2d(8.25, 4.135),
+                                new Rotation2d(90), //TODO: change angle
+                                1
+                            ),
+                            new PathPoint(
+                                new Translation2d(8.25, 4.25),
+                                new Rotation2d(90), //TODO: change angle
+                                0.5
+                            )
+                        )
+                    ),
+
+                    new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2, Rotation2d.fromDegrees(180)),
+
+                    false,
+
+                    SwerveDrive.getInstance()
+
+                    )
+                ),
+
+                new ParallelCommandGroup(
+
+                new TransferSequence(),
+
+                    new DriveWithSource(
+                        new FollowPath(
+                            new Path(
+                                new PathPoint(
+                                    new Translation2d(8.25, 4.25), 
                                     Constants.Paths.START_LEFT_ANGLE,
                                     2
                                 )

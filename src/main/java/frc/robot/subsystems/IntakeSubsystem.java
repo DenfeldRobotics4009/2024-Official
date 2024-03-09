@@ -154,3 +154,11 @@ public class IntakeSubsystem extends SubsystemBase {
     intakePIDController.setSetpoint(position);
   }
 }
+
+/*
+
+if willToLive == 0 {
+  die;
+}
+
+*/

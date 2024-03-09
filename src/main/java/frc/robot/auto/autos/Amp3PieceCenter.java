@@ -36,65 +36,6 @@ public class Amp3PieceCenter extends SequentialCommandGroup {
             
             new ShootManual(Shooter.getInstance(), -10),
 
-            new ParallelCommandGroup(
-
-                new LowerIntake(),
-
-                new DriveWithSource(
-                    new FollowPath(
-                        new Path(
-                            new PathPoint(
-                                Constants.Paths.START_LEFT,
-                                Constants.Paths.START_LEFT_ANGLE,
-                                0.5
-                            ),
-                            new PathPoint(
-                                new Translation2d(1, 6.95),
-                                Constants.Paths.START_LEFT_ANGLE,
-                                0.5
-                            ),
-                            new PathPoint(
-                                new Translation2d(2.26, 6.95),
-                                new Rotation2d(Math.toRadians(180)),
-                                0.2
-                            )
-                        )
-                    ),
-
-                    new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2, Rotation2d.fromDegrees(180)),
-
-                    true, // Race
-
-                    SwerveDrive.getInstance()
-                )
-            ),
-
-            new ParallelCommandGroup(
-
-                new TransferSequence(),
-
-                new DriveWithSource(
-                    new FollowPath(
-                        new Path(
-                            new PathPoint(
-                                new Translation2d(2.26, 6.95),
-                                new Rotation2d(Math.toRadians(180)),
-                                2
-                            ),
-                            new PathPoint(
-                                Constants.Paths.START_LEFT,
-                                Constants.Paths.START_LEFT_ANGLE,
-                                0.1
-                            )
-                        )
-                    ),
-
-                    SwerveDrive.getInstance()
-                )
-            ),
-
-            new ShootManual(Shooter.getInstance(), -10),
-
                 new ParallelCommandGroup(
 
                     new LowerIntake(),
@@ -108,12 +49,17 @@ public class Amp3PieceCenter extends SequentialCommandGroup {
                                     0.5
                                 ),
                                 new PathPoint(
-                                    new Translation2d(8.25, 7.25), //point guessed
+                                    new Translation2d(4.054, 6.243), //point guessed
                                     Constants.Paths.START_LEFT_ANGLE,
                                     0.5
                                 ),
                                 new PathPoint(
-                                    new Translation2d(8.25, 6.25), //point guessed
+                                    new Translation2d(8.25, 7.54), //point guessed
+                                    new Rotation2d(Math.toRadians(180)),
+                                    0.2
+                                ),
+                                new PathPoint(
+                                    new Translation2d(8.25, 7), //point guessed
                                     new Rotation2d(Math.toRadians(180)),
                                     0.2
                                 )
@@ -135,7 +81,7 @@ public class Amp3PieceCenter extends SequentialCommandGroup {
                             new FollowPath(
                                 new Path(
                                     new PathPoint(
-                                        new Translation2d(8.25, 6.25), // point guessed
+                                        new Translation2d(8.25, 7), // point guessed
                                         new Rotation2d(Math.toRadians(180)),
                                         2
                                     ),
