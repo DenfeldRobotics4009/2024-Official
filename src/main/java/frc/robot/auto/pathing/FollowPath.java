@@ -13,13 +13,13 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.auto.pathing.controllers.PoseController;
+import frc.robot.auto.pathing.controllers.RotationController;
 import frc.robot.auto.pathing.controllers.TranslationController;
 import frc.robot.auto.pathing.pathObjects.Path;
 import frc.robot.auto.pathing.pathObjects.PathPoint;
 import frc.robot.auto.pathing.pathObjects.PathState;
 
-public class FollowPath extends Command implements PoseController, TranslationController {
+public class FollowPath extends Command implements RotationController, TranslationController {
     
     // Set of processed points
     final Path path;
@@ -358,7 +358,7 @@ public class FollowPath extends Command implements PoseController, TranslationCo
     }
 
     @Override
-    public Pose2d getPoseSpeeds() {
-        return new Pose2d(getTranslationSpeeds(), Rotation2d.fromRadians(lastSpeeds.omegaRadiansPerSecond));
+    public Rotation2d getRotationSpeeds() {
+        return Rotation2d.fromRadians(lastSpeeds.omegaRadiansPerSecond);
     }
 }

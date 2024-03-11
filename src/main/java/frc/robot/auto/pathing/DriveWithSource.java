@@ -11,7 +11,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.auto.pathing.controllers.PoseController;
 import frc.robot.auto.pathing.controllers.RotationController;
 import frc.robot.auto.pathing.controllers.TranslationController;
 
@@ -20,44 +19,6 @@ import frc.robot.auto.pathing.controllers.TranslationController;
  * supply a rotational and translational speed.
  */
 public class DriveWithSource extends Command {
-
-  /**
-   * Isolates the translation component of a pose controller, without
-   * duplicating its command instance.
-   */
-  private class TranslationComponent implements TranslationController {
-
-    final PoseController poseController;
-
-    public TranslationComponent(PoseController poseController) {
-      this.poseController = poseController;
-    }
-
-    @Override
-    public Translation2d getTranslationSpeeds() {
-      return poseController.getPoseSpeeds().getTranslation();
-    }
-
-  }
-
-  /**
-   * Isolates the rotation component of a pose controller, without
-   * duplicating its command instance.
-   */
-  private class RotationComponent implements RotationController {
-
-    final PoseController poseController;
-
-    public RotationComponent(PoseController poseController) {
-      this.poseController = poseController;
-    }
-
-    @Override
-    public Rotation2d getRotationSpeeds() {
-      return poseController.getPoseSpeeds().getRotation();
-    }
-
-  }
 
   DriveSubsystem driveSubsystem;
 
@@ -110,10 +71,12 @@ public class DriveWithSource extends Command {
    * @param poseController
    * @param driveSubsystem
    */
-  public DriveWithSource(PoseController poseController, DriveSubsystem driveSubsystem) {
+  public <PoseController extends TranslationController & RotationController> 
+    DriveWithSource(PoseController poseController, DriveSubsystem driveSubsystem) 
+  {
     this.driveSubsystem = driveSubsystem;
-    this.translationController = new TranslationComponent(poseController);
-    this.rotationController = new RotationComponent(poseController);
+    this.translationController = poseController;
+    this.rotationController = poseController;
 
     if (poseController instanceof Command) {
       commands.add((Command) poseController);

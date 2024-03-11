@@ -44,82 +44,139 @@ public class SourceHoover extends SequentialCommandGroup {
                     new FollowPath(
                         new Path(
                             new PathPoint(
-                                Constants.Paths.START_RIGHT,
-                                Constants.Paths.START_RIGHT_ANGLE,
+                                Constants.Paths.START_FAR_RIGHT,
+                                Constants.Paths.START_CENTER_ANGLE,
                                 0.5
                             ),
                             new PathPoint(
-                                new Translation2d(4, 1),
-                                Constants.Paths.START_RIGHT_ANGLE,
-                                0.5
-                            ),
-                            new PathPoint(
-                                new Translation2d(8.25, 0.77),
+                                new Translation2d(8.25, 0.77), // Far right note
                                 new Rotation2d(Math.toRadians(180)),
                                 0.5
-                            ),
-                            new PathPoint(
-                                new Translation2d(8.75, 1),
-                                new Rotation2d(Math.toRadians(180)),
-                                0.2
                             )
                         )
                     ),
 
                     new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2, Rotation2d.fromDegrees(180)),
 
-                    false, // Race
+                    true, // Race
 
                     SwerveDrive.getInstance()
                 )
             ),
-            
-            new ParallelCommandGroup(
 
+            new ParallelCommandGroup(
+                            
                 new TransferSequence(),
 
                     new DriveWithSource(
                         new FollowPath(
                             new Path(
                                 new PathPoint(
-                                    new Translation2d(8.75, 1), 
-                                    Constants.Paths.START_LEFT_ANGLE,
-                                    2
+                                    new Translation2d(7, 1.24), // between far right and midright, point guessed
+                                    new Rotation2d(200),
+                                    1
                                 )
                             )
                         ),
 
-                        SwerveDrive.getInstance()
+                    SwerveDrive.getInstance()
+
                     )
                 ),
 
             new ShootManual(Shooter.getInstance(), -10),
 
             new ParallelCommandGroup(
+                
+            new TransferSequence(),
+
                 new DriveWithSource(
                     new FollowPath(
                         new Path(
                             new PathPoint(
-                                new Translation2d(8.25, 2.514),
-                                new Rotation2d(90), //TODO: change angle
+                                new Translation2d(8.25, 2.514), // Midright note
+                                new Rotation2d(180),
                                 1
-                            ),
-                            new PathPoint(
-                                new Translation2d(8.25, 2.75),
-                                new Rotation2d(90), //TODO: change angle
-                                0.5
                             )
                         )
                     ),
 
                     new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2, Rotation2d.fromDegrees(180)),
 
-                    false,
+                    true,
 
                     SwerveDrive.getInstance()
 
                     )
                 ),
+
+            new ParallelCommandGroup(
+                            
+                new TransferSequence(),
+
+                    new DriveWithSource(
+                        new FollowPath(
+                            new Path(
+                                new PathPoint(
+                                    new Translation2d(7, 3), // between midright and mid, point guessed
+                                    new Rotation2d(200),
+                                    1
+                                )
+                            )
+                        ),
+
+                    SwerveDrive.getInstance()
+
+                    )
+                ),
+
+            new ShootManual(Shooter.getInstance(), -10),
+
+            new ParallelCommandGroup(
+
+            new TransferSequence(),
+
+                new DriveWithSource(
+                    new FollowPath(
+                        new Path(
+                            new PathPoint(
+                                new Translation2d(8.25, 4.135), // Mid note
+                                new Rotation2d(180),
+                                1
+                            )
+                        )
+                    ),
+
+                    new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2, Rotation2d.fromDegrees(180)),
+
+                    true,
+
+                    SwerveDrive.getInstance()
+
+                    )
+                ),
+
+            new ParallelCommandGroup(
+                            
+                new TransferSequence(),
+
+                    new DriveWithSource(
+                        new FollowPath(
+                            new Path(
+                                new PathPoint(
+                                    new Translation2d(7, 5), // between mid and midleft, point guessed
+                                    new Rotation2d(200),
+                                    1
+                                )
+                            )
+                        ),
+
+                    SwerveDrive.getInstance()
+
+                    )
+                ),
+
+                new ShootManual(Shooter.getInstance(), -10),
 
                 new ParallelCommandGroup(
 
@@ -129,8 +186,8 @@ public class SourceHoover extends SequentialCommandGroup {
                         new FollowPath(
                             new Path(
                                 new PathPoint(
-                                    new Translation2d(8.25, 2.75), 
-                                    Constants.Paths.START_LEFT_ANGLE,
+                                    new Translation2d(8.25, 6.5), // Midleft piece, point guessed
+                                    new Rotation2d(-45),
                                     2
                                 )
                             )
@@ -140,33 +197,27 @@ public class SourceHoover extends SequentialCommandGroup {
                     )
                 ),
 
-            new ShootManual(Shooter.getInstance(), -10),
+                new ParallelCommandGroup(
+                            
+                new TransferSequence(),
 
-            new ParallelCommandGroup(
-                new DriveWithSource(
-                    new FollowPath(
-                        new Path(
-                            new PathPoint(
-                                new Translation2d(8.25, 4.135),
-                                new Rotation2d(90), //TODO: change angle
-                                1
-                            ),
-                            new PathPoint(
-                                new Translation2d(8.25, 4.25),
-                                new Rotation2d(90), //TODO: change angle
-                                0.5
+                    new DriveWithSource(
+                        new FollowPath(
+                            new Path(
+                                new PathPoint(
+                                    new Translation2d(7, 7.25), // between midleft and far left, point guessed
+                                    new Rotation2d(200),
+                                    1
+                                )
                             )
-                        )
-                    ),
-
-                    new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2, Rotation2d.fromDegrees(180)),
-
-                    false,
+                        ),
 
                     SwerveDrive.getInstance()
 
                     )
                 ),
+
+                new ShootManual(Shooter.getInstance(), -10),
 
                 new ParallelCommandGroup(
 
@@ -176,18 +227,23 @@ public class SourceHoover extends SequentialCommandGroup {
                         new FollowPath(
                             new Path(
                                 new PathPoint(
-                                    new Translation2d(8.25, 4.25), 
-                                    Constants.Paths.START_LEFT_ANGLE,
+                                    new Translation2d(8.25, 8.1), // Far left piece, point guessed
+                                    new Rotation2d(180),
                                     2
                                 )
                             )
                         ),
+
+                        new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2, Rotation2d.fromDegrees(180)),
+
+                        true,
 
                         SwerveDrive.getInstance()
                     )
                 ),
 
             new ShootManual(Shooter.getInstance(), -10)
+
         );
     }
 }
