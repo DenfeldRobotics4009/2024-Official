@@ -24,7 +24,7 @@ public class amptest extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.setPosition(-23.66 *2*Math.PI);
+    shooter.setPosition(-24.5 *2*Math.PI);
     //get flywheels are up to speed
     shooter.ampTest();
 

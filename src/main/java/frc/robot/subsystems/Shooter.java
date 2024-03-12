@@ -94,7 +94,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public void ampTest(){
-    setFlyWheelSpeed(-4000, 0);
+    setFlyWheelSpeed(-3000, 0);
     //feeder.set(-1);
   }
   @Override
