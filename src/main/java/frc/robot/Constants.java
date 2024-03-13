@@ -137,8 +137,8 @@ public final class Constants {
         }
 
         // Meters from wheel center to wheel center
-        public static double TrackYMeters = 0.59325;
-        public static double TrackXMeters = 0.59325;
+        public static double TrackYMeters = 0.45085;
+        public static double TrackXMeters = 0.59055;
 
         public static Rotation2d forwardAngle = new Rotation2d(Math.toRadians(0));
     }
