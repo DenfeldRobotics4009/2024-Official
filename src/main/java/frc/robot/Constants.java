@@ -68,7 +68,8 @@ public final class Constants {
     public static final class Intake {
         public static int intakeMotorID = 12;
         public static int rotateMotorID = 10; 
-        public static double intakeMotorPower = -0.4;
+        public static double intakeMotorPower = -1; // Sped up for new intake
+        public static double slowIntakeMotorPower = -0.4;
 
         public static double ground = -0.3242;
         public static double deposit = -0.1315;

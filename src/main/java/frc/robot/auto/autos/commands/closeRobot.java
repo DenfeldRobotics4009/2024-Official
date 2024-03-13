@@ -5,14 +5,14 @@
 package frc.robot.auto.autos.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.MoveShooterFirst;
+import frc.robot.commands.MoveShooter;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.IntakeSubsystem.intakePosition;
 import frc.robot.subsystems.Shooter.shooterPosition;
 
 /** Add your docs here. */
-public class closeRobot extends MoveShooterFirst{
+public class closeRobot extends MoveShooter{
     public closeRobot() {
         super(
             IntakeSubsystem.getInstance(),

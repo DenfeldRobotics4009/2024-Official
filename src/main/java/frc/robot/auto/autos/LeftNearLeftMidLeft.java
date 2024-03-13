@@ -14,16 +14,16 @@ import frc.robot.auto.pathing.pathObjects.Path;
 import frc.robot.auto.pathing.pathObjects.PathPoint;
 import frc.robot.auto.util.SetDrivePosition;
 import frc.robot.commands.AutoShoot;
-import frc.robot.commands.Intake;
+import frc.robot.commands.AutoIntake;
 import frc.robot.commands.MoveIntakeFirst;
-import frc.robot.commands.MoveShooterFirst;
+import frc.robot.commands.MoveShooter;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.IntakeSubsystem.intakePosition;
 import frc.robot.subsystems.Shooter.shooterPosition;
 
 public class LeftNearLeftMidLeft extends SequentialCommandGroup {
-    private static Command closeRobot = new MoveShooterFirst(
+    private static Command closeRobot = new MoveShooter(
                             IntakeSubsystem.getInstance(),
                             Shooter.getInstance(),
                             intakePosition.STARTING.get(),

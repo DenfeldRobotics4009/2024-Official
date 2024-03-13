@@ -17,9 +17,9 @@ import frc.robot.auto.util.Field;
 import frc.robot.auto.util.SetDrivePosition;
 import frc.robot.commands.AutoShoot;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.Intake;
+import frc.robot.commands.AutoIntake;
 import frc.robot.commands.MoveIntakeFirst;
-import frc.robot.commands.MoveShooterFirst;
+import frc.robot.commands.MoveShooter;
 import frc.robot.commands.ShootManual;
 import frc.robot.commands.Transfer;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -93,7 +93,7 @@ public enum Autos {
                     )
                 ),
 
-                new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2)
+                new AutoIntake(IntakeSubsystem.getInstance(), RobotContainer.cam2)
             ),
             new FollowPath(
                 new Path(
@@ -102,14 +102,14 @@ public enum Autos {
                         new Rotation2d(Math.toRadians(180)),
                         1.5,
                         new SequentialCommandGroup(
-                            new MoveShooterFirst(
+                            new MoveShooter(
                                 IntakeSubsystem.getInstance(), 
                                 Shooter.getInstance(), 
                                 intakePosition.DEPOSIT.get(), 
                                 shooterPosition.DEPOSIT.get()
                             ),
                             new Transfer(IntakeSubsystem.getInstance(), Shooter.getInstance()),
-                            new MoveShooterFirst(
+                            new MoveShooter(
                                 IntakeSubsystem.getInstance(), 
                                 Shooter.getInstance(), 
                                 intakePosition.DEPOSIT.get(), 
@@ -159,14 +159,14 @@ public enum Autos {
                         new Rotation2d(Math.toRadians(150)),
                         0.2,
                         new SequentialCommandGroup(
-                            new MoveShooterFirst(
+                            new MoveShooter(
                                 IntakeSubsystem.getInstance(), 
                                 Shooter.getInstance(), 
                                 intakePosition.DEPOSIT.get(), 
                                 shooterPosition.DEPOSIT.get()
                             ),
                             new Transfer(IntakeSubsystem.getInstance(), Shooter.getInstance()),
-                            new MoveShooterFirst(
+                            new MoveShooter(
                                 IntakeSubsystem.getInstance(), 
                                 Shooter.getInstance(), 
                                 intakePosition.DEPOSIT.get(), 
@@ -176,7 +176,7 @@ public enum Autos {
                     )
                 ),
 
-                new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2)
+                new AutoIntake(IntakeSubsystem.getInstance(), RobotContainer.cam2)
             ),
             new FollowPath(
                 new Path(
@@ -185,14 +185,14 @@ public enum Autos {
                         new Rotation2d(Math.toRadians(180)),
                         1.5,
                         new SequentialCommandGroup(
-                            new MoveShooterFirst(
+                            new MoveShooter(
                                 IntakeSubsystem.getInstance(), 
                                 Shooter.getInstance(), 
                                 intakePosition.DEPOSIT.get(), 
                                 shooterPosition.DEPOSIT.get()
                             ),
                             new Transfer(IntakeSubsystem.getInstance(), Shooter.getInstance()),
-                            new MoveShooterFirst(
+                            new MoveShooter(
                                 IntakeSubsystem.getInstance(), 
                                 Shooter.getInstance(), 
                                 intakePosition.DEPOSIT.get(), 
@@ -248,14 +248,14 @@ public enum Autos {
                         new Rotation2d(Math.toRadians(180)),
                         0.2,
                         new SequentialCommandGroup(
-                            new MoveShooterFirst(
+                            new MoveShooter(
                                 IntakeSubsystem.getInstance(), 
                                 Shooter.getInstance(), 
                                 intakePosition.DEPOSIT.get(), 
                                 shooterPosition.DEPOSIT.get()
                             ),
                             new Transfer(IntakeSubsystem.getInstance(), Shooter.getInstance()),
-                            new MoveShooterFirst(
+                            new MoveShooter(
                                 IntakeSubsystem.getInstance(), 
                                 Shooter.getInstance(), 
                                 intakePosition.DEPOSIT.get(), 
@@ -264,7 +264,7 @@ public enum Autos {
                         )
                     )
                 ),
-                new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2)
+                new AutoIntake(IntakeSubsystem.getInstance(), RobotContainer.cam2)
             ),
             new FollowPath(
                 new Path(
@@ -310,14 +310,14 @@ public enum Autos {
                         new Rotation2d(Math.toRadians(180)),
                         0.2,
                         new SequentialCommandGroup(
-                            new MoveShooterFirst(
+                            new MoveShooter(
                                 IntakeSubsystem.getInstance(), 
                                 Shooter.getInstance(), 
                                 intakePosition.DEPOSIT.get(), 
                                 shooterPosition.DEPOSIT.get()
                             ),
                             new Transfer(IntakeSubsystem.getInstance(), Shooter.getInstance()),
-                            new MoveShooterFirst(
+                            new MoveShooter(
                                 IntakeSubsystem.getInstance(), 
                                 Shooter.getInstance(), 
                                 intakePosition.DEPOSIT.get(), 
@@ -327,7 +327,7 @@ public enum Autos {
                     )
                 ),
 
-                new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2)
+                new AutoIntake(IntakeSubsystem.getInstance(), RobotContainer.cam2)
             ),
             new FollowPath(
                 new Path(
@@ -421,7 +421,7 @@ public enum Autos {
                     )
                 ),
 
-                new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2)
+                new AutoIntake(IntakeSubsystem.getInstance(), RobotContainer.cam2)
             ),
             new FollowPath(
                 new Path(
@@ -430,14 +430,14 @@ public enum Autos {
                         new Rotation2d(Math.toRadians(180)),
                         1.5,
                         new SequentialCommandGroup(
-                            new MoveShooterFirst(
+                            new MoveShooter(
                                 IntakeSubsystem.getInstance(), 
                                 Shooter.getInstance(), 
                                 intakePosition.DEPOSIT.get(), 
                                 shooterPosition.DEPOSIT.get()
                             ),
                             new Transfer(IntakeSubsystem.getInstance(), Shooter.getInstance()),
-                            new MoveShooterFirst(
+                            new MoveShooter(
                                 IntakeSubsystem.getInstance(), 
                                 Shooter.getInstance(), 
                                 intakePosition.DEPOSIT.get(), 
@@ -510,7 +510,7 @@ public enum Autos {
                     )
                 ),
 
-                new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2)
+                new AutoIntake(IntakeSubsystem.getInstance(), RobotContainer.cam2)
             ),
             new FollowPath(
                 new Path(
@@ -519,14 +519,14 @@ public enum Autos {
                         new Rotation2d(Math.toRadians(180)),
                         1.5,
                         new SequentialCommandGroup(
-                            new MoveShooterFirst(
+                            new MoveShooter(
                                 IntakeSubsystem.getInstance(), 
                                 Shooter.getInstance(), 
                                 intakePosition.DEPOSIT.get(), 
                                 shooterPosition.DEPOSIT.get()
                             ),
                             new Transfer(IntakeSubsystem.getInstance(), Shooter.getInstance()),
-                            new MoveShooterFirst(
+                            new MoveShooter(
                                 IntakeSubsystem.getInstance(), 
                                 Shooter.getInstance(), 
                                 intakePosition.DEPOSIT.get(), 
@@ -574,7 +574,7 @@ public enum Autos {
                     )
                 ),
 
-                new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2)
+                new AutoIntake(IntakeSubsystem.getInstance(), RobotContainer.cam2)
             ),
 
             new FollowPath(
@@ -584,14 +584,14 @@ public enum Autos {
                         new Rotation2d(Math.toRadians(180)),
                         1.5,
                         new SequentialCommandGroup(
-                            new MoveShooterFirst(
+                            new MoveShooter(
                                 IntakeSubsystem.getInstance(), 
                                 Shooter.getInstance(), 
                                 intakePosition.DEPOSIT.get(), 
                                 shooterPosition.DEPOSIT.get()
                             ),
                             new Transfer(IntakeSubsystem.getInstance(), Shooter.getInstance()),
-                            new MoveShooterFirst(
+                            new MoveShooter(
                                 IntakeSubsystem.getInstance(), 
                                 Shooter.getInstance(), 
                                 intakePosition.DEPOSIT.get(), 
@@ -653,7 +653,7 @@ public enum Autos {
                     )
                 ),
 
-                new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2)
+                new AutoIntake(IntakeSubsystem.getInstance(), RobotContainer.cam2)
             ),
             new FollowPath(
                 new Path(
@@ -662,14 +662,14 @@ public enum Autos {
                         new Rotation2d(Math.toRadians(180)),
                         1,
                         new SequentialCommandGroup(
-                            new MoveShooterFirst(
+                            new MoveShooter(
                                 IntakeSubsystem.getInstance(), 
                                 Shooter.getInstance(), 
                                 intakePosition.DEPOSIT.get(), 
                                 shooterPosition.DEPOSIT.get()
                             ),
                             new Transfer(IntakeSubsystem.getInstance(), Shooter.getInstance()),
-                            new MoveShooterFirst(
+                            new MoveShooter(
                                 IntakeSubsystem.getInstance(), 
                                 Shooter.getInstance(), 
                                 intakePosition.DEPOSIT.get(), 
@@ -714,7 +714,7 @@ public enum Autos {
                     )
                 ),
 
-                new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2)
+                new AutoIntake(IntakeSubsystem.getInstance(), RobotContainer.cam2)
             ),
 
             new FollowPath(
@@ -724,14 +724,14 @@ public enum Autos {
                         new Rotation2d(Math.toRadians(180)),
                         2.5,
                         new SequentialCommandGroup(
-                            new MoveShooterFirst(
+                            new MoveShooter(
                                 IntakeSubsystem.getInstance(), 
                                 Shooter.getInstance(), 
                                 intakePosition.DEPOSIT.get(), 
                                 shooterPosition.DEPOSIT.get()
                             ),
                             new Transfer(IntakeSubsystem.getInstance(), Shooter.getInstance()),
-                            new MoveShooterFirst(
+                            new MoveShooter(
                                 IntakeSubsystem.getInstance(), 
                                 Shooter.getInstance(), 
                                 intakePosition.DEPOSIT.get(), 
@@ -776,14 +776,14 @@ public enum Autos {
                         new Rotation2d(Math.toRadians(150)),
                         0.2,
                         new SequentialCommandGroup(
-                            new MoveShooterFirst(
+                            new MoveShooter(
                                 IntakeSubsystem.getInstance(), 
                                 Shooter.getInstance(), 
                                 intakePosition.DEPOSIT.get(), 
                                 shooterPosition.DEPOSIT.get()
                             ),
                             new Transfer(IntakeSubsystem.getInstance(), Shooter.getInstance()),
-                            new MoveShooterFirst(
+                            new MoveShooter(
                                 IntakeSubsystem.getInstance(), 
                                 Shooter.getInstance(), 
                                 intakePosition.DEPOSIT.get(), 
@@ -793,7 +793,7 @@ public enum Autos {
                     )
                 ),
 
-                new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2)
+                new AutoIntake(IntakeSubsystem.getInstance(), RobotContainer.cam2)
             ),
             new FollowPath(
                 new Path(
@@ -802,14 +802,14 @@ public enum Autos {
                         new Rotation2d(Math.toRadians(180)),
                         1.5,
                         new SequentialCommandGroup(
-                            new MoveShooterFirst(
+                            new MoveShooter(
                                 IntakeSubsystem.getInstance(), 
                                 Shooter.getInstance(), 
                                 intakePosition.DEPOSIT.get(), 
                                 shooterPosition.DEPOSIT.get()
                             ),
                             new Transfer(IntakeSubsystem.getInstance(), Shooter.getInstance()),
-                            new MoveShooterFirst(
+                            new MoveShooter(
                                 IntakeSubsystem.getInstance(), 
                                 Shooter.getInstance(), 
                                 intakePosition.DEPOSIT.get(), 

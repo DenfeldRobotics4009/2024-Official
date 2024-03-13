@@ -8,36 +8,34 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.Shooter;
 
-public class MoveIntake extends Command {
+public class MoveShooter extends Command {
 
-  final IntakeSubsystem intake;
-  final double intakePosition;
+  final Shooter shooter;
+  final double shooterPosition;
 
   /**
    * Sets the intake to the transfer position to allow
-   * for shooter movement.
+   * for shooter movement. The shooter will only be
+   * moved when the intake has reached transfer position
    * @param intake
    * @param shooter
    */
-  public MoveIntake(
-    IntakeSubsystem intake, 
-    double intakePosition
-  ) {
+  public MoveShooter(Shooter shooter, double shooterPosition) {
     // addRequirements(intake, shooter);
 
-    this.intake = intake;
-    this.intakePosition = intakePosition;
+    this.shooter = shooter;
+    this.shooterPosition = shooterPosition;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    shooter.setPosition(shooterPosition);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.setPosition(intakePosition);
   }
 
   // Called once the command ends or is interrupted.
@@ -50,6 +48,6 @@ public class MoveIntake extends Command {
    * End when the intake has reached position
    */
   public boolean isFinished() {
-    return intake.atTargetAngle() && intake.getTargetAngle() == intakePosition;
+    return shooter.atTargetAngle() && shooter.getTargetAngle() == shooterPosition;
   }
 }

@@ -12,45 +12,22 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.auto.pathing.AutoRotationSource;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.NoteCamera;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.subsystems.IntakeSubsystem.intakePosition;
 
-public class Intake extends Command implements AutoRotationSource{
-  IntakeSubsystem intake;
-  NoteCamera camera;
+public class AutoIntake extends TransferIntake implements AutoRotationSource {
+
   /**
    * Runs the intake until the sensor is activated
    * @param intake
    */
-  public Intake(
-    IntakeSubsystem intake, NoteCamera camera) {
-    addRequirements(intake);
-    this.intake = intake;
-    this.camera = camera;
-  }
-
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-
-  }
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    intake.setIntake();
-  }
-
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-    intake.stop();
-  }
-
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return intake.getIntakeSensor() && intake.atTargetAngle();
+  public AutoIntake(
+    IntakeSubsystem intake, 
+    NoteCamera camera,
+    Shooter shooter 
+  ) {
+    super(intake, shooter, camera);
   }
 
   @Override

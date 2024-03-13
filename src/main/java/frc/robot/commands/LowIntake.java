@@ -7,35 +7,29 @@ package frc.robot.commands;
 import java.util.Optional;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Controls;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.NoteCamera;
-import frc.robot.subsystems.SwerveDrive;
-import frc.robot.subsystems.swerve.SwerveModule;
+import frc.robot.subsystems.Shooter;
 
-public class TeleopIntake extends Command {
-
+public class LowIntake extends Command {
   PIDController aimingPidController = new PIDController(3, 0.1, 0);
 
   IntakeSubsystem intake;
   NoteCamera camera;
-  Controls controls;
 
   /**
    * Runs the intake until the sensor is activated
    * @param intake
    */
-  public TeleopIntake(
+  public LowIntake(
     IntakeSubsystem intake, 
-    NoteCamera camera, 
-    Controls controls
+    NoteCamera camera
   ) {
     addRequirements(intake);
     this.intake = intake;
     this.camera = camera;
-    this.controls = controls;
   }
 
   // Called when the command is initially scheduled.
@@ -47,9 +41,13 @@ public class TeleopIntake extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    
     intake.setIntake();
 
-    //aim drive train
+    applyTurnSpeed();
+  }
+
+  protected void applyTurnSpeed() {
     double omegaRadPerSecond = 0; // From controller
     Optional<Double> yawToNote = camera.getYawToNote();
     if (yawToNote.isPresent()) {

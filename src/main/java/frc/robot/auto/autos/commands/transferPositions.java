@@ -6,7 +6,7 @@ package frc.robot.auto.autos.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.MoveIntakeFirst;
-import frc.robot.commands.MoveShooterFirst;
+import frc.robot.commands.MoveShooter;
 import frc.robot.commands.Transfer;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.Shooter;
@@ -25,7 +25,7 @@ public class transferPositions extends SequentialCommandGroup{
                 shooterPosition.DEPOSIT.get()
             ),
             new Transfer(IntakeSubsystem.getInstance(), Shooter.getInstance()),
-            new MoveShooterFirst(
+            new MoveShooter(
                 IntakeSubsystem.getInstance(), 
                 Shooter.getInstance(), 
                 intakePosition.DEPOSIT.get(), 

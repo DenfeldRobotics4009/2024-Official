@@ -17,9 +17,9 @@ import frc.robot.auto.pathing.pathObjects.Path;
 import frc.robot.auto.pathing.pathObjects.PathPoint;
 import frc.robot.auto.util.SetDrivePosition;
 import frc.robot.commands.AutoShoot;
-import frc.robot.commands.Intake;
+import frc.robot.commands.AutoIntake;
 import frc.robot.commands.MoveIntakeFirst;
-import frc.robot.commands.MoveShooterFirst;
+import frc.robot.commands.MoveShooter;
 import frc.robot.commands.SetFlywheelSpeed;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.ShootManual;
@@ -94,7 +94,7 @@ public class RightMidCenterMidCenterRightMidRight extends SequentialCommandGroup
                         0.5    // Speed (m/s)
                     )
                 ),
-                new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2)
+                new AutoIntake(IntakeSubsystem.getInstance(), RobotContainer.cam2)
             ),
             new FollowPath(
                 new Path(

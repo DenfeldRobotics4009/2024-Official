@@ -14,9 +14,9 @@ import frc.robot.auto.pathing.pathObjects.PathPoint;
 import frc.robot.auto.util.Field;
 import frc.robot.auto.util.SetDrivePosition;
 import frc.robot.commands.AutoShoot;
-import frc.robot.commands.Intake;
+import frc.robot.commands.AutoIntake;
 import frc.robot.commands.MoveIntakeFirst;
-import frc.robot.commands.MoveShooterFirst;
+import frc.robot.commands.MoveShooter;
 import frc.robot.commands.ShootManual;
 import frc.robot.commands.Transfer;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -53,14 +53,14 @@ public class RightNearRightMidCenter extends SequentialCommandGroup {
                             new Rotation2d(Math.toRadians(180)),
                             0.2,
                             new SequentialCommandGroup(
-                                new MoveShooterFirst(
+                                new MoveShooter(
                                     IntakeSubsystem.getInstance(), 
                                     Shooter.getInstance(), 
                                     intakePosition.DEPOSIT.get(), 
                                     shooterPosition.DEPOSIT.get()
                                 ),
                                 new Transfer(IntakeSubsystem.getInstance(), Shooter.getInstance()),
-                                new MoveShooterFirst(
+                                new MoveShooter(
                                     IntakeSubsystem.getInstance(), 
                                     Shooter.getInstance(), 
                                     intakePosition.DEPOSIT.get(), 
@@ -70,7 +70,7 @@ public class RightNearRightMidCenter extends SequentialCommandGroup {
                         )
                     ),
 
-                    new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2)
+                    new AutoIntake(IntakeSubsystem.getInstance(), RobotContainer.cam2)
                 ),
                 new FollowPath(
                     new Path(
@@ -151,7 +151,7 @@ public class RightNearRightMidCenter extends SequentialCommandGroup {
                         0.5    // Speed (m/s)
                     )
                 ),
-                new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2)
+                new AutoIntake(IntakeSubsystem.getInstance(), RobotContainer.cam2)
             ),
             new FollowPath(
                 new Path(
