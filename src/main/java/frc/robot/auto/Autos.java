@@ -23,7 +23,6 @@ import frc.robot.commands.ShootManual;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.IntakeSubsystem.intakePosition;
 import frc.robot.subsystems.Shooter.shooterPosition;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;

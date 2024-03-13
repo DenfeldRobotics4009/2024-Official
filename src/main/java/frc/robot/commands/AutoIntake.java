@@ -14,7 +14,6 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.NoteCamera;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.SwerveDrive;
-import frc.robot.subsystems.IntakeSubsystem.intakePosition;
 
 public class AutoIntake extends TransferIntake implements AutoRotationSource {
 
