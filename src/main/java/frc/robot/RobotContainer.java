@@ -136,7 +136,7 @@ public class RobotContainer {
      * LOW INTAKE
      */
     new Trigger(() -> {
-      return controls.operate.getLeftTriggerAxis() >= 0.1;
+      return controls.operate.getRightStickButton();
     }).whileTrue(
       new LowIntake(intake, cam2)
     );

@@ -6,8 +6,6 @@ package frc.robot.auto;
 
 import java.util.Optional;
 
-import javax.swing.text.html.Option;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
