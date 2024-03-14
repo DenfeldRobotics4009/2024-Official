@@ -38,9 +38,6 @@ public class Center3PieceSource extends SequentialCommandGroup {
 
             // Intake the closest center piece, lower intake at the same time
             new ParallelCommandGroup(
-                // Lower intake to ground
-                new LowerIntake(),
-
                 new DriveWithSource(
 
                     // Translation source from path
@@ -80,9 +77,6 @@ public class Center3PieceSource extends SequentialCommandGroup {
             ),
             // Drive back to the origin, while transferring
             new ParallelCommandGroup(
-
-                new TransferSequence(),
-
                 // Pose source from path, controls both rotation and translation
                 new DriveWithSource(
                     new FollowPath(
@@ -118,9 +112,6 @@ public class Center3PieceSource extends SequentialCommandGroup {
 
             // Intake next piece, and lower intake at the same time
             new ParallelCommandGroup(
-
-                new LowerIntake(),
-
                 new DriveWithSource(
                     new FollowPath(
                         new Path(
@@ -152,8 +143,6 @@ public class Center3PieceSource extends SequentialCommandGroup {
             ),
 
             new ParallelCommandGroup(
-                new TransferSequence(),
-
                 new DriveWithSource(
                     new FollowPath(
                         new Path(

@@ -27,8 +27,8 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.SwerveDrive;
 
-public class Amp3Piece extends SequentialCommandGroup {
-    public Amp3Piece() {
+public class Amp4Piece extends SequentialCommandGroup {
+    public Amp4Piece() {
         super(
             new SetDrivePosition(
                 Field.mirrorPointIfRed(
@@ -55,12 +55,12 @@ public class Amp3Piece extends SequentialCommandGroup {
                         ),
                         new PathPoint(
                             new Translation2d(2.514, 6.325),
-                            Rotation2d.fromDegrees(180),
+                        Rotation2d.fromDegrees(180),
                             3
                         ),
                         new PathPoint(
                             new Translation2d(8.19, 7.541),
-                        Rotation2d.fromDegrees(180),
+                            Rotation2d.fromDegrees(180),
                             0
                         )
                     )
@@ -73,7 +73,7 @@ public class Amp3Piece extends SequentialCommandGroup {
                 SwerveDrive.getInstance()
 
             ),
-                //Move to Shoot Point
+            //Move to Shoot Point
             new DriveWithSource(
                 new FollowPath(
                     new Path(
@@ -99,6 +99,7 @@ public class Amp3Piece extends SequentialCommandGroup {
 
                     @Override
                     public Translation2d getTranslationSpeeds() {
+                        // TODO Auto-generated method stub
                         return new Translation2d();
                     } 
                 },
@@ -110,6 +111,70 @@ public class Amp3Piece extends SequentialCommandGroup {
                 SwerveDrive.getInstance()
 
             ),
+
+            // Go to Mid Amp Side Piece in the Middle
+            new DriveWithSource(
+                new FollowPath(
+                    new Path(
+                        new PathPoint(
+                            new Translation2d(3.22,6.57),
+                            new Rotation2d(Math.toRadians(180)),
+                            3
+                        ),
+                        new PathPoint(
+                            new Translation2d(8.19, 5.838),
+                            Rotation2d.fromDegrees(180),
+                            0
+                        )
+                    )
+                ),
+
+                new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2, Rotation2d.fromDegrees(180)),
+
+                true,
+
+                SwerveDrive.getInstance()
+
+            ),
+                //Move to Shoot Point
+            new DriveWithSource(
+                new FollowPath(
+                    new Path(
+                        new PathPoint(
+                            new Translation2d(8.19, 5.838),
+                            Rotation2d.fromDegrees(180),
+                            3
+                        ),
+                        new PathPoint(
+                            new Translation2d(3.22,6.57),
+                            new Rotation2d(Math.toRadians(180)),
+                            0
+                        )
+                    )
+                ),
+
+                SwerveDrive.getInstance()
+
+            ),
+            //Shoot
+            new DriveWithSource(
+                new TranslationController() {
+
+                    @Override
+                    public Translation2d getTranslationSpeeds() {
+                        // TODO Auto-generated method stub
+                        return new Translation2d();
+                    } 
+                },
+
+                new AutoShoot(Shooter.getInstance(), RobotContainer.cam1),
+
+                false,
+
+                SwerveDrive.getInstance()
+
+            ),            
+
             //Move to Near Amp Side Piece
             new DriveWithSource(
                 new FollowPath(
@@ -122,12 +187,12 @@ public class Amp3Piece extends SequentialCommandGroup {
                         new PathPoint(
                             new Translation2d(2.26, 6.95),
                             Rotation2d.fromDegrees(-45),
-                            1
+                            0
                         )
                     )
                 ),
 
-                new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2, Rotation2d.fromDegrees(-45)),
+                new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2, Rotation2d.fromDegrees(180)),
 
                 true,
 

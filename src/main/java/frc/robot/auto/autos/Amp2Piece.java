@@ -38,8 +38,6 @@ public class Amp2Piece extends SequentialCommandGroup {
 
             new ParallelCommandGroup(
 
-                new LowerIntake(),
-
                 new DriveWithSource(
                     new FollowPath(
                         new Path(
@@ -69,8 +67,6 @@ public class Amp2Piece extends SequentialCommandGroup {
                 )
             ),
             new ParallelCommandGroup(
-
-                new TransferSequence(),
 
                 new DriveWithSource(
                     new FollowPath(

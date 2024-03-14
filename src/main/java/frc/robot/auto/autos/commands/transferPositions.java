@@ -16,7 +16,6 @@ import frc.robot.subsystems.Shooter.shooterPosition;
 
 /** Add your docs here. */
 public class transferPositions extends SequentialCommandGroup{
-    ParallelCommandGroup
     /** Add your docs here. */
     public transferPositions() {
         super(

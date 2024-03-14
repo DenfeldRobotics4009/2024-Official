@@ -44,17 +44,46 @@ public enum Autos {
     // RightMidCenterMidCenterRightMidRight(
     //     new RightMidCenterMidCenterRightMidRight()
     // ),
-    Center3PieceSource(new Center3PieceSource()),
+
+    //2 Piece Autos
 
     Amp2Piece(new Amp2Piece()),
 
-    Source2Piece(new Source2Piece()),
-    
     Center2Piece(new Center2Piece()),
+
+    Source2Piece(new Source2Piece()),
+
+    //3 Piece Autos
+    
+    Center3PieceSource(new Center3PieceSource()),
 
     Center3PieceAmp(new Center3PieceAmp()),
 
-    Center4Piece(new Center4Piece());    
+    Amp3Piece(new Amp3Piece()),
+
+    //4 Piece Autos
+
+    Amp4Piece(new Amp4Piece()),
+
+    Center4Piece(new Center4Piece()),
+
+    Source4Piece(new Source4Piece()),
+
+    //5 Piece Autos
+
+    Source5Piece(new Source5Piece()),
+
+    Source5PieceMiddle(new Source5PieceMiddle()),
+
+    //6 Piece Autos
+
+    Source6Piece(new Source6Piece()),
+
+    //Hoover Autos
+
+    AmpHoover(new AmpHoover()), 
+
+    SourceHoover(new SourceHoover());   
     
     /* ----------------- */
 

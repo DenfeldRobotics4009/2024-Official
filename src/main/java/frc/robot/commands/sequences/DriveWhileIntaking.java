@@ -27,8 +27,6 @@ public class DriveWhileIntaking extends ParallelCommandGroup {
    */
   public DriveWhileIntaking(Path path, Rotation2d defaultIntakeAngle) {
     super(
-      new LowerIntake(),
-
       new DriveWithSource(
 
           new FollowPath(path),

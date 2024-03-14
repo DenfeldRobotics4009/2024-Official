@@ -38,20 +38,23 @@ public class SourceHoover extends SequentialCommandGroup {
 
             new ParallelCommandGroup(
 
-                new LowerIntake(),
-
                 new DriveWithSource(
                     new FollowPath(
                         new Path(
                             new PathPoint(
-                                Constants.Paths.START_FAR_RIGHT,
-                                Constants.Paths.START_CENTER_ANGLE,
-                                0.5
+                                Constants.Paths.START_RIGHT,
+                                Constants.Paths.START_RIGHT_ANGLE,
+                                3
                             ),
                             new PathPoint(
-                                new Translation2d(8.25, 0.77), // Far right note
+                                new Translation2d(3.406,1.541),
+                                Constants.Paths.START_RIGHT_ANGLE,
+                                3
+                            ),
+                            new PathPoint(
+                                new Translation2d(8.19, 0.811), // Far right note
                                 new Rotation2d(Math.toRadians(180)),
-                                0.5
+                                0
                             )
                         )
                     ),
@@ -63,26 +66,26 @@ public class SourceHoover extends SequentialCommandGroup {
                     SwerveDrive.getInstance()
                 )
             ),
-
-            new ParallelCommandGroup(
-                            
-                new TransferSequence(),
-
-                    new DriveWithSource(
-                        new FollowPath(
-                            new Path(
-                                new PathPoint(
-                                    new Translation2d(7, 1.24), // between far right and midright, point guessed
-                                    new Rotation2d(200),
-                                    1
-                                )
-                            )
+           
+            new DriveWithSource(
+                new FollowPath(
+                    new Path(
+                        new PathPoint(
+                            new Translation2d(8.19, 0.811), // Far right note
+                            new Rotation2d(Math.toRadians(180)),
+                            1.5
                         ),
-
-                    SwerveDrive.getInstance()
-
+                        new PathPoint(
+                            new Translation2d(7, 1.24), // between far right and midright, point guessed
+                            new Rotation2d(200),
+                            0
+                        )
                     )
                 ),
+
+                SwerveDrive.getInstance()
+
+            ),
 
             new ShootManual(Shooter.getInstance(), -10),
 
@@ -94,9 +97,14 @@ public class SourceHoover extends SequentialCommandGroup {
                     new FollowPath(
                         new Path(
                             new PathPoint(
-                                new Translation2d(8.25, 2.514), // Midright note
+                                new Translation2d(7, 1.24), // between far right and midright, point guessed
+                                new Rotation2d(200),
+                                1.5
+                            ),
+                            new PathPoint(
+                                new Translation2d(8.19, 2.433), // Midright note
                                 new Rotation2d(180),
-                                1
+                                0
                             )
                         )
                     ),
@@ -107,142 +115,143 @@ public class SourceHoover extends SequentialCommandGroup {
 
                     SwerveDrive.getInstance()
 
-                    )
-                ),
+                )
+            ),
 
-            new ParallelCommandGroup(
-                            
-                new TransferSequence(),
-
-                    new DriveWithSource(
-                        new FollowPath(
-                            new Path(
-                                new PathPoint(
-                                    new Translation2d(7, 3), // between midright and mid, point guessed
-                                    new Rotation2d(200),
-                                    1
-                                )
-                            )
+            new DriveWithSource(
+                new FollowPath(
+                    new Path(
+                        new PathPoint(
+                            new Translation2d(8.19, 2.433), // Midright note
+                            new Rotation2d(180),
+                            1.5
                         ),
-
-                    SwerveDrive.getInstance()
-
+                        new PathPoint(
+                            new Translation2d(7, 3), // between midright and mid, point guessed
+                            new Rotation2d(200),
+                            0
+                        )
                     )
                 ),
+
+                SwerveDrive.getInstance()
+
+            ),
 
             new ShootManual(Shooter.getInstance(), -10),
 
-            new ParallelCommandGroup(
-
-            new TransferSequence(),
-
-                new DriveWithSource(
-                    new FollowPath(
-                        new Path(
-                            new PathPoint(
-                                new Translation2d(8.25, 4.135), // Mid note
-                                new Rotation2d(180),
-                                1
-                            )
+            new DriveWithSource(
+                new FollowPath(
+                    new Path(
+                        new PathPoint(
+                            new Translation2d(7, 3), // between midright and mid, point guessed
+                            new Rotation2d(200),
+                            1.5
+                        ),
+                        new PathPoint(
+                            new Translation2d(8.19, 4.054), // Mid note
+                            new Rotation2d(180),
+                            0
                         )
-                    ),
-
-                    new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2, Rotation2d.fromDegrees(180)),
-
-                    true,
-
-                    SwerveDrive.getInstance()
-
                     )
                 ),
 
-            new ParallelCommandGroup(
-                            
-                new TransferSequence(),
+                new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2, Rotation2d.fromDegrees(180)),
 
-                    new DriveWithSource(
-                        new FollowPath(
-                            new Path(
-                                new PathPoint(
-                                    new Translation2d(7, 5), // between mid and midleft, point guessed
-                                    new Rotation2d(200),
-                                    1
-                                )
-                            )
+                true,
+
+                SwerveDrive.getInstance()
+
+            ),
+            new DriveWithSource(
+                new FollowPath(
+                    new Path(
+                        new PathPoint(
+                            new Translation2d(8.19, 4.054), // Mid note
+                            new Rotation2d(180),
+                            1.5
                         ),
-
-                    SwerveDrive.getInstance()
-
+                        new PathPoint(
+                            new Translation2d(7, 5), // between mid and midleft, point guessed
+                            new Rotation2d(200),
+                            0
+                        )
                     )
                 ),
 
-                new ShootManual(Shooter.getInstance(), -10),
+                SwerveDrive.getInstance()
 
-                new ParallelCommandGroup(
+            ),
 
-                new TransferSequence(),
+            new ShootManual(Shooter.getInstance(), -10),
 
-                    new DriveWithSource(
-                        new FollowPath(
-                            new Path(
-                                new PathPoint(
-                                    new Translation2d(8.25, 6.5), // Midleft piece, point guessed
-                                    new Rotation2d(-45),
-                                    2
-                                )
-                            )
+            new DriveWithSource(
+                new FollowPath(
+                    new Path(
+                        new PathPoint(
+                            new Translation2d(7, 5), // between mid and midleft, point guessed
+                            new Rotation2d(200),
+                            1.5
                         ),
-
-                        SwerveDrive.getInstance()
+                        new PathPoint(
+                            new Translation2d(8.19, 8.838), // Midleft piece, point guessed
+                            new Rotation2d(180),
+                            0
+                        )
                     )
                 ),
 
-                new ParallelCommandGroup(
-                            
-                new TransferSequence(),
+                new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2, Rotation2d.fromDegrees(180)),
 
-                    new DriveWithSource(
-                        new FollowPath(
-                            new Path(
-                                new PathPoint(
-                                    new Translation2d(7, 7.25), // between midleft and far left, point guessed
-                                    new Rotation2d(200),
-                                    1
-                                )
-                            )
+                true,
+
+                SwerveDrive.getInstance()
+            ),
+
+            new DriveWithSource(
+                new FollowPath(
+                    new Path(
+                        new PathPoint(
+                            new Translation2d(8.19, 8.838), // Midleft piece, point guessed
+                            new Rotation2d(180),
+                            1.5
                         ),
-
-                    SwerveDrive.getInstance()
-
+                        new PathPoint(
+                            new Translation2d(7, 7.25), // between midleft and far left, point guessed
+                            new Rotation2d(200),
+                            0
+                        )
                     )
                 ),
 
-                new ShootManual(Shooter.getInstance(), -10),
+                SwerveDrive.getInstance()
 
-                new ParallelCommandGroup(
+            ),
 
-                new TransferSequence(),
+            new ShootManual(Shooter.getInstance(), -10),
 
-                    new DriveWithSource(
-                        new FollowPath(
-                            new Path(
-                                new PathPoint(
-                                    new Translation2d(8.25, 8.1), // Far left piece, point guessed
-                                    new Rotation2d(180),
-                                    2
-                                )
-                            )
+            new DriveWithSource(
+                new FollowPath(
+                    new Path(
+                        new PathPoint(
+                            new Translation2d(7, 7.25), // between midleft and far left, point guessed
+                            new Rotation2d(200),
+                            1.5
                         ),
-
-                        new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2, Rotation2d.fromDegrees(180)),
-
-                        true,
-
-                        SwerveDrive.getInstance()
+                        new PathPoint(
+                            new Translation2d(8.19, 7.541), // Far left piece, point guessed
+                            new Rotation2d(180),
+                            0
+                        )
                     )
                 ),
 
-            new ShootManual(Shooter.getInstance(), -10)
+                new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2, Rotation2d.fromDegrees(180)),
+
+                true,
+
+                SwerveDrive.getInstance()
+            )
 
         );
     }

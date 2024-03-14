@@ -37,8 +37,6 @@ public class Center2Piece extends SequentialCommandGroup {
             new ShootManual(Shooter.getInstance(), -10),
 
             new ParallelCommandGroup(
-                new LowerIntake(),
-
                 new DriveWithSource(
                     new FollowPath(
                         new Path(
@@ -75,8 +73,6 @@ public class Center2Piece extends SequentialCommandGroup {
             ),
 
             new ParallelCommandGroup(
-                new TransferSequence(),
-
                 new DriveWithSource(
                     new FollowPath(
                         new Path(

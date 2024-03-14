@@ -65,25 +65,21 @@ public class Center4Piece extends SequentialCommandGroup {
                 Rotation2d.fromDegrees(180)
             ),
 
-            new ParallelCommandGroup(
-                new TransferSequence(),
-
-                new DrivePath(
-                    new Path(
-                        new PathPoint(
-                            new Translation2d(2, 5.0),
-                            new Rotation2d(Math.toRadians(180)),
-                            1
-                        ),
-                        new PathPoint(
-                            new Translation2d(0.8701, 5.528),
-                            new Rotation2d(Math.toRadians(180)),
-                            0.2
-                        )
+            new DrivePath(
+                new Path(
+                    new PathPoint(
+                        new Translation2d(2, 5.0),
+                        new Rotation2d(Math.toRadians(180)),
+                        1
+                    ),
+                    new PathPoint(
+                        new Translation2d(0.8701, 5.528),
+                        new Rotation2d(Math.toRadians(180)),
+                        0.2
                     )
                 )
             ),
-            
+
             new ShootManual(Shooter.getInstance(), -10),
 
             new DriveWhileIntaking(
@@ -109,27 +105,22 @@ public class Center4Piece extends SequentialCommandGroup {
                 Rotation2d.fromDegrees(180)
             ),
 
-            new ParallelCommandGroup(
-
-                new TransferSequence(),
-
-                new DrivePath(
-                    new Path(
-                        new PathPoint(
-                            new Translation2d(2.26, 6.95),
-                            new Rotation2d(Math.toRadians(180)),
-                            2.5
-                        ),
-                        new PathPoint(
-                            new Translation2d(1, 5.528),
-                            new Rotation2d(Math.toRadians(180)),
-                            2.5
-                        ),
-                        new PathPoint(
-                            new Translation2d(0.8701, 5.528),
-                            new Rotation2d(Math.toRadians(180)),
-                            0.2
-                        )
+            new DrivePath(
+                new Path(
+                    new PathPoint(
+                        new Translation2d(2.26, 6.95),
+                        new Rotation2d(Math.toRadians(180)),
+                        2.5
+                    ),
+                    new PathPoint(
+                        new Translation2d(1, 5.528),
+                        new Rotation2d(Math.toRadians(180)),
+                        2.5
+                    ),
+                    new PathPoint(
+                        new Translation2d(0.8701, 5.528),
+                        new Rotation2d(Math.toRadians(180)),
+                        0.2
                     )
                 )
             ),
@@ -159,21 +150,17 @@ public class Center4Piece extends SequentialCommandGroup {
                 Rotation2d.fromDegrees(180)
             ),
 
-            new ParallelCommandGroup(
-                new TransferSequence(),
-
-                new DrivePath(
-                    new Path(
-                        new PathPoint(
-                            new Translation2d(2, 5.0),
-                            new Rotation2d(Math.toRadians(180)),
-                            1.5
-                        ),
-                        new PathPoint(
-                            new Translation2d(0.8701, 5.2), 
-                            new Rotation2d(Math.toRadians(180)),
-                            0.5
-                        )
+            new DrivePath(
+                new Path(
+                    new PathPoint(
+                        new Translation2d(2, 5.0),
+                        new Rotation2d(Math.toRadians(180)),
+                        1.5
+                    ),
+                    new PathPoint(
+                        new Translation2d(0.8701, 5.2), 
+                        new Rotation2d(Math.toRadians(180)),
+                        0.5
                     )
                 )
             ),
