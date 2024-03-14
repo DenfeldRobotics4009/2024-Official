@@ -56,7 +56,7 @@ public final class Constants {
 
         public static double flyWheelTolerance = 400; // RPM
 
-        public static int barrelLaserSensorID = 1;
+        public static int barrelLaserSensorID = 2;
 
         public static int aimLimitSwitchID = 0;
 
@@ -67,15 +67,15 @@ public final class Constants {
     }
     public static final class Intake {
         public static int intakeMotorID = 12;
-        public static double intakeMotorPower = -1; // Sped up for new intake
-        public static double slowIntakeMotorPower = -0.4;
+        public static double intakeMotorPower = 1; // Sped up for new intake
+        public static double slowIntakeMotorPower = 0.2;
 
         public static double ground = -0.3242;
         public static double deposit = -0.1315;
 
         public static double pidTolerance = 0.08;
 
-        public static int intakeLaserSensorID = 0;
+        public static int intakeLaserSensorID = 3;
 
         public static double rotateEncoderOffset = -0.032;// 0.9709;
 

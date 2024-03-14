@@ -100,6 +100,7 @@ public class Shooter extends SubsystemBase {
     MathUtil.clamp(speed, -1, 1);
     aim.set(speed);
     SmartDashboard.putNumber("Current Shooter Angle", aim.getEncoder().getPosition());
+    SmartDashboard.putBoolean("Shooter Sensor", getBarrelSensor());
 
     // Check the limit switch to reset aim encoder
     if (aimLimitSwitch.get()) {
@@ -163,7 +164,6 @@ public class Shooter extends SubsystemBase {
   }
 
   public boolean getBarrelSensor() {
-    System.out.println("Barrel Sensor - " + barrelSensor.getVoltage());
     return barrelSensor.getVoltage() < Constants.laserSensorVoltageHigh; 
   }
 }

@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.Controls;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.NoteCamera;
@@ -42,7 +43,7 @@ public class LowIntake extends Command {
   @Override
   public void execute() {
     
-    intake.setIntake();
+    intake.setIntake(Constants.Intake.slowIntakeMotorPower);
 
     applyTurnSpeed();
   }

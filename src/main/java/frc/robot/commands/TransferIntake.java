@@ -40,12 +40,8 @@ public class TransferIntake extends LowIntake {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
-    if (shooter.atTargetAngle()) {
-      intake.setIntake();
-      shooter.feed();
-    }
-
+    intake.setIntake();
+    shooter.feed();
     applyTurnSpeed();
   }
 
@@ -59,6 +55,6 @@ public class TransferIntake extends LowIntake {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return shooter.getBarrelSensor() && shooter.atTargetAngle();
+    return shooter.getBarrelSensor();
   }
 }
