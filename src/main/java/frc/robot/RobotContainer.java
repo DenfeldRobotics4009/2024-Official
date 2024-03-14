@@ -107,7 +107,7 @@ public class RobotContainer {
      * Feeding is triggered by the left trigger
      */
     controls.getOperatePOVTrigger(270).whileTrue(
-      new AmpShoot(shooter, controls)
+      new AmpShoot(shooter)
     );
 
     /**
