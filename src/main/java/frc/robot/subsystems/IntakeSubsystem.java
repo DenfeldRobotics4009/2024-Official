@@ -79,3 +79,11 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
 }
+
+/*
+
+if willToLive == 0 {
+  die;
+}
+
+*/
