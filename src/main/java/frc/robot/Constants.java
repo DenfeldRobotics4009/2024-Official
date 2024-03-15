@@ -28,7 +28,7 @@ public final class Constants {
         public static int leftClimberMotorID = 18;
         public static int rightClimberMotorID = 19;
         public static double down = -5;
-        public static double up = 450;
+        public static double up = 400;
         public static double climberMotorPower = 1;  
     }
     public static final class Shooter {
@@ -80,6 +80,8 @@ public final class Constants {
         public static double rotateEncoderOffset = -0.032;// 0.9709;
 
         public static int rotateEncoderID = 3;
+
+        public static int lightHubId = 12;
     }
     public static final class AprilTagOdometry {
         public static double maxSpeed = 0.001; // power
@@ -134,8 +136,8 @@ public final class Constants {
         }
 
         // Meters from wheel center to wheel center
-        public static double TrackYMeters = 0.45085;
-        public static double TrackXMeters = 0.59055;
+        public static double TrackYMeters = 0.59055;
+        public static double TrackXMeters = 0.45085;
 
         public static Rotation2d forwardAngle = new Rotation2d(Math.toRadians(0));
     }

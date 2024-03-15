@@ -59,6 +59,8 @@ public class Shooter extends SubsystemBase {
   DigitalInput aimLimitSwitch = new DigitalInput(Constants.Shooter.aimLimitSwitchID);
   boolean limitSwitchToggle = false;
 
+  boolean atFlyWheelSpeed = true;
+
   /**
    * @return singleton instance of Turret
    */
@@ -135,10 +137,15 @@ public class Shooter extends SubsystemBase {
     topFlywheelPidController.setReference(topRPM, ControlType.kVelocity);
 
     // Check tolerance
-    return (
+    atFlyWheelSpeed = (
       topMotor.getEncoder().getVelocity() >= (topRPM-Constants.Shooter.flyWheelTolerance) && 
       bottomMotor.getEncoder().getVelocity() <= (Constants.Shooter.flyWheelTolerance-bottomRPM)
     );
+    return atFlyWheelSpeed;
+  }
+
+  public boolean atFlyWheelSpeed() {
+    return atFlyWheelSpeed;
   }
 
   public void feed() {

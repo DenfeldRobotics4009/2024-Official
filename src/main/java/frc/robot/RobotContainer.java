@@ -95,7 +95,7 @@ public class RobotContainer {
     controls.getOperatePOVTrigger(90).whileTrue(new Shoot(shooter, controls, cam1));
 
     new Trigger(() -> {return controls.operate.getRightTriggerAxis() >= 0.1;}).whileTrue(
-      new FeedShooter(shooter)
+      new FeedShooter(shooter, true)
     );
 
     /**

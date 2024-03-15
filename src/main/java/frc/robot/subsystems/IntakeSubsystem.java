@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DigitalSource;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.PneumaticHub;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -25,6 +27,10 @@ public class IntakeSubsystem extends SubsystemBase {
 
   // When tripped, there is a piece within the intake
   AnalogInput intakeLaserSensor = new AnalogInput(Constants.Intake.intakeLaserSensorID);
+
+  PneumaticHub lightHub = new PneumaticHub(Constants.Intake.lightHubId);
+  Solenoid lightStripA = lightHub.makeSolenoid(14);
+  Solenoid lightStripB = lightHub.makeSolenoid(15);
 
 
   /**
@@ -49,8 +55,10 @@ public class IntakeSubsystem extends SubsystemBase {
 
     SmartDashboard.putBoolean("Intake Sensor", getIntakeSensor());
 
-    SmartDashboard.putNumber("Intake Current", intakeMotor.getOutputCurrent());
+    SmartDashboard.putNumber("Intake Current", intakeMotor.getOutputCurrent()); 
 
+    lightStripA.set(getIntakeSensor() || Shooter.getInstance().getBarrelSensor());
+    lightStripB.set(getIntakeSensor() || Shooter.getInstance().getBarrelSensor());
   }
 
   public void setIntake() {
