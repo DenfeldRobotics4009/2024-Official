@@ -13,10 +13,8 @@ import frc.robot.auto.pathing.FollowPath;
 import frc.robot.auto.pathing.pathObjects.Path;
 import frc.robot.auto.pathing.pathObjects.PathPoint;
 import frc.robot.commands.Intake;
-import frc.robot.commands.MoveShooterFirst;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.IntakeSubsystem.intakePosition;
 import frc.robot.subsystems.Shooter.shooterPosition;
 import frc.robot.subsystems.SwerveDrive;
 

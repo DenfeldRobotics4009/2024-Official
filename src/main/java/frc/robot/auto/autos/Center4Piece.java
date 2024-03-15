@@ -21,8 +21,6 @@ import frc.robot.commands.Intake;
 import frc.robot.commands.ShootManual;
 import frc.robot.commands.sequences.DrivePath;
 import frc.robot.commands.sequences.DriveWhileIntaking;
-import frc.robot.commands.sequences.LowerIntake;
-import frc.robot.commands.sequences.TransferSequence;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.SwerveDrive;

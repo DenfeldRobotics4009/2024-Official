@@ -19,8 +19,6 @@ import frc.robot.auto.util.Field;
 import frc.robot.auto.util.SetDrivePosition;
 import frc.robot.commands.Intake;
 import frc.robot.commands.ShootManual;
-import frc.robot.commands.sequences.LowerIntake;
-import frc.robot.commands.sequences.TransferSequence;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.SwerveDrive;
@@ -129,8 +127,6 @@ public class AmpHoover extends SequentialCommandGroup {
             new ShootManual(Shooter.getInstance(), -10),
 
             new ParallelCommandGroup(
-
-            new TransferSequence(),
 
                 new DriveWithSource(
                     new FollowPath(
