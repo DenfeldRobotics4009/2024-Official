@@ -33,18 +33,20 @@ public final class Constants {
     }
     public static final class Shooter {
 
-        public static double shotProfileOffset = 3.5;
+        public static double shotProfileOffset = 14;
+
+        public static double sideAimTolerance = 10;
 
         public static int topMotorID = 57;
         public static int bottomMotorID = 58; 
         public static double spin = 0.9;
         public static int feederMotorID = 59;
-        public static double feederSpeed = 1;
+        public static double feederSpeed = 0.7;
         public static int aimMotorID = 40;
         
         public static double pidTolerance = 4;
 
-        public static double aimRangeFrom0 = -133;
+        public static double aimRangeFrom0 = -180;
         public static double transferAngle = -90;
         
         public static double minimumFlywheelSpeed = 0;
@@ -67,7 +69,7 @@ public final class Constants {
     }
     public static final class Intake {
         public static int intakeMotorID = 12;
-        public static double intakeMotorPower = 1; // Sped up for new intake
+        public static double intakeMotorPower = 0.7; // Sped up for new intake
         public static double slowIntakeMotorPower = 0.2;
 
         public static double ground = -0.3242;

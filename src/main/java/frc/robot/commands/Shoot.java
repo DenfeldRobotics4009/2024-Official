@@ -63,7 +63,6 @@ public class Shoot extends Command {
     if (ShotProfile.getHeightFromDistance(distance).isPresent()) {
       angle = ShotProfile.getHeightFromDistance(distance).get();
     }
-    angle +=  offset += Controls.modifyAxis(3* controls.operate.getLeftY(), 0.6);
 
     // System.out.println("Distance " + distance);
     // System.out.println("Shot angle " + angle);

@@ -29,140 +29,178 @@ public class Center4Piece extends SequentialCommandGroup {
     public Center4Piece() {
         super(
             new SetDrivePosition(
-                    Field.mirrorPointIfRed(
+                Field.mirrorPointIfRed(
                     new Pose2d(Constants.Paths.START_CENTER,Constants.Paths.START_CENTER_ANGLE)
                 )
             ),
             new ShootManual(Shooter.getInstance(), -10),
 
-            new DriveWhileIntaking(
-                new Path(
-                    0.01,
-                    new PathPoint(
-                        new Translation2d(1, 5.528),
-                        new Rotation2d(Math.toRadians(180)),
-                        1
+            new ParallelCommandGroup(
+                new DriveWithSource(
+                    new FollowPath(
+                        new Path(
+                            0.01,
+                            new PathPoint(
+                                new Translation2d(1, 5.528),
+                                new Rotation2d(Math.toRadians(180)),
+                                3
+                            ),
+                            new PathPoint(
+                                new Translation2d(3, 6),
+                                new Rotation2d(Math.toRadians(180)),
+                                3
+                            ),
+                            new PathPoint(
+                                new Translation2d(2, 5.0),
+                                new Rotation2d(Math.toRadians(180)),
+                                0
+                            )
+                        )
                     ),
-                    new PathPoint(
-                        new Translation2d(3, 5.528),
-                        new Rotation2d(Math.toRadians(180)),
-                        1.5
-                    ),
-                    new PathPoint(
-                        new Translation2d(3, 6),
-                        new Rotation2d(Math.toRadians(180)),
-                        1.5
-                    ),
-                    new PathPoint(
-                        new Translation2d(2, 5.0),
-                        new Rotation2d(Math.toRadians(180)),
-                        0.5
-                    )
-                ),
 
-                Rotation2d.fromDegrees(180)
+                    new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2, Rotation2d.fromDegrees(180)),
+
+                    true,
+
+                    SwerveDrive.getInstance()
+                )
             ),
 
-            new DrivePath(
-                new Path(
-                    new PathPoint(
-                        new Translation2d(2, 5.0),
-                        new Rotation2d(Math.toRadians(180)),
-                        1
+            new ParallelCommandGroup(
+                new DriveWithSource(
+                    new FollowPath(
+                        new Path(
+                            new PathPoint(
+                                new Translation2d(2, 5.0),
+                                new Rotation2d(Math.toRadians(180)),
+                                3
+                            ),
+                            new PathPoint(
+                                new Translation2d(1, 5.528),
+                                new Rotation2d(Math.toRadians(180)),
+                                3
+                            ),
+                            new PathPoint(
+                                new Translation2d(0.8701, 5.528),
+                                new Rotation2d(Math.toRadians(180)),
+                                0
+                            )
+                        )
                     ),
-                    new PathPoint(
-                        new Translation2d(0.8701, 5.528),
-                        new Rotation2d(Math.toRadians(180)),
-                        0.2
-                    )
+
+                    SwerveDrive.getInstance()
                 )
             ),
 
             new ShootManual(Shooter.getInstance(), -10),
 
-            new DriveWhileIntaking(
-                new Path(
-                    0.01,
-                    new PathPoint(
-                        new Translation2d(0.8701, 5.528),
-                        new Rotation2d(Math.toRadians(180)),
-                        1.5
+            new ParallelCommandGroup(
+                new DriveWithSource(
+                    new FollowPath(
+                        new Path(
+                            0.01,
+                            new PathPoint(
+                                new Translation2d(0.8701, 5.528),
+                                new Rotation2d(Math.toRadians(130)),
+                                3
+                            ),
+                            new PathPoint(
+                                new Translation2d(1.6, 6),
+                                new Rotation2d(Math.toRadians(130)),
+                                3
+                            ),
+                            new PathPoint(
+                                new Translation2d(2.5, 6.95),
+                                new Rotation2d(Math.toRadians(130)),
+                                0
+                            )
+                        )
                     ),
-                    new PathPoint(
-                        new Translation2d(1, 6.95),
-                        new Rotation2d(Math.toRadians(180)),
-                        1.5
-                    ),
-                    new PathPoint(
-                        new Translation2d(2, 6.95),
-                        new Rotation2d(Math.toRadians(180)),
-                        0.2
-                    )
-                ),
 
-                Rotation2d.fromDegrees(180)
+                    new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2, Rotation2d.fromDegrees(360-130)),
+
+                    true,
+
+                    SwerveDrive.getInstance()
+                )
             ),
 
-            new DrivePath(
-                new Path(
-                    new PathPoint(
-                        new Translation2d(2.26, 6.95),
-                        new Rotation2d(Math.toRadians(180)),
-                        2.5
+            new ParallelCommandGroup(
+                new DriveWithSource(
+                    new FollowPath(
+                        new Path(
+                            new PathPoint(
+                                new Translation2d(2.26, 6.95),
+                                new Rotation2d(Math.toRadians(180)),
+                                3
+                            ),
+                            new PathPoint(
+                                new Translation2d(0.8701, 5.2),
+                                new Rotation2d(Math.toRadians(180)),
+                                0
+                            )
+                        )
                     ),
-                    new PathPoint(
-                        new Translation2d(1, 5.528),
-                        new Rotation2d(Math.toRadians(180)),
-                        2.5
-                    ),
-                    new PathPoint(
-                        new Translation2d(0.8701, 5.528),
-                        new Rotation2d(Math.toRadians(180)),
-                        0.2
-                    )
+
+                    SwerveDrive.getInstance()
                 )
             ),
 
             new ShootManual(Shooter.getInstance(), -10),
 
-            new DriveWhileIntaking(
-                new Path(
-                    0.01,
-                    new PathPoint(
-                        new Translation2d(0.8701, 5.528),
-                        new Rotation2d(Math.toRadians(180)),
-                        1.5
+            // Intake next piece, and lower intake at the same time
+            new ParallelCommandGroup(
+                new DriveWithSource(
+                    new FollowPath(
+                        new Path(
+                            0.01,
+                            new PathPoint(
+                                new Translation2d(0.8701, 5.528),
+                                new Rotation2d(Math.toRadians(180)),
+                                3
+                            ),
+                            new PathPoint(
+                                new Translation2d(1,5),
+                                new Rotation2d(Math.toRadians(230)),
+                                3
+                            ),
+                            new PathPoint(
+                                new Translation2d(2.5, 4.2),
+                                new Rotation2d(Math.toRadians(230)),
+                                0
+                            )
+                        )
                     ),
-                    new PathPoint(
-                        new Translation2d(1,5),
-                        new Rotation2d(Math.toRadians(150)),
-                        1.5
-                    ),
-                    new PathPoint(
-                        new Translation2d(2, 4.2),
-                        new Rotation2d(Math.toRadians(150)),
-                        0.2
-                    )
-                ),
 
-                Rotation2d.fromDegrees(180)
-            ),
+                    new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2, Rotation2d.fromDegrees(360-230)),
 
-            new DrivePath(
-                new Path(
-                    new PathPoint(
-                        new Translation2d(2, 5.0),
-                        new Rotation2d(Math.toRadians(180)),
-                        1.5
-                    ),
-                    new PathPoint(
-                        new Translation2d(0.8701, 5.2), 
-                        new Rotation2d(Math.toRadians(180)),
-                        0.5
-                    )
+                    true, // Race
+
+                    SwerveDrive.getInstance()
                 )
             ),
-            
+
+            new ParallelCommandGroup(
+                new DriveWithSource(
+                    new FollowPath(
+                        new Path(
+                            new PathPoint(
+                                new Translation2d(2.4, 5.0),
+                                new Rotation2d(Math.toRadians(180)),
+                                3
+                            ),
+                            new PathPoint(
+                                Constants.Paths.START_CENTER, 
+                                new Rotation2d(Math.toRadians(180)),
+                                0
+                            )
+                        )
+                    ),
+
+                    SwerveDrive.getInstance()
+                )
+            ),
+
             new ShootManual(Shooter.getInstance(), -10)
         );
     }

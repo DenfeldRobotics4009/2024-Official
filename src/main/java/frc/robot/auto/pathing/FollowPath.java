@@ -142,6 +142,9 @@ public class FollowPath extends Command implements RotationController, Translati
             PathingConstants.driveSubsystem.getPosition().getTranslation()
         );
 
+        System.out.println("Followpath isfinished " +(lastCrossedPointIndex >= (path.points.size() - 2) && 
+            distanceToLastPointMeters < path.lastPointTolerance));
+
         return (
             // If we have passed the second to last point
             lastCrossedPointIndex >= (path.points.size() - 2) && 
@@ -354,6 +357,7 @@ public class FollowPath extends Command implements RotationController, Translati
 
     @Override
     public Translation2d getTranslationSpeeds() {
+        System.out.println("Translation speed: "+ lastSpeeds);
         return new Translation2d(lastSpeeds.vxMetersPerSecond, lastSpeeds.vyMetersPerSecond);
     }
 

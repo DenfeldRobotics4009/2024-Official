@@ -41,22 +41,17 @@ public class Center3PieceAmp extends SequentialCommandGroup {
                             new PathPoint(
                                 new Translation2d(1, 5.528),
                                 new Rotation2d(Math.toRadians(180)),
-                                0.5
-                            ),
-                            new PathPoint(
-                                new Translation2d(3, 5.528),
-                                new Rotation2d(Math.toRadians(180)),
-                                1
+                                1.5
                             ),
                             new PathPoint(
                                 new Translation2d(3, 6),
                                 new Rotation2d(Math.toRadians(180)),
-                                1
+                                1.5
                             ),
                             new PathPoint(
                                 new Translation2d(2, 5.0),
                                 new Rotation2d(Math.toRadians(180)),
-                                0.5
+                                0
                             )
                         )
                     ),
@@ -86,7 +81,7 @@ public class Center3PieceAmp extends SequentialCommandGroup {
                             new PathPoint(
                                 new Translation2d(0.8701, 5.528),
                                 new Rotation2d(Math.toRadians(180)),
-                                0.2
+                                0
                             )
                         )
                     ),
@@ -104,23 +99,23 @@ public class Center3PieceAmp extends SequentialCommandGroup {
                             0.01,
                             new PathPoint(
                                 new Translation2d(0.8701, 5.528),
-                                new Rotation2d(Math.toRadians(180)),
+                                new Rotation2d(Math.toRadians(150)),
                                 1.5
                             ),
                             new PathPoint(
-                                new Translation2d(1, 6.95),
-                                new Rotation2d(Math.toRadians(180)),
+                                new Translation2d(1.6, 6),
+                                new Rotation2d(Math.toRadians(150)),
                                 1.5
                             ),
                             new PathPoint(
-                                new Translation2d(2.26, 6.95),
-                                new Rotation2d(Math.toRadians(180)),
-                                0.2
+                                new Translation2d(2.5, 6.95),
+                                new Rotation2d(Math.toRadians(150)),
+                                0
                             )
                         )
                     ),
 
-                    new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2, Rotation2d.fromDegrees(180)),
+                    new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2, Rotation2d.fromDegrees(360-150)),
 
                     true,
 
@@ -143,9 +138,9 @@ public class Center3PieceAmp extends SequentialCommandGroup {
                                 1.5
                             ),
                             new PathPoint(
-                                new Translation2d(0.8701, 5.528),
+                                new Translation2d(0.8701, 5.2),
                                 new Rotation2d(Math.toRadians(180)),
-                                0.2
+                                0
                             )
                         )
                     ),

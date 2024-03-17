@@ -93,7 +93,7 @@ public class DriveWithSource extends Command {
    */
   public final void initialize() {
     for (Command command : commands) {
-      command.schedule();
+      command.initialize();
     }
   }
 
@@ -102,6 +102,9 @@ public class DriveWithSource extends Command {
    * Sets the drive subsystem speeds/
    */
   public final void execute() {
+    for (Command command : commands) {
+      command.execute();
+    }
     Pose2d poseSpeeds = new Pose2d(translationController.getTranslationSpeeds(), rotationController.getRotationSpeeds());
 
     driveSubsystem.drive(
@@ -115,7 +118,7 @@ public class DriveWithSource extends Command {
    */
   public final void end(boolean interrupted) {
     for (Command command : commands) {
-      command.cancel();
+      command.end(interrupted);
     }
   }
 

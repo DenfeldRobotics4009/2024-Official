@@ -27,7 +27,9 @@ public class AutoShoot extends Command implements RotationController {
   Shooter shooter;
   AprilTagOdometry camera;
 
-  PIDController orientationController = new PIDController(0.5, 0, 0);
+  Timer timer = new Timer();
+
+  PIDController orientationController = new PIDController(6, 0.1, 0);
 
   public AutoShoot(Shooter shooter, AprilTagOdometry camera) {
     this.shooter = shooter;
@@ -40,7 +42,8 @@ public class AutoShoot extends Command implements RotationController {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
+    timer.reset();
+    timer.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -67,8 +70,9 @@ public class AutoShoot extends Command implements RotationController {
 
     //if flywheels up to speed, shooter aimed, drive train aimed, then feed in
     if (
-      atShooterSpeed && shooter.atTargetAngle() //&& 
-      //Math.abs(camera.getYawToSpeaker()) < turningTolerance 
+      atShooterSpeed && shooter.atTargetAngle() && 
+      Math.abs(camera.getYawToSpeaker()) < Constants.Shooter.sideAimTolerance &&
+      timer.get() > 1
     ) { //TODO: How to check if chassis is facing correct angle?
       shooter.feed();
     }
@@ -92,7 +96,7 @@ public class AutoShoot extends Command implements RotationController {
   @Override
   public Rotation2d getRotationSpeeds() {
 
-    Rotation2d yawToSpeaker = Rotation2d.fromDegrees(-camera.getYawToSpeaker());
+    Rotation2d yawToSpeaker = Rotation2d.fromDegrees(camera.getYawToSpeaker());
 
     return Rotation2d.fromRadians(
       orientationController.calculate(yawToSpeaker.getRadians(), 0)

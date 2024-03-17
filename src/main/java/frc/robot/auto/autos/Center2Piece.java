@@ -42,7 +42,7 @@ public class Center2Piece extends SequentialCommandGroup {
                             new PathPoint(
                                 new Translation2d(0.8701, 5.528),
                                 new Rotation2d(Math.toRadians(180)),
-                                0.5
+                                1
                             ),
                             new PathPoint(
                                 new Translation2d(3, 5.528),
@@ -57,12 +57,12 @@ public class Center2Piece extends SequentialCommandGroup {
                             new PathPoint(
                                 new Translation2d(2, 5.0),
                                 new Rotation2d(Math.toRadians(180)),
-                                0.5
+                                0
                             )
                         )
                     ),
 
-                    new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2),
+                    new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2, Rotation2d.fromDegrees(180)),
 
                     true,
 
@@ -82,7 +82,7 @@ public class Center2Piece extends SequentialCommandGroup {
                             new PathPoint(
                                 new Translation2d(0.8701, 5.528),
                                 new Rotation2d(Math.toRadians(180)),
-                                1.5
+                                0
                             )
                         )
                     ),

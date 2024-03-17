@@ -40,7 +40,7 @@ public class AmpShoot extends Command {
   @Override
   public void execute() {
     //get flywheels are up to speed
-    shooter.setPosition(-24.5 *2*Math.PI);
+    shooter.setPosition(-130);
     shooter.setFlyWheelSpeed(-3000,0);
   }
 

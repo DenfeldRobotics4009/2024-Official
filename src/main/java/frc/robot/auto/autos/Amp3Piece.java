@@ -21,6 +21,7 @@ import frc.robot.auto.util.SetDrivePosition;
 import frc.robot.commands.AutoShoot;
 import frc.robot.commands.Intake;
 import frc.robot.commands.ShootManual;
+import frc.robot.commands.TransferIntake;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.SwerveDrive;
@@ -44,21 +45,26 @@ public class Amp3Piece extends SequentialCommandGroup {
                         new PathPoint(
                             Constants.Paths.START_LEFT,
                             Constants.Paths.START_LEFT_ANGLE,
-                            1.5
+                            1
                         ),
                         new PathPoint(
-                            new Translation2d(1.135, 7.054),
+                            new Translation2d(1.135, 6.5),
                             Constants.Paths.START_LEFT_ANGLE,
-                            1.5
+                            3
                         ),
                         new PathPoint(
-                            new Translation2d(2.514, 6.325),
+                            new Translation2d(2.514, 6),
                             Rotation2d.fromDegrees(180),
                             3
                         ),
                         new PathPoint(
-                            new Translation2d(8.19, 7.541),
-                        Rotation2d.fromDegrees(180),
+                            new Translation2d(7.19, 7.5),
+                            Rotation2d.fromDegrees(180),
+                            4
+                        ),
+                        new PathPoint(
+                            new Translation2d(8.8, 7.5),
+                            Rotation2d.fromDegrees(180),
                             0
                         )
                     )
@@ -71,25 +77,29 @@ public class Amp3Piece extends SequentialCommandGroup {
                 SwerveDrive.getInstance()
 
             ),
+
+            new ParallelCommandGroup(
+                new TransferIntake(IntakeSubsystem.getInstance(), Shooter.getInstance(), RobotContainer.cam2),
                 //Move to Shoot Point
-            new DriveWithSource(
-                new FollowPath(
-                    new Path(
-                        new PathPoint(
-                            new Translation2d(8.19, 7.541),
-                            Rotation2d.fromDegrees(180),
-                            3
-                        ),
-                        new PathPoint(
-                            new Translation2d(3.22,6.57),
-                            new Rotation2d(Math.toRadians(180)),
-                            0
+                new DriveWithSource(
+                    new FollowPath(
+                        new Path(
+                            new PathPoint(
+                                new Translation2d(8.19, 7),
+                                Rotation2d.fromDegrees(180),
+                                4
+                            ),
+                            new PathPoint(
+                                new Translation2d(3.5,6.5),
+                                new Rotation2d(Math.toRadians(180)),
+                                0
+                            )
                         )
-                    )
-                ),
+                    ),
 
-                SwerveDrive.getInstance()
+                    SwerveDrive.getInstance()
 
+                )
             ),
             //Shoot
             new DriveWithSource(
@@ -119,15 +129,15 @@ public class Amp3Piece extends SequentialCommandGroup {
                         ),
                         new PathPoint(
                             new Translation2d(2.26, 6.95),
-                            Rotation2d.fromDegrees(-45),
-                            1
+                            Rotation2d.fromDegrees(15),
+                            0
                         )
                     )
                 ),
 
-                new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2, Rotation2d.fromDegrees(-45)),
+                new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2, Rotation2d.fromDegrees(15)),
 
-                true,
+                false,
 
                 SwerveDrive.getInstance()
 

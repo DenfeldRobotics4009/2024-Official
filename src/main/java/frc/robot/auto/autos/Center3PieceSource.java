@@ -28,76 +28,60 @@ public class Center3PieceSource extends SequentialCommandGroup {
         super(
             new SetDrivePosition(
                 Field.mirrorPointIfRed(
-                    new Pose2d(Constants.Paths.START_CENTER, Constants.Paths.START_CENTER_ANGLE)
+                    new Pose2d(Constants.Paths.START_CENTER,Constants.Paths.START_CENTER_ANGLE)
                 )
             ),
-
             new ShootManual(Shooter.getInstance(), -10),
 
-            // Intake the closest center piece, lower intake at the same time
             new ParallelCommandGroup(
                 new DriveWithSource(
-
-                    // Translation source from path
                     new FollowPath(
                         new Path(
                             0.01,
                             new PathPoint(
                                 new Translation2d(1, 5.528),
                                 new Rotation2d(Math.toRadians(180)),
-                                0.5
-                            ),
-                            new PathPoint(
-                                new Translation2d(3, 5.528),
-                                new Rotation2d(Math.toRadians(180)),
-                                1
+                                3
                             ),
                             new PathPoint(
                                 new Translation2d(3, 6),
                                 new Rotation2d(Math.toRadians(180)),
-                                1
+                                3
                             ),
                             new PathPoint(
                                 new Translation2d(2, 5.0),
                                 new Rotation2d(Math.toRadians(180)),
-                                0.5
+                                0
                             )
                         )
                     ),
 
-                    // Rotation source from intake, with a default direction of 180 degrees
                     new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2, Rotation2d.fromDegrees(180)),
 
-                    true, // Race to avoid stalling if the piece fails to be picked up
+                    true,
 
                     SwerveDrive.getInstance()
                 )
             ),
-            // Drive back to the origin, while transferring
+
             new ParallelCommandGroup(
-                // Pose source from path, controls both rotation and translation
                 new DriveWithSource(
                     new FollowPath(
                         new Path(
                             new PathPoint(
                                 new Translation2d(2, 5.0),
                                 new Rotation2d(Math.toRadians(180)),
-                                1.5
+                                3
                             ),
                             new PathPoint(
-                                new Translation2d(3, 6),
+                                new Translation2d(1, 5.528),
                                 new Rotation2d(Math.toRadians(180)),
-                                1.5
-                            ),
-                            new PathPoint(
-                                new Translation2d(3, 5.528),
-                                new Rotation2d(Math.toRadians(180)),
-                                1.5
+                                3
                             ),
                             new PathPoint(
                                 new Translation2d(0.8701, 5.528),
                                 new Rotation2d(Math.toRadians(180)),
-                                0.2
+                                0
                             )
                         )
                     ),
@@ -108,7 +92,6 @@ public class Center3PieceSource extends SequentialCommandGroup {
 
             new ShootManual(Shooter.getInstance(), -10),
 
-            // Intake next piece, and lower intake at the same time
             new ParallelCommandGroup(
                 new DriveWithSource(
                     new FollowPath(
@@ -116,25 +99,25 @@ public class Center3PieceSource extends SequentialCommandGroup {
                             0.01,
                             new PathPoint(
                                 new Translation2d(0.8701, 5.528),
-                                new Rotation2d(Math.toRadians(180)),
-                                1.5
+                                new Rotation2d(Math.toRadians(130)),
+                                3
                             ),
                             new PathPoint(
-                                new Translation2d(1,5),
-                                new Rotation2d(Math.toRadians(150)),
-                                1.5
+                                new Translation2d(1.6, 6),
+                                new Rotation2d(Math.toRadians(130)),
+                                3
                             ),
                             new PathPoint(
-                                new Translation2d(2, 4.2),
-                                new Rotation2d(Math.toRadians(150)),
-                                0.2
+                                new Translation2d(2.5, 6.95),
+                                new Rotation2d(Math.toRadians(130)),
+                                0
                             )
                         )
                     ),
 
-                    new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2, Rotation2d.fromDegrees(150)),
+                    new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2, Rotation2d.fromDegrees(360-130)),
 
-                    true, // Race
+                    true,
 
                     SwerveDrive.getInstance()
                 )
@@ -145,14 +128,14 @@ public class Center3PieceSource extends SequentialCommandGroup {
                     new FollowPath(
                         new Path(
                             new PathPoint(
-                                new Translation2d(2, 5.0),
+                                new Translation2d(2.26, 6.95),
                                 new Rotation2d(Math.toRadians(180)),
-                                1.5
+                                3
                             ),
                             new PathPoint(
-                                new Translation2d(0.8701, 5.528), 
+                                new Translation2d(0.8701, 5.2),
                                 new Rotation2d(Math.toRadians(180)),
-                                0.5
+                                0
                             )
                         )
                     ),

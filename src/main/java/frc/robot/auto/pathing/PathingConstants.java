@@ -9,7 +9,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 /** Add your docs here. */
 public class PathingConstants {
 
-    public static double endpointTolerance = 0.2;
+    public static double endpointTolerance = 0.4;
     /**
      * Sets the default allowed distance from the robot to the
      * last point in the path for the path command to end.
@@ -52,7 +52,7 @@ public class PathingConstants {
             FollowPath.Clamp(maxVelocityMeters, 10, 0);
     }
 
-    public static double maxAccelerationMeters = 3;
+    public static double maxAccelerationMeters = 2.7;
     /**
      * Sets the maximum allowed deceleration along paths
      * This does not limit acceleration, only deceleration.

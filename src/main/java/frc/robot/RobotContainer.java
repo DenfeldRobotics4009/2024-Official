@@ -159,6 +159,13 @@ public class RobotContainer {
     );
 
     /**
+     * LOW FIELD CROSS SHOT
+     */
+    new Trigger(() -> {return controls.operate.getLeftStickButton();}).whileTrue(
+      new ShootManual(shooter, -145)
+    );
+
+    /**
      * TRANSFER
      * 
      * Bypasses the automatic intake process and just runs the transfer.

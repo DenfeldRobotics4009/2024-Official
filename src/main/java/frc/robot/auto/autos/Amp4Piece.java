@@ -21,6 +21,7 @@ import frc.robot.auto.util.SetDrivePosition;
 import frc.robot.commands.AutoShoot;
 import frc.robot.commands.Intake;
 import frc.robot.commands.ShootManual;
+import frc.robot.commands.TransferIntake;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.SwerveDrive;
@@ -44,20 +45,25 @@ public class Amp4Piece extends SequentialCommandGroup {
                         new PathPoint(
                             Constants.Paths.START_LEFT,
                             Constants.Paths.START_LEFT_ANGLE,
-                            1.5
+                            1
                         ),
                         new PathPoint(
-                            new Translation2d(1.135, 7.054),
+                            new Translation2d(1.135, 6.5),
                             Constants.Paths.START_LEFT_ANGLE,
-                            1.5
-                        ),
-                        new PathPoint(
-                            new Translation2d(2.514, 6.325),
-                        Rotation2d.fromDegrees(180),
                             3
                         ),
                         new PathPoint(
-                            new Translation2d(8.19, 7.541),
+                            new Translation2d(2.514, 6),
+                            Rotation2d.fromDegrees(180),
+                            5
+                        ),
+                        new PathPoint(
+                            new Translation2d(7.19, 7.35),
+                            Rotation2d.fromDegrees(180),
+                            3
+                        ),
+                        new PathPoint(
+                            new Translation2d(8.8, 7.35),
                             Rotation2d.fromDegrees(180),
                             0
                         )
@@ -71,25 +77,29 @@ public class Amp4Piece extends SequentialCommandGroup {
                 SwerveDrive.getInstance()
 
             ),
-            //Move to Shoot Point
-            new DriveWithSource(
-                new FollowPath(
-                    new Path(
-                        new PathPoint(
-                            new Translation2d(8.19, 7.541),
-                            Rotation2d.fromDegrees(180),
-                            3
-                        ),
-                        new PathPoint(
-                            new Translation2d(3.22,6.57),
-                            new Rotation2d(Math.toRadians(180)),
-                            0
+
+            new ParallelCommandGroup(
+                new TransferIntake(IntakeSubsystem.getInstance(), Shooter.getInstance(), RobotContainer.cam2),
+                //Move to Shoot Point
+                new DriveWithSource(
+                    new FollowPath(
+                        new Path(
+                            new PathPoint(
+                                new Translation2d(8.19, 7.35),
+                                Rotation2d.fromDegrees(180),
+                                4
+                            ),
+                            new PathPoint(
+                                new Translation2d(3.5,6),
+                                new Rotation2d(Math.toRadians(180)),
+                                0
+                            )
                         )
-                    )
-                ),
+                    ),
 
-                SwerveDrive.getInstance()
+                    SwerveDrive.getInstance()
 
+                )
             ),
             //Shoot
             new DriveWithSource(
@@ -97,7 +107,6 @@ public class Amp4Piece extends SequentialCommandGroup {
 
                     @Override
                     public Translation2d getTranslationSpeeds() {
-                        // TODO Auto-generated method stub
                         return new Translation2d();
                     } 
                 },
@@ -115,12 +124,22 @@ public class Amp4Piece extends SequentialCommandGroup {
                 new FollowPath(
                     new Path(
                         new PathPoint(
-                            new Translation2d(3.22,6.57),
+                            new Translation2d(3.22,6.5),
                             new Rotation2d(Math.toRadians(180)),
-                            3
+                            5
                         ),
                         new PathPoint(
-                            new Translation2d(8.19, 5.838),
+                            new Translation2d(7,6.5),
+                            new Rotation2d(Math.toRadians(180)),
+                            5
+                        ),
+                        new PathPoint(
+                            new Translation2d(7, 5.3),
+                            Rotation2d.fromDegrees(180),
+                            5
+                        ),
+                        new PathPoint(
+                            new Translation2d(9, 5),
                             Rotation2d.fromDegrees(180),
                             0
                         )
@@ -134,25 +153,29 @@ public class Amp4Piece extends SequentialCommandGroup {
                 SwerveDrive.getInstance()
 
             ),
-                //Move to Shoot Point
-            new DriveWithSource(
-                new FollowPath(
-                    new Path(
-                        new PathPoint(
-                            new Translation2d(8.19, 5.838),
-                            Rotation2d.fromDegrees(180),
-                            3
-                        ),
-                        new PathPoint(
-                            new Translation2d(3.22,6.57),
-                            new Rotation2d(Math.toRadians(180)),
-                            0
+
+            new ParallelCommandGroup(
+                new TransferIntake(IntakeSubsystem.getInstance(), Shooter.getInstance(), RobotContainer.cam2),
+                    //Move to Shoot Point
+                new DriveWithSource(
+                    new FollowPath(
+                        new Path(
+                            new PathPoint(
+                                new Translation2d(8.19, 5.838),
+                                Rotation2d.fromDegrees(180),
+                                4
+                            ),
+                            new PathPoint(
+                                new Translation2d(3.4,6.2),
+                                new Rotation2d(Math.toRadians(180)),
+                                0
+                            )
                         )
-                    )
-                ),
+                    ),
 
-                SwerveDrive.getInstance()
+                    SwerveDrive.getInstance()
 
+                )
             ),
             //Shoot
             new DriveWithSource(
@@ -178,21 +201,21 @@ public class Amp4Piece extends SequentialCommandGroup {
                 new FollowPath(
                     new Path(
                         new PathPoint(
-                            new Translation2d(3.22,6.57),
+                            new Translation2d(4,6.3),
                             new Rotation2d(Math.toRadians(180)),
                             1
                         ),
                         new PathPoint(
                             new Translation2d(2.26, 6.95),
-                            Rotation2d.fromDegrees(-45),
+                            Rotation2d.fromDegrees(60),
                             0
                         )
                     )
                 ),
 
-                new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2, Rotation2d.fromDegrees(180)),
+                new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2, Rotation2d.fromDegrees(360-60)),
 
-                true,
+                false,
 
                 SwerveDrive.getInstance()
 

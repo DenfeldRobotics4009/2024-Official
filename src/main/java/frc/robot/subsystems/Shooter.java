@@ -108,6 +108,7 @@ public class Shooter extends SubsystemBase {
     if (aimLimitSwitch.get()) {
       if (!limitSwitchToggle) {
         aim.getEncoder().setPosition(0);
+        System.out.println("Reset shooter");
       }
       limitSwitchToggle = true;
     } else {
