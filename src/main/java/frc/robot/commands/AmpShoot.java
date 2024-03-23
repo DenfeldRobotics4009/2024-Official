@@ -41,7 +41,7 @@ public class AmpShoot extends Command {
   public void execute() {
     //get flywheels are up to speed
     shooter.setPosition(-140);
-    shooter.setFlyWheelSpeed(-3500,0);
+    shooter.setFlyWheelSpeed(-3750,0); // Sped up from 3500
   }
 
   // Called once the command ends or is interrupted.

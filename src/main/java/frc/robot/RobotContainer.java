@@ -177,8 +177,10 @@ public class RobotContainer {
      * 
      * Does not move the intake or shooter, only runs the outtake while
      * the button is held.
+     * This will outtake the shooter as well, meaning this is not applicable when 2 notes
+     * are held in the robot. Instead, the first note should be shot.
      */
-    new Trigger(() -> {return controls.operate.getYButton();}).whileTrue(new Outtake(intake));
+    new Trigger(() -> {return controls.operate.getYButton();}).whileTrue(new Outtake(intake, shooter));
 
     // /**
     //  * FAST INTAKE

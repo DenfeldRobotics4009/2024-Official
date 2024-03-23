@@ -152,6 +152,9 @@ public class Shooter extends SubsystemBase {
   public void feed() {
     feeder.set(-Constants.Shooter.feederSpeed);
   }
+  public void outFeed() {
+    feeder.set(Constants.Shooter.feederSpeed);
+  }
   public void stopFeed() {
     feeder.set(0);
   }
