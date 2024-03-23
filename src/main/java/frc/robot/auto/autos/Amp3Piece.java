@@ -77,29 +77,24 @@ public class Amp3Piece extends SequentialCommandGroup {
                 SwerveDrive.getInstance()
 
             ),
-
-            new ParallelCommandGroup(
-                new TransferIntake(IntakeSubsystem.getInstance(), Shooter.getInstance(), RobotContainer.cam2),
-                //Move to Shoot Point
-                new DriveWithSource(
-                    new FollowPath(
-                        new Path(
-                            new PathPoint(
-                                new Translation2d(8.19, 7),
-                                Rotation2d.fromDegrees(180),
-                                4
-                            ),
-                            new PathPoint(
-                                new Translation2d(3.5,6.5),
-                                new Rotation2d(Math.toRadians(180)),
-                                0
-                            )
+            //Move to Shoot Point
+            new DriveWithSource(
+                new FollowPath(
+                    new Path(
+                        new PathPoint(
+                            new Translation2d(8.19, 7),
+                            Rotation2d.fromDegrees(180),
+                            4
+                        ),
+                        new PathPoint(
+                            new Translation2d(3.5,6.5),
+                            new Rotation2d(Math.toRadians(180)),
+                            0
                         )
-                    ),
+                    )
+                ),
 
-                    SwerveDrive.getInstance()
-
-                )
+                SwerveDrive.getInstance()
             ),
             //Shoot
             new DriveWithSource(

@@ -45,7 +45,7 @@ public class LowIntake extends Command {
     
     intake.setIntake(Constants.Intake.slowIntakeMotorPower);
 
-    applyTurnSpeed();
+    //applyTurnSpeed();
   }
 
   protected void applyTurnSpeed() {

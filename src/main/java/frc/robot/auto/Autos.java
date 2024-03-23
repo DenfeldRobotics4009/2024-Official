@@ -68,21 +68,23 @@ public enum Autos {
 
     Source4Piece(new Source4Piece()),
 
+    ExampleAuto(new Example());
+
     //5 Piece Autos
 
-    Source5Piece(new Source5Piece()),
+    //Source5Piece(new Source5Piece()),
 
-    Source5PieceMiddle(new Source5PieceMiddle()),
+    //Source5PieceMiddle(new Source5PieceMiddle()),
 
     //6 Piece Autos
 
-    Source6Piece(new Source6Piece()),
+    //Source6Piece(new Source6Piece()),
 
     //Hoover Autos
 
-    AmpHoover(new AmpHoover()), 
+    //AmpHoover(new AmpHoover()), 
 
-    SourceHoover(new SourceHoover());   
+    //SourceHoover(new SourceHoover());   
     
     /* ----------------- */
 

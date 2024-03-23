@@ -28,12 +28,12 @@ public final class Constants {
         public static int leftClimberMotorID = 18;
         public static int rightClimberMotorID = 19;
         public static double down = -5;
-        public static double up = 400;
+        public static double up = 340;
         public static double climberMotorPower = 1;  
     }
     public static final class Shooter {
 
-        public static double shotProfileOffset = 14;
+        public static double shotProfileOffset = 12; // Tuned from 14
 
         public static double sideAimTolerance = 10;
 

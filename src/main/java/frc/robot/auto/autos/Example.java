@@ -18,6 +18,7 @@ import frc.robot.auto.pathing.pathObjects.Path;
 import frc.robot.auto.pathing.pathObjects.PathPoint;
 import frc.robot.auto.util.Field;
 import frc.robot.auto.util.SetDrivePosition;
+import frc.robot.commands.AutoShoot;
 import frc.robot.commands.Intake;
 import frc.robot.commands.ShootManual;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -29,55 +30,51 @@ public class Example extends SequentialCommandGroup {
         super(
             new SetDrivePosition(
                 Field.mirrorPointIfRed(
-                    new Pose2d(Constants.Paths.START_RIGHT, Constants.Paths.START_RIGHT_ANGLE)
+                    new Pose2d(
+                        Constants.Paths.START_CENTER.plus(new Translation2d(1, 0)), 
+                        Constants.Paths.START_CENTER_ANGLE
+                    )
                 )
             ),
-            new ShootManual(Shooter.getInstance(), -10),
-
-            new ParallelCommandGroup(
-
-                new DriveWithSource(
-                    new TranslationController() {
-
-                        @Override
-                        public Translation2d getTranslationSpeeds() {
-                            // TODO Auto-generated method stub
-                            return new Translation2d();
-                        }
-                        
-                    },
-
-                    new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2, Rotation2d.fromDegrees(180)),
-
-                    true,
-
-                    SwerveDrive.getInstance()
-                )
-            ),
-
-            new ParallelCommandGroup(
-
-                new DriveWithSource(
-                    new FollowPath(
-                        new Path(
-                            new PathPoint(
-                                new Translation2d(2, 4.2),
-                                new Rotation2d(Math.toRadians(180)),
-                                0.5
-                            ),
-                            new PathPoint(
-                                Constants.Paths.START_RIGHT, 
-                                Constants.Paths.START_RIGHT_ANGLE,
-                                0.5
-                            )
+            new DriveWithSource(
+                new FollowPath(
+                    new Path(
+                        new PathPoint(
+                            Constants.Paths.START_CENTER.plus(new Translation2d(1, 0)),
+                            Constants.Paths.START_CENTER_ANGLE,
+                            1
+                        ),
+                        new PathPoint(
+                            Constants.Paths.START_CENTER.plus(new Translation2d(2, 0)),
+                            Constants.Paths.START_CENTER_ANGLE,
+                            0
                         )
-                    ),
+                    )
+                ),
 
-                    SwerveDrive.getInstance()
-                )
+                new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2, Rotation2d.fromDegrees(180)),
+
+                true,
+                
+                SwerveDrive.getInstance()
             ),
+            //Shoot
+            new DriveWithSource(
+                new TranslationController() {
 
-            new ShootManual(Shooter.getInstance(), -10)
+                    @Override
+                    public Translation2d getTranslationSpeeds() {
+                        return new Translation2d();
+                    } 
+                },
+
+                new AutoShoot(Shooter.getInstance(), RobotContainer.cam1),
+
+                false,
+
+                SwerveDrive.getInstance()
+
+            )
         );
     }
 }

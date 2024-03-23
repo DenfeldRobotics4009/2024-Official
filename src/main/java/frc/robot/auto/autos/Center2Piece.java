@@ -34,61 +34,57 @@ public class Center2Piece extends SequentialCommandGroup {
 
             new ShootManual(Shooter.getInstance(), -10),
 
-            new ParallelCommandGroup(
-                new DriveWithSource(
-                    new FollowPath(
-                        new Path(
-                            0.01,
-                            new PathPoint(
-                                new Translation2d(0.8701, 5.528),
-                                new Rotation2d(Math.toRadians(180)),
-                                1
-                            ),
-                            new PathPoint(
-                                new Translation2d(3, 5.528),
-                                new Rotation2d(Math.toRadians(180)),
-                                1
-                            ),
-                            new PathPoint(
-                                new Translation2d(3, 6),
-                                new Rotation2d(Math.toRadians(180)),
-                                1
-                            ),
-                            new PathPoint(
-                                new Translation2d(2, 5.0),
-                                new Rotation2d(Math.toRadians(180)),
-                                0
-                            )
+            new DriveWithSource(
+                new FollowPath(
+                    new Path(
+                        0.01,
+                        new PathPoint(
+                            new Translation2d(0.8701, 5.528),
+                            new Rotation2d(Math.toRadians(180)),
+                            1
+                        ),
+                        new PathPoint(
+                            new Translation2d(3, 5.528),
+                            new Rotation2d(Math.toRadians(180)),
+                            1
+                        ),
+                        new PathPoint(
+                            new Translation2d(3, 6),
+                            new Rotation2d(Math.toRadians(180)),
+                            1
+                        ),
+                        new PathPoint(
+                            new Translation2d(2, 5.0),
+                            new Rotation2d(Math.toRadians(180)),
+                            0
                         )
-                    ),
+                    )
+                ),
 
-                    new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2, Rotation2d.fromDegrees(180)),
+                new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2, Rotation2d.fromDegrees(180)),
 
-                    true,
+                true,
 
-                    SwerveDrive.getInstance()
-                )
+                SwerveDrive.getInstance()
             ),
 
-            new ParallelCommandGroup(
-                new DriveWithSource(
-                    new FollowPath(
-                        new Path(
-                            new PathPoint(
-                                new Translation2d(2, 5.0),
-                                new Rotation2d(Math.toRadians(180)),
-                                1.5
-                            ),
-                            new PathPoint(
-                                new Translation2d(0.8701, 5.528),
-                                new Rotation2d(Math.toRadians(180)),
-                                0
-                            )
+            new DriveWithSource(
+                new FollowPath(
+                    new Path(
+                        new PathPoint(
+                            new Translation2d(2, 5.0),
+                            new Rotation2d(Math.toRadians(180)),
+                            1.5
+                        ),
+                        new PathPoint(
+                            new Translation2d(0.8701, 5.528),
+                            new Rotation2d(Math.toRadians(180)),
+                            0
                         )
-                    ),
+                    )
+                ),
 
-                    SwerveDrive.getInstance()
-                )
+                SwerveDrive.getInstance()
             ),
 
             new ShootManual(Shooter.getInstance(), -10)

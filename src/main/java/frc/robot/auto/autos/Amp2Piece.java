@@ -34,56 +34,51 @@ public class Amp2Piece extends SequentialCommandGroup {
             
             new ShootManual(Shooter.getInstance(), -10),
 
-            new ParallelCommandGroup(
-
-                new DriveWithSource(
-                    new FollowPath(
-                        new Path(
-                            new PathPoint(
-                                Constants.Paths.START_LEFT,
-                                Constants.Paths.START_LEFT_ANGLE,
-                                0.5
-                            ),
-                            new PathPoint(
-                                new Translation2d(1, 6.95),
-                                Constants.Paths.START_LEFT_ANGLE,
-                                0.5
-                            ),
-                            new PathPoint(
-                                new Translation2d(2.26, 6.95),
-                                new Rotation2d(Math.toRadians(180)),
-                                0.2
-                            )
+            new DriveWithSource(
+                new FollowPath(
+                    new Path(
+                        new PathPoint(
+                            Constants.Paths.START_LEFT,
+                            Constants.Paths.START_LEFT_ANGLE,
+                            0.5
+                        ),
+                        new PathPoint(
+                            new Translation2d(1, 6.95),
+                            Constants.Paths.START_LEFT_ANGLE,
+                            0.5
+                        ),
+                        new PathPoint(
+                            new Translation2d(2.26, 6.95),
+                            new Rotation2d(Math.toRadians(180)),
+                            0.2
                         )
-                    ),
+                    )
+                ),
 
-                    new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2, Rotation2d.fromDegrees(180)),
+                new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2, Rotation2d.fromDegrees(180)),
 
-                    true, // Race
+                true, // Race
 
-                    SwerveDrive.getInstance()
-                )
+                SwerveDrive.getInstance()
             ),
-            new ParallelCommandGroup(
 
-                new DriveWithSource(
-                    new FollowPath(
-                        new Path(
-                            new PathPoint(
-                                new Translation2d(2.26, 6.95),
-                                new Rotation2d(Math.toRadians(180)),
-                                2
-                            ),
-                            new PathPoint(
-                                Constants.Paths.START_LEFT,
-                                Constants.Paths.START_LEFT_ANGLE,
-                                0.1
-                            )
+            new DriveWithSource(
+                new FollowPath(
+                    new Path(
+                        new PathPoint(
+                            new Translation2d(2.26, 6.95),
+                            new Rotation2d(Math.toRadians(180)),
+                            2
+                        ),
+                        new PathPoint(
+                            Constants.Paths.START_LEFT,
+                            Constants.Paths.START_LEFT_ANGLE,
+                            0.1
                         )
-                    ),
+                    )
+                ),
 
-                    SwerveDrive.getInstance()
-                )
+                SwerveDrive.getInstance()
             ),
 
             new ShootManual(Shooter.getInstance(), -10)

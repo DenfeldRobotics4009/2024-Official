@@ -66,12 +66,12 @@ public class Source4Piece extends SequentialCommandGroup {
                         5
                         ),
                         new PathPoint(
-                            new Translation2d(6,4),              
+                            new Translation2d(6,4.4),              
                             new Rotation2d(Math.toRadians(180)),
                         5
                         ),
                         new PathPoint(
-                            new Translation2d(6.5,4),              
+                            new Translation2d(6.5,4.4),              
                             new Rotation2d(Math.toRadians(180)),
                         3
                         )
@@ -86,12 +86,17 @@ public class Source4Piece extends SequentialCommandGroup {
                     new Path(
                         0.8,
                         new PathPoint(
-                            new Translation2d(6.5,4),              
+                            new Translation2d(6.5,4.4),              
                             new Rotation2d(Math.toRadians(180)),
                         3
                         ),
                         new PathPoint(
-                            new Translation2d(8.19, 4),
+                            new Translation2d(8.19, 4.4),
+                            new Rotation2d(180),
+                            0.5
+                        ),
+                        new PathPoint(
+                            new Translation2d(8.7, 4.4),
                             new Rotation2d(180),
                             0
                         )
@@ -100,35 +105,35 @@ public class Source4Piece extends SequentialCommandGroup {
 
                 new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2, Rotation2d.fromDegrees(180)),
 
-                false,
+                true,
 
                 SwerveDrive.getInstance()
             ),
             new ParallelCommandGroup(
-            new MoveShooter(Shooter.getInstance(), 0),
+                new MoveShooter(Shooter.getInstance(), 0),
                 //Move to Shoot Point
-             new DriveWithSource(
-                new FollowPath(
-                    new Path(
-                        new PathPoint(
-                            new Translation2d(6,4.2),
-                            new Rotation2d(Math.toRadians(180)),
+                new DriveWithSource(
+                    new FollowPath(
+                        new Path(
+                            new PathPoint(
+                                new Translation2d(6,4.2),
+                                new Rotation2d(Math.toRadians(180)),
+                                4
+                            ),
+                            new PathPoint(
+                                new Translation2d(5.2,4.25), // Tuned from 4.5            
+                                new Rotation2d(Math.toRadians(180)),
                             4
-                        ),
-                        new PathPoint(
-                            new Translation2d(4.5,4.25),              
+                            ),
+                            new PathPoint(
+                                new Translation2d(3.3,5.29),
                             new Rotation2d(Math.toRadians(180)),
-                        4
-                        ),
-                        new PathPoint(
-                            new Translation2d(3.3,5.29),
-                        new Rotation2d(Math.toRadians(180)),
-                            0
+                                0
+                            )
                         )
-                    )
-                ),
+                    ),
 
-                SwerveDrive.getInstance()
+                    SwerveDrive.getInstance()
 
                 )
             ),
@@ -151,46 +156,61 @@ public class Source4Piece extends SequentialCommandGroup {
 
             ),
             new ParallelCommandGroup(
-            new MoveShooter(Shooter.getInstance(), 0),
-            //Intake the Source Side Middle Piece
-            new DriveWithSource(
-                new FollowPath(
-                    new Path(
-                        new PathPoint(
-                            new Translation2d(3.3,5.29),
-                            new Rotation2d(Math.toRadians(180)),
-                            4
-                        ),
-                        new PathPoint(
-                            new Translation2d(4.2,4.25),
-                            new Rotation2d(Math.toRadians(360-200)),
-                            4
-                        ),
-                        new PathPoint(
-                            new Translation2d(7,2.5),
-                            new Rotation2d(Math.toRadians(360-200)),
-                        4
+                new MoveShooter(Shooter.getInstance(), 0),
+                //Intake the Source Side Middle Piece
+                new DriveWithSource(
+                    new FollowPath(
+                        new Path(
+                            new PathPoint(
+                                new Translation2d(3.3,5.29),
+                                new Rotation2d(Math.toRadians(180)),
+                                2
+                            ),
+                            new PathPoint(
+                                new Translation2d(3.8,5.29),
+                                new Rotation2d(Math.toRadians(180)),
+                                2
+                            ),
+                            new PathPoint(
+                                new Translation2d(4.6,4.5),
+                                new Rotation2d(Math.toRadians(180)),
+                                2
+                            ),
+                            new PathPoint(
+                                new Translation2d(6.5,4.5),
+                                new Rotation2d(Math.toRadians(180)),
+                                2
+                            ),
+                            new PathPoint(
+                                new Translation2d(7,2.8),
+                                new Rotation2d(Math.toRadians(360-200)),
+                            2
 
+                            )
                         )
-                    )
-                ),
-            
-                SwerveDrive.getInstance()
+                    ),
+                
+                    SwerveDrive.getInstance()
 
-            )
+                )
             ),
             new DriveWithSource(
                 new FollowPath(
                     new Path(
                         0.8,
                         new PathPoint(
-                            new Translation2d(7,2.5),              
+                            new Translation2d(7,2.8),              
                             new Rotation2d(Math.toRadians(360-200)),
                         3
                         ),
                         new PathPoint(
-                            new Translation2d(8.189, 2),
-                        new Rotation2d(Math.toRadians(360-200)),
+                            new Translation2d(8.189, 2.8),
+                            new Rotation2d(Math.toRadians(360-200)),
+                            0.5
+                        ),
+                        new PathPoint(
+                            new Translation2d(8.6, 2.8),
+                            new Rotation2d(Math.toRadians(360-200)),
                             0
                         )
                     )
@@ -198,41 +218,41 @@ public class Source4Piece extends SequentialCommandGroup {
 
                 new Intake(IntakeSubsystem.getInstance(), RobotContainer.cam2, Rotation2d.fromDegrees(360-200)),
 
-                false,
+                true,
             
                 SwerveDrive.getInstance()
 
             ),
             new ParallelCommandGroup(
-            new MoveShooter(Shooter.getInstance(), 0),
-            new DriveWithSource(
-                new FollowPath(
-                    new Path(
-                        new PathPoint(
-                            new Translation2d(8.189, 2.533),
-                            new Rotation2d(Math.toRadians(180)),
-                            5
-                        ),
-                        new PathPoint(
-                            new Translation2d(6,4.2),
-                            new Rotation2d(Math.toRadians(180)),
-                            4
-                        ),
-                        new PathPoint(
-                            new Translation2d(4.2,4.25),              
-                            new Rotation2d(Math.toRadians(180)),
-                        3
+                new MoveShooter(Shooter.getInstance(), 0),
+                new DriveWithSource(
+                    new FollowPath(
+                        new Path(
+                            new PathPoint(
+                                new Translation2d(8.189, 2.533),
+                                new Rotation2d(Math.toRadians(180)),
+                                5
+                            ),
+                            new PathPoint(
+                                new Translation2d(6,4.2),
+                                new Rotation2d(Math.toRadians(180)),
+                                4
+                            ),
+                            new PathPoint(
+                                new Translation2d(4.9,4.25),              
+                                new Rotation2d(Math.toRadians(180)),
+                            3
 
-                        ),
-                        new PathPoint(
-                            new Translation2d(3.3,5.29),
-                        new Rotation2d(Math.toRadians(180)),
-                            0
+                            ),
+                            new PathPoint(
+                                new Translation2d(3.3,5.29),
+                            new Rotation2d(Math.toRadians(180)),
+                                0
+                            )
                         )
-                    )
-                ),
+                    ),
 
-                SwerveDrive.getInstance()
+                    SwerveDrive.getInstance()
 
                 )
             ),
@@ -255,53 +275,53 @@ public class Source4Piece extends SequentialCommandGroup {
 
             ),
             new ParallelCommandGroup(
-            new MoveShooter(Shooter.getInstance(), 0),
-            //Intake Source Middle Piece
-            new DriveWithSource(
-                new FollowPath(
-                    new Path(
-                        new PathPoint(
-                            new Translation2d(3.70,5.29),
-                            new Rotation2d(Math.toRadians(180)),
-                            4
-                        ),
-                        new PathPoint(
-                            new Translation2d(4.5,4),              
-                            new Rotation2d(Math.toRadians(180)),
-                        5
-                        ),
-                        new PathPoint(
-                            new Translation2d(7, 3.7),
-                        new Rotation2d(Math.toRadians(135)),
+                new MoveShooter(Shooter.getInstance(), 0),
+                //Intake Source Middle Piece
+                new DriveWithSource(
+                    new FollowPath(
+                        new Path(
+                            new PathPoint(
+                                new Translation2d(3.70,5.29),
+                                new Rotation2d(Math.toRadians(180)),
+                                4
+                            ),
+                            new PathPoint(
+                                new Translation2d(4.5,4),              
+                                new Rotation2d(Math.toRadians(180)),
                             5
-                        ),
-                        new PathPoint(
-                            new Translation2d(7.8,1.811),              
-                            new Rotation2d(Math.toRadians(100)),
-                        5
+                            ),
+                            new PathPoint(
+                                new Translation2d(7, 3.7),
+                            new Rotation2d(Math.toRadians(135)),
+                                5
+                            ),
+                            new PathPoint(
+                                new Translation2d(8.2,1.811),              
+                                new Rotation2d(Math.toRadians(100)),
+                            5
+                            )
                         )
-                    )
-                ),
-            
-                SwerveDrive.getInstance()
+                    ),
+                
+                    SwerveDrive.getInstance()
 
-            )
+                )
             ),
             new DriveWithSource(
                 new FollowPath(
                     new Path(
                         new PathPoint(
-                            new Translation2d(7.8,1.811),              
+                            new Translation2d(8.2,1.811),              
                             new Rotation2d(Math.toRadians(90)),
                         4
                         ),
                         new PathPoint(
-                            new Translation2d(7.8,0.811),              
+                            new Translation2d(8.2,0.811),              
                             new Rotation2d(Math.toRadians(90)),
                         3
                         ),
                         new PathPoint(
-                            new Translation2d(7.8,0.3),
+                            new Translation2d(8.2,0.3),
                         new Rotation2d(Math.toRadians(90)),
                             0
                         )

@@ -218,7 +218,7 @@ public class RobotContainer {
      * 
      * While the B button is held, the climber ignores its limits
      */
-    new Trigger(() -> {return controls.operate.getBButton();}).onFalse(new SetClimberLimits(climber, true));
+    new Trigger(() -> {return controls.operate.getBButton();}).whileFalse(new SetClimberLimits(climber, true));
     
     /**
      * LEFT CLIMBER UP
