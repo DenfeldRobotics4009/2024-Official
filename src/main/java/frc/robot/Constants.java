@@ -28,23 +28,25 @@ public final class Constants {
         public static int leftClimberMotorID = 18;
         public static int rightClimberMotorID = 19;
         public static double down = -5;
-        public static double up = 450;
+        public static double up = 340;
         public static double climberMotorPower = 1;  
     }
     public static final class Shooter {
 
-        public static double shotProfileOffset = 3.5;
+        public static double shotProfileOffset = 12; // Tuned from 14
+
+        public static double sideAimTolerance = 10;
 
         public static int topMotorID = 57;
         public static int bottomMotorID = 58; 
         public static double spin = 0.9;
         public static int feederMotorID = 59;
-        public static double feederSpeed = 1;
+        public static double feederSpeed = 0.7;
         public static int aimMotorID = 40;
         
-        public static double pidTolerance = 2;
+        public static double pidTolerance = 4;
 
-        public static double aimRangeFrom0 = -133;
+        public static double aimRangeFrom0 = -180;
         public static double transferAngle = -90;
         
         public static double minimumFlywheelSpeed = 0;
@@ -56,7 +58,7 @@ public final class Constants {
 
         public static double flyWheelTolerance = 400; // RPM
 
-        public static int barrelLaserSensorID = 0;
+        public static int barrelLaserSensorID = 2;
 
         public static int aimLimitSwitchID = 0;
 
@@ -67,21 +69,21 @@ public final class Constants {
     }
     public static final class Intake {
         public static int intakeMotorID = 12;
-        public static int rotateMotorID = 10; 
-        public static double intakeMotorPower = -0.4;
+        public static double intakeMotorPower = 0.7; // Sped up for new intake
+        public static double slowIntakeMotorPower = 0.2;
 
         public static double ground = -0.3242;
         public static double deposit = -0.1315;
 
         public static double pidTolerance = 0.08;
 
-        public static int intakeLaserSensorID = 1;
-        public static int intakeInnerLimitSwitchID = 1;
-        public static int intakeOuterLimitSwitchID = 2;
+        public static int intakeLaserSensorID = 3;
 
         public static double rotateEncoderOffset = -0.032;// 0.9709;
 
         public static int rotateEncoderID = 3;
+
+        public static int lightHubId = 12;
     }
     public static final class AprilTagOdometry {
         public static double maxSpeed = 0.001; // power
@@ -136,8 +138,8 @@ public final class Constants {
         }
 
         // Meters from wheel center to wheel center
-        public static double TrackYMeters = 0.59325;
-        public static double TrackXMeters = 0.59325;
+        public static double TrackYMeters = 0.59055;
+        public static double TrackXMeters = 0.45085;
 
         public static Rotation2d forwardAngle = new Rotation2d(Math.toRadians(0));
     }

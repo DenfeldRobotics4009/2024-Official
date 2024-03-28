@@ -12,24 +12,19 @@ import frc.robot.commands.BurpShoot;
 import frc.robot.commands.Climb;
 import frc.robot.commands.Drive;
 import frc.robot.commands.FeedShooter;
-import frc.robot.commands.Intake;
-import frc.robot.commands.MoveIntake;
-import frc.robot.commands.MoveIntakeFirst;
-import frc.robot.commands.MoveShooterFirst;
+import frc.robot.commands.LowIntake;
+import frc.robot.commands.MoveShooter;
 import frc.robot.commands.Outtake;
 import frc.robot.commands.SetClimberLimits;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.ShootManual;
-import frc.robot.commands.TeleopIntake;
-import frc.robot.commands.Transfer;
+import frc.robot.commands.TransferIntake;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.subsystems.Climber.climberSide;
-import frc.robot.subsystems.IntakeSubsystem.intakePosition;
 import frc.robot.subsystems.Shooter.shooterPosition;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.AprilTagOdometry;
 import frc.robot.subsystems.Climber;
@@ -97,15 +92,10 @@ public class RobotContainer {
      * 
      * Feeding is triggered by the left trigger
      */
-    controls.getOperatePOVTrigger(90).whileTrue(
-      new SequentialCommandGroup(
-        new MoveIntake(intake, intakePosition.DEPOSIT.get()),
-        new Shoot(shooter, controls, cam1)
-      )
-    );
+    controls.getOperatePOVTrigger(90).whileTrue(new Shoot(shooter, controls, cam1));
 
     new Trigger(() -> {return controls.operate.getRightTriggerAxis() >= 0.1;}).whileTrue(
-      new FeedShooter(shooter)
+      new FeedShooter(shooter, true)
     );
 
     /**
@@ -117,10 +107,7 @@ public class RobotContainer {
      * Feeding is triggered by the left trigger
      */
     controls.getOperatePOVTrigger(270).whileTrue(
-      new SequentialCommandGroup(
-        new MoveIntakeFirst(intake, shooter, intakePosition.DEPOSIT.get(), shooterPosition.GROUND.get()),
-        new AmpShoot(shooter, controls)
-      )
+      new AmpShoot(shooter)
     );
 
     /**
@@ -139,32 +126,19 @@ public class RobotContainer {
 
     /**
      * INTAKE
-     * 
-     * Full intake process, canceled when button is released.
-     * Intake extends outward -> shooter moves to transfer -> intake motors run
-     * -> move shooter to transfer (will end immediately) -> move intake to transfer
-     * -> run transfer process.
      */
     new Trigger(() -> {return controls.operate.getLeftTriggerAxis() >= 0.1;}).whileTrue(
-      new ParallelCommandGroup(
-        new TeleopIntake(intake, cam2, controls), // Continue until a piece is picked up
-        new MoveIntakeFirst(intake, shooter, intakePosition.GROUND.get(), shooterPosition.DEPOSIT.get())
-      )
+      new TransferIntake(intake, shooter, cam2) // Continue until a piece is picked up
     );
 
 
     /**
-     * TRANSFER
-     * 
-     * Automatic after the intake sensor is triggered after intaking.
+     * LOW INTAKE
      */
     new Trigger(() -> {
-      return controls.operate.getLeftTriggerAxis() >= 0.1 && intake.getIntakeSensor() && intake.atAngle(intakePosition.GROUND);
-    }).onTrue(
-      new SequentialCommandGroup(
-        new MoveShooterFirst(intake, shooter, intakePosition.DEPOSIT.get(), shooterPosition.DEPOSIT.get()),
-        new Transfer(intake, shooter)
-      )
+      return controls.operate.getRightStickButton();
+    }).whileTrue(
+      new LowIntake(intake, cam2)
     );
 
     /**
@@ -174,7 +148,7 @@ public class RobotContainer {
      * This fully tucks all arms into the robot.
      */
     new Trigger(() -> {return controls.operate.getAButton();}).onTrue(
-      new MoveShooterFirst(intake, shooter, intakePosition.STARTING.get(), shooterPosition.GROUND.get())
+      new MoveShooter(shooter, shooterPosition.GROUND.get())
     );
 
     /**
@@ -182,6 +156,13 @@ public class RobotContainer {
      */
     new Trigger(() -> {return controls.operate.getXButton();}).whileTrue(
       new ShootManual(shooter, -5)
+    );
+
+    /**
+     * LOW FIELD CROSS SHOT
+     */
+    new Trigger(() -> {return controls.operate.getLeftStickButton();}).whileTrue(
+      new ShootManual(shooter, -145)
     );
 
     /**
@@ -196,8 +177,10 @@ public class RobotContainer {
      * 
      * Does not move the intake or shooter, only runs the outtake while
      * the button is held.
+     * This will outtake the shooter as well, meaning this is not applicable when 2 notes
+     * are held in the robot. Instead, the first note should be shot.
      */
-    new Trigger(() -> {return controls.operate.getYButton();}).whileTrue(new Outtake(intake));
+    new Trigger(() -> {return controls.operate.getYButton();}).whileTrue(new Outtake(intake, shooter));
 
     // /**
     //  * FAST INTAKE
@@ -237,7 +220,7 @@ public class RobotContainer {
      * 
      * While the B button is held, the climber ignores its limits
      */
-    new Trigger(() -> {return controls.operate.getBButton();}).onFalse(new SetClimberLimits(climber, true));
+    new Trigger(() -> {return controls.operate.getBButton();}).whileFalse(new SetClimberLimits(climber, true));
     
     /**
      * LEFT CLIMBER UP

@@ -19,16 +19,26 @@ public final class ShotProfile {
         // x = distance (inches), y = height (joystick value)
         new Translation2d(0, 0),
         new Translation2d(0.95, 0),
-        new Translation2d(1.5, -40),
-        new Translation2d(2.5, -54),
-        new Translation2d(3.7, -75),
-        new Translation2d(4.20, -85),
-        new Translation2d(4.40, -86.8),
-        new Translation2d(4.47, -87),
-        new Translation2d(5.1, -89.2),
-        new Translation2d(5.30, -89.6),
-        new Translation2d(5.44, -90),
-        new Translation2d(5.56, -90.45)
+        new Translation2d(1.6, -60),
+        new Translation2d(2.7, -68),
+        new Translation2d(3, -85),
+        new Translation2d(3.5, -87),
+        new Translation2d(3.8, -88),
+        new Translation2d(3.9, -89.5),
+        new Translation2d(4, -90),
+        new Translation2d(4.3, -93),
+        new Translation2d(4.6, -96),
+        new Translation2d(5, -100),
+        // new Translation2d(1.5, -40),
+        // new Translation2d(2.5, -54),
+        // new Translation2d(3.7, -90), // Podium line
+        // new Translation2d(4.20, -85),
+        // new Translation2d(4.40, -86.8),
+        // new Translation2d(4.47, -87),
+        // new Translation2d(5.1, -89.2),
+        // new Translation2d(5.30, -89.6),
+        // new Translation2d(5.44, -90),
+        // new Translation2d(5.56, -90.45)
         // new Translation2d(0, 0),
         // new Translation2d(33, 0),
         // new Translation2d(76, 0),//-0.35),
@@ -41,6 +51,7 @@ public final class ShotProfile {
         // new Translation2d(180,0),// -0.68),
         // new Translation2d(207.5,0),// -0.72),
         // new Translation2d(237,0)// -0.9)
+        new Translation2d(8.19, -110)
     };
 
     /**

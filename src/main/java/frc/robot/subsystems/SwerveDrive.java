@@ -212,12 +212,18 @@ public class SwerveDrive extends SubsystemBase implements DriveSubsystem {
   public void setPosition(Pose2d position) {
     // Rebuild pose estimator with more relevant values
     navxGyro.setAngleAdjustment(position.getRotation().times(-1).getDegrees());
-    robotPoseEstimator.resetPosition(navxGyro.getRotation2d(), getModulePositions(), position);
+    if (robotPoseEstimator != null) {
+      robotPoseEstimator.resetPosition(navxGyro.getRotation2d(), getModulePositions(), position);
+    } else {
+      robotPoseEstimator = new SwerveDrivePoseEstimator(kinematics, navxGyro.getRotation2d(), getModulePositions(), position);
+    }
   }
 
   public void addVisionMeasurement(Pose2d visionPosition, double timestampSeconds) {
     // Check if the vision position is within 1 meter of the current drive position,
     // per the robotPoseEstimator recommendations.
+
+    // Im losing my marbles
     if (visionPosition.getTranslation().getDistance(getPosition().getTranslation()) < 1) {
       robotPoseEstimator.addVisionMeasurement(visionPosition, timestampSeconds);
     }

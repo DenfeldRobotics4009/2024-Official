@@ -9,9 +9,16 @@ import frc.robot.subsystems.Shooter;
 
 public class FeedShooter extends Command {
   Shooter shooter;
-  /** Creates a new FeedShooter. */
+  boolean waitForShooter;
+
+  public FeedShooter(Shooter shooter, boolean waitForShooter) {
+    this.shooter = shooter;
+    this.waitForShooter = waitForShooter;
+  }
+
   public FeedShooter(Shooter shooter) {
     this.shooter = shooter;
+    this.waitForShooter = false;
   }
 
   // Called when the command is initially scheduled.
@@ -21,8 +28,11 @@ public class FeedShooter extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.feed();
-    
+    if (waitForShooter) {
+      if (shooter.atFlyWheelSpeed()) shooter.feed();
+    } else {
+      shooter.feed();
+    }
   }
 
   // Called once the command ends or is interrupted.

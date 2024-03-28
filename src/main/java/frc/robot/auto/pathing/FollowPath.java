@@ -13,11 +13,13 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.auto.pathing.controllers.RotationController;
+import frc.robot.auto.pathing.controllers.TranslationController;
 import frc.robot.auto.pathing.pathObjects.Path;
 import frc.robot.auto.pathing.pathObjects.PathPoint;
 import frc.robot.auto.pathing.pathObjects.PathState;
 
-public class FollowPath extends Command {
+public class FollowPath extends Command implements RotationController, TranslationController {
     
     // Set of processed points
     final Path path;
@@ -30,13 +32,14 @@ public class FollowPath extends Command {
 
     PIDController rotationController = new PIDController(PathingConstants.turningProportion, 0, 0);
 
+    ChassisSpeeds lastSpeeds;
+
     /**
      * Follows a given path
      * @param Path 
      */
     public FollowPath(Path Path) {
-        // Assume drive control when path following
-        addRequirements(PathingConstants.driveSubsystem);
+        
         path = Path;
         rotationController.enableContinuousInput(-Math.PI, Math.PI);
     }
@@ -52,9 +55,6 @@ public class FollowPath extends Command {
         System.out.println("--- Following path of points: ---");
         for (PathPoint point : path.points) {System.out.println(point.posMeters + "," + point.orientation);}
         System.out.println("--- --- --- -- --- -- --- --- ---");
-
-        System.out.println("Scheduling path command: " + getFirstPoint().triggeredCommand);
-        getFirstPoint().triggeredCommand.schedule();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -96,7 +96,7 @@ public class FollowPath extends Command {
         );
         // Construct chassis speeds from state values
         // Convert field oriented to robot oriented
-        ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
+        lastSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
             // Field oriented chassisSpeeds
             new ChassisSpeeds(
                 axisSpeeds.getX(),
@@ -110,8 +110,6 @@ public class FollowPath extends Command {
             // Rotate from current direction
             robotPose.getRotation()
         );
-        // Drive
-        PathingConstants.driveSubsystem.drive(speeds);
 
         // Recurse until called to end
     }
@@ -129,9 +127,6 @@ public class FollowPath extends Command {
         AutoShuffleboardTab.distanceFromGoalEntry.setDouble(0);
         AutoShuffleboardTab.speedEntry.setDouble(0);
         AutoShuffleboardTab.lookAheadEntry.setDouble(0);
-
-        System.out.println("Scheduling path command: " + getLastPoint().triggeredCommand);
-        getLastPoint().triggeredCommand.schedule();
     }
 
     // Returns true when the command should end.
@@ -146,6 +141,9 @@ public class FollowPath extends Command {
         double distanceToLastPointMeters = getLastPoint().posMeters.getDistance(
             PathingConstants.driveSubsystem.getPosition().getTranslation()
         );
+
+        System.out.println("Followpath isfinished " +(lastCrossedPointIndex >= (path.points.size() - 2) && 
+            distanceToLastPointMeters < path.lastPointTolerance));
 
         return (
             // If we have passed the second to last point
@@ -249,9 +247,6 @@ public class FollowPath extends Command {
 
         // Check to increment index
         if (compareWithNextLine(perpendicularIntersectionAB, robotTranslation)) {
-            // Schedule associated command
-            System.out.println("Scheduling path command: " + relevantPoints.get(1).triggeredCommand);
-            relevantPoints.get(1).triggeredCommand.schedule();
             lastCrossedPointIndex ++;
             //println("Increment last crossed point index to " + lastCrossedPointIndex);
         }
@@ -345,5 +340,29 @@ public class FollowPath extends Command {
         if (input > max) {return max;}
         else if (input < min) {return min;}
         else {return input;}
+    }
+
+    /**
+     * 
+     * @param A Rotation2d A
+     * @param B Rotation2d B
+     * @return the angle from A to B
+     * on the interval [pi, -pi), in radians
+     */
+    public static double signedAngleBetween(Rotation2d A, Rotation2d B) {
+        return (
+            A.minus(B).getRadians()
+        );
+    }
+
+    @Override
+    public Translation2d getTranslationSpeeds() {
+        System.out.println("Translation speed: "+ lastSpeeds);
+        return new Translation2d(lastSpeeds.vxMetersPerSecond, lastSpeeds.vyMetersPerSecond);
+    }
+
+    @Override
+    public Rotation2d getRotationSpeeds() {
+        return Rotation2d.fromRadians(lastSpeeds.omegaRadiansPerSecond);
     }
 }

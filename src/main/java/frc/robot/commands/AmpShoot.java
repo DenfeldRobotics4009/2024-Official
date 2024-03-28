@@ -15,21 +15,17 @@ import frc.robot.subsystems.AprilTagOdometry;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.IntakeSubsystem.intakePosition;
 import frc.robot.subsystems.swerve.SwerveModule;
 
 public class AmpShoot extends Command {
 
   Shooter shooter;
-  Controls controls;
 
   /** Creates a new Shoot. */
   public AmpShoot(
-    Shooter shooter, 
-    Controls controls
+    Shooter shooter
   ) {
     this.shooter = shooter;
-    this.controls = controls;
     
     addRequirements(shooter);
   }
@@ -43,23 +39,9 @@ public class AmpShoot extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Convert joystick value into a shooter angle
-    double angle = -15;
-
     //get flywheels are up to speed
-    shooter.setPosition(angle);
-    shooter.setFlyWheelSpeed(
-      Constants.Shooter.topAmpFlyWheelSpeed, 
-      Constants.Shooter.bottomAmpFlyWheelSpeed
-    );
-
-    //if flywheels up to speed, shooter aimed, drive train aimed, then feed in
-    // if (controls.operate.getRightTriggerAxis() > 0.1) {
-    //   shooter.feed();
-    // }
-    // else {
-    //   shooter.stopFeed();
-    // }
+    shooter.setPosition(-140);
+    shooter.setFlyWheelSpeed(-3750,0); // Sped up from 3500
   }
 
   // Called once the command ends or is interrupted.

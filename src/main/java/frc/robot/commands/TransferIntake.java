@@ -4,52 +4,57 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.NoteCamera;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Shooter.shooterPosition;
 
-public class MoveIntake extends Command {
+public class TransferIntake extends LowIntake {
 
-  final IntakeSubsystem intake;
-  final double intakePosition;
+  Shooter shooter;
 
   /**
-   * Sets the intake to the transfer position to allow
-   * for shooter movement.
+   * Runs the intake until the sensor is activated
    * @param intake
-   * @param shooter
    */
-  public MoveIntake(
+  public TransferIntake(
     IntakeSubsystem intake, 
-    double intakePosition
+    Shooter shooter,
+    NoteCamera camera
   ) {
-    // addRequirements(intake, shooter);
 
+    super(intake, camera);
+    addRequirements(shooter);
     this.intake = intake;
-    this.intakePosition = intakePosition;
+    this.camera = camera;
+    this.shooter = shooter;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    shooter.setPosition(shooterPosition.DEPOSIT);
+    super.initialize();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.setPosition(intakePosition);
+    intake.setIntake();
+    shooter.feed();
+    applyTurnSpeed();
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    shooter.stopFeed();
+    super.end(interrupted);
+  }
 
   // Returns true when the command should end.
   @Override
-  /**
-   * End when the intake has reached position
-   */
   public boolean isFinished() {
-    return intake.atTargetAngle() && intake.getTargetAngle() == intakePosition;
+    return shooter.getBarrelSensor();
   }
 }

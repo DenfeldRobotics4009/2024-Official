@@ -59,6 +59,8 @@ public class Shooter extends SubsystemBase {
   DigitalInput aimLimitSwitch = new DigitalInput(Constants.Shooter.aimLimitSwitchID);
   boolean limitSwitchToggle = false;
 
+  boolean atFlyWheelSpeed = true;
+
   /**
    * @return singleton instance of Turret
    */
@@ -100,11 +102,13 @@ public class Shooter extends SubsystemBase {
     MathUtil.clamp(speed, -1, 1);
     aim.set(speed);
     SmartDashboard.putNumber("Current Shooter Angle", aim.getEncoder().getPosition());
+    SmartDashboard.putBoolean("Shooter Sensor", getBarrelSensor());
 
     // Check the limit switch to reset aim encoder
     if (aimLimitSwitch.get()) {
       if (!limitSwitchToggle) {
         aim.getEncoder().setPosition(0);
+        System.out.println("Reset shooter");
       }
       limitSwitchToggle = true;
     } else {
@@ -134,14 +138,22 @@ public class Shooter extends SubsystemBase {
     topFlywheelPidController.setReference(topRPM, ControlType.kVelocity);
 
     // Check tolerance
-    return (
+    atFlyWheelSpeed = (
       topMotor.getEncoder().getVelocity() >= (topRPM-Constants.Shooter.flyWheelTolerance) && 
       bottomMotor.getEncoder().getVelocity() <= (Constants.Shooter.flyWheelTolerance-bottomRPM)
     );
+    return atFlyWheelSpeed;
+  }
+
+  public boolean atFlyWheelSpeed() {
+    return atFlyWheelSpeed;
   }
 
   public void feed() {
     feeder.set(-Constants.Shooter.feederSpeed);
+  }
+  public void outFeed() {
+    feeder.set(Constants.Shooter.feederSpeed);
   }
   public void stopFeed() {
     feeder.set(0);
@@ -163,7 +175,6 @@ public class Shooter extends SubsystemBase {
   }
 
   public boolean getBarrelSensor() {
-    System.out.println("Barrel Sensor - " + barrelSensor.getVoltage());
     return barrelSensor.getVoltage() < Constants.laserSensorVoltageHigh; 
   }
 }

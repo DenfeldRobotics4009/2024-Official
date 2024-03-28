@@ -17,7 +17,6 @@ import frc.robot.subsystems.AprilTagOdometry;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.IntakeSubsystem.intakePosition;
 import frc.robot.subsystems.swerve.SwerveModule;
 
 public class Shoot extends Command {
@@ -64,7 +63,6 @@ public class Shoot extends Command {
     if (ShotProfile.getHeightFromDistance(distance).isPresent()) {
       angle = ShotProfile.getHeightFromDistance(distance).get();
     }
-    angle +=  offset += Controls.modifyAxis(3* controls.operate.getLeftY(), 0.6);
 
     // System.out.println("Distance " + distance);
     // System.out.println("Shot angle " + angle);
