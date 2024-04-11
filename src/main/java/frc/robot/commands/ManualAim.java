@@ -48,7 +48,7 @@ public class ManualAim extends Command {
     angle = MathUtil.clamp(angle, Constants.Shooter.aimRangeFrom0, 0);
     //get flywheels are up to speed
     shooter.setPosition(angle);
-    shooter.setFlyWheelSpeed(Constants.Shooter.flyWheelSpeed);
+    shooter.setFlyWheelSpeed(4000);
   }
 
   // Called once the command ends or is interrupted.
