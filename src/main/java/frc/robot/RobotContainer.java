@@ -13,6 +13,7 @@ import frc.robot.commands.Climb;
 import frc.robot.commands.Drive;
 import frc.robot.commands.FeedShooter;
 import frc.robot.commands.LowIntake;
+import frc.robot.commands.ManualAim;
 import frc.robot.commands.MoveShooter;
 import frc.robot.commands.Outtake;
 import frc.robot.commands.SetClimberLimits;
@@ -96,6 +97,10 @@ public class RobotContainer {
 
     new Trigger(() -> {return controls.operate.getRightTriggerAxis() >= 0.1;}).whileTrue(
       new FeedShooter(shooter, true)
+    );
+
+    new Trigger(() -> {return controls.operate.getBButton();}).whileTrue(
+      new ManualAim(shooter, controls)
     );
 
     /**
@@ -208,19 +213,19 @@ public class RobotContainer {
      */
     new Trigger(() -> {return controls.operate.getRightBumper();}).whileTrue(new Climb(climber, -Constants.Climber.climberMotorPower));
 
-    /**
-     * CLIMBER LIMIT DISABLE
-     * 
-     * While the B button is held, the climber ignores its limits
-     */
-    new Trigger(() -> {return controls.operate.getBButton();}).onTrue(new SetClimberLimits(climber, false));
+    // /**
+    //  * CLIMBER LIMIT DISABLE
+    //  * 
+    //  * While the B button is held, the climber ignores its limits
+    //  */
+    // new Trigger(() -> {return controls.operate.getBButton();}).onTrue(new SetClimberLimits(climber, false));
     
-    /**
-     * CLIMBER LIMIT ENABLE
-     * 
-     * While the B button is held, the climber ignores its limits
-     */
-    new Trigger(() -> {return controls.operate.getBButton();}).whileFalse(new SetClimberLimits(climber, true));
+    // /**
+    //  * CLIMBER LIMIT ENABLE
+    //  * 
+    //  * While the B button is held, the climber ignores its limits
+    //  */
+    // new Trigger(() -> {return controls.operate.getBButton();}).whileFalse(new SetClimberLimits(climber, true));
     
     /**
      * LEFT CLIMBER UP
